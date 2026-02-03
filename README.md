@@ -3,131 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helados.mix - Pedidos</title>
+    
+    <title>🍦 Helados.mix - Pedidos</title>
+    <meta property="og:title" content="Helados.mix - Catálogo Interactivo">
+    <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido online.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/heladosmix/index.html/main/1770160675997.jpg">
+    <meta property="og:url" content="https://heladosmix.github.io/index.html/">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --pink: #e31b6d; --light-pink: #fff0f6; --green: #25d366; }
-        body { font-family: 'Segoe UI', sans-serif; background: #fdf2f8; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .app-card { background: white; width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        :root { --primario: #ff85a2; --secundario: #fce4ec; --texto: #4a4a4a; --whatsapp: #25d366; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--secundario); color: var(--texto); margin: 0; padding-bottom: 160px; }
+        header { background-color: var(--primario); color: white; text-align: center; padding: 2rem 1rem; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .brand-title { font-size: 2.8rem; font-weight: 700; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .categoria { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        h2 { color: var(--primario); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid var(--secundario); padding-bottom: 8px; }
+        .selector-tamano { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .radio-tamano { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 2px solid var(--secundario); border-radius: 12px; cursor: pointer; position: relative; }
+        input[type="radio"] { position: absolute; opacity: 0; }
+        input[type="radio"]:checked + .radio-content { background-color: var(--primario); color: white; width: 100%; margin: -12px; padding: 12px; border-radius: 10px; font-weight: bold; }
+        .opcion { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f2f2f2; cursor: pointer; }
+        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primario); margin-right: 15px; }
+        .input-direccion { width: 100%; padding: 15px; border: 2px solid var(--secundario); border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 1rem; box-sizing: border-box; outline: none; }
         
-        .header { background: white; padding: 20px; text-align: center; border-bottom: 2px solid var(--light-pink); }
-        .header h1 { color: var(--pink); margin: 0; font-size: 26px; font-weight: 800; }
-
-        .section { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; }
-        .section-title { font-weight: bold; font-size: 14px; color: #888; text-transform: uppercase; margin-bottom: 10px; display: block; }
-
-        .size-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .size-option { display: none; }
-        .size-label { background: #f8f9fa; border: 2px solid transparent; padding: 10px; border-radius: 12px; text-align: center; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.2s; }
-        .size-option:checked + .size-label { border-color: var(--pink); color: var(--pink); background: var(--light-pink); }
-
-        .flavor-list { max-height: 300px; overflow-y: auto; padding-right: 5px; }
-        .flavor-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #fafafa; cursor: pointer; }
-        .flavor-item input { width: 18px; height: 18px; margin-right: 12px; accent-color: var(--pink); }
-
-        .input-address { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; outline: none; background: #fdfdfd; }
-        .input-address:focus { border-color: var(--pink); background: white; }
-
-        .footer { padding: 20px; background: white; }
-        .btn-whatsapp { background: var(--green); color: white; border: none; width: 100%; padding: 16px; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+        .btn-flotante { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+            background-color: var(--whatsapp); color: white; padding: 18px 30px; 
+            border-radius: 50px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5); 
+            width: 90%; border: none; cursor: pointer; z-index: 1000; text-align: center;
+        }
+        .btn-texto-principal { font-size: 1.2rem; font-weight: 700; display: block; }
+        .info-seleccion { font-size: 0.9rem; opacity: 0.95; }
+        .precio-tag { float: right; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="app-card">
-    <div class="header">
-        <h1>Helados.mix 🍦</h1>
-    </div>
+<header>
+    <span class="brand-title">Helados.mix</span>
+    <p>Catálogo Interactivo</p>
+</header>
 
-    <div class="section">
-        <span class="section-title">1. Elegí el tamaño</span>
-        <div class="size-grid">
-            <input type="radio" name="size" id="s1" value="1 KG" data-limit="4" checked class="size-option" onclick="resetSabores()">
-            <label for="s1" class="size-label">1 KG<br><small>4 Sabores</small></label>
-
-            <input type="radio" name="size" id="s2" value="1/2 KG" data-limit="3" class="size-option" onclick="resetSabores()">
-            <label for="s2" class="size-label">1/2 KG<br><small>3 Sabores</small></label>
-
-            <input type="radio" name="size" id="s3" value="1/4 KG" data-limit="2" class="size-option" onclick="resetSabores()">
-            <label for="s3" class="size-label">1/4 KG<br><small>2 Sabores</small></label>
+<div class="container">
+    <form id="pedidoForm">
+        <div class="categoria">
+            <h2>📏 1. Elegí el tamaño</h2>
+            <div class="selector-tamano">
+                <label class="radio-tamano">
+                    <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
+                    <div class="radio-content">1 KG <span class="precio-tag">$14.000</span></div>
+                </label>
+                <label class="radio-tamano">
+                    <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
+                    <div class="radio-content">1/2 KG <span class="precio-tag">$8.000</span></div>
+                </label>
+                <label class="radio-tamano">
+                    <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
+                    <div class="radio-content">1/4 KG <span class="precio-tag">$4.000</span></div>
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="section">
-        <span class="section-title">2. Sabores (<span id="count">0</span> seleccionados)</span>
-        <div class="flavor-list" id="listaSabores"></div>
-    </div>
+        <div class="categoria">
+            <h2>🏠 2. Dirección de entrega</h2>
+            <input type="text" id="direccion" class="input-direccion" placeholder="Ej: Calle Falsa 123, Rafael Calzada">
+        </div>
 
-    <div class="section">
-        <span class="section-title">3. Datos de entrega (Opcional)</span>
-        <input type="text" id="direccion" class="input-address" placeholder="Ej: Calle 123, Depto 2B...">
-    </div>
+        <div class="categoria">
+            <h2>🍨 3. Sabores a la Crema</h2>
+            <div id="lista-crema"></div>
+        </div>
 
-    <div class="footer">
-        <button class="btn-whatsapp" onclick="enviarPedido()">
-            PEDIR POR WHATSAPP 🚀
+        <div class="categoria">
+            <h2>🍋 4. Sabores al Agua</h2>
+            <div id="lista-agua"></div>
+        </div>
+
+        <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
+            <span class="btn-texto-principal">ENVIAR POR WHATSAPP</span>
+            <span id="resumen-seleccion" class="info-seleccion">Primero elegí un tamaño</span>
         </button>
-    </div>
+    </form>
 </div>
 
 <script>
-    const sabores = [
-        "Almendrado", "Anana al agua", "Mouse de limón", "Crema Americana", "Banana", "B. Dolca",
-        "Banana Split", "C. Cielo", "Lemon Pie", "D. Leche", "D.L. Granizado", "Durazno al agua",
-        "Vainilla", "Arcoiris", "Ferrero Rocher", "Chocolate", "Marroc", "Chocolate al rhum",
-        "Chocotorta", "Oreo", "Chantilly con frutilla", "Frutilla al agua", "Frutilla a la crema",
-        "Limón al agua", "Pistacho", "Frutos del bosque", "Rockler", "Menta granizada",
-        "Granizado", "Tramontana", "Flan con dulce"
-    ];
+    const saboresCrema = ["Almendrado", "Tramontana", "Dulce de leche", "Chocotorta", "Banana split", "Flan con dulce", "Chocolate", "Frutilla a la crema", "Americana", "Menta granizada", "Dulce granizado", "Vainilla", "Granizado", "Banana", "Cielo", "Chocolate al rhum", "Frutos del bosque", "Rockler", "Marroc", "Dolca", "Mouse de limon", "Pistacho", "Chantilly con frutilla", "Arcoiris"];
+    const saboresAgua = ["Ananá al agua", "Frutilla al agua", "Limón al agua", "Durazno"];
 
-    const lista = document.getElementById('listaSabores');
-
-    sabores.forEach(s => {
-        const item = document.createElement('label');
-        item.className = 'flavor-item';
-        item.innerHTML = `<input type="checkbox" name="sabor" value="${s}" onchange="checkLimit(this)"> <span>${s}</span>`;
-        lista.appendChild(item);
-    });
-
-    function checkLimit(el) {
-        const limit = parseInt(document.querySelector('input[name="size"]:checked').dataset.limit);
-        const selected = document.querySelectorAll('input[name="sabor"]:checked');
-        if (selected.length > limit) {
-            el.checked = false;
-            alert("¡Límite alcanzado para este tamaño!");
-        }
-        document.getElementById('count').innerText = document.querySelectorAll('input[name="sabor"]:checked').length;
+    function generarLista(lista, idContenedor) {
+        const contenedor = document.getElementById(idContenedor);
+        lista.sort().forEach(s => {
+            contenedor.innerHTML += `<label class="opcion"><input type="checkbox" name="sabor" value="${s}" onchange="actualizarInfo()"> <span>${s}</span></label>`;
+        });
     }
 
-    function resetSabores() {
-        document.querySelectorAll('input[name="sabor"]').forEach(c => c.checked = false);
-        document.getElementById('count').innerText = "0";
-    }
+    generarLista(saboresCrema, 'lista-crema');
+    generarLista(saboresAgua, 'lista-agua');
 
-    function enviarPedido() {
-        const num = "5491137610574";
-        const size = document.querySelector('input[name="size"]:checked').value;
-        const seleccionados = Array.from(document.querySelectorAll('input[name="sabor"]:checked')).map(s => s.value);
-        const dir = document.getElementById('direccion').value.trim();
+    function actualizarInfo() {
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const resumen = document.getElementById('resumen-seleccion');
 
-        if (seleccionados.length === 0) return alert("Seleccioná tus sabores");
-
-        let msg = `*NUEVO PEDIDO - Helados.mix*%0A`;
-        msg += `--------------------------%0A`;
-        msg += `*Tamaño:* ${size}%0A`;
-        
-        // Solo agrega la dirección si el usuario escribió algo
-        if (dir !== "") {
-            msg += `*Dirección:* ${dir}%0A`;
-        } else {
-            msg += `*Entrega:* A coordinar / Retiro%0A`;
+        if (!tamano) {
+            resumen.innerText = "Primero elegí un tamaño";
+            return;
         }
 
-        msg += `*Sabores:*%0A`;
-        seleccionados.forEach(s => msg += `• ${s}%0A`);
-        
-        window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+        const elegidos = seleccionados.length;
+        resumen.innerText = elegidos === 0 ? "Seleccioná tus sabores" : `Llevás ${elegidos} ${elegidos === 1 ? 'sabor seleccionado' : 'sabores seleccionados'}`;
+    }
+
+    function enviarWhatsApp() {
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const direccion = document.getElementById('direccion').value;
+
+        if (!tamano) { alert("Por favor, seleccioná un tamaño primero."); return; }
+        if (seleccionados.length === 0) { alert("Elegí al menos un sabor."); return; }
+        if (direccion.trim() === "") { alert("Por favor, ingresá tu dirección."); return; }
+
+        let lista = "";
+        seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
+
+        const miTelefono = "5491137610574"; 
+        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}%0A_Enviado desde el catálogo interactivo_`;
+
+        window.open(`https://wa.me/${miTelefono}?text=${msj}`, '_blank');
     }
 </script>
-
 </body>
 </html>
