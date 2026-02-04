@@ -1,122 +1,118 @@
-<!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍦 Helados.mix - Pedidos</title>
-    <meta property="og:title" content="Helados.mix - Catálogo Interactivo">
-    <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido online.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/heladosmix/index.html/main/1770160675997.jpg">
-    <meta property="og:url" content="https://heladosmix.github.io/index.html/">
-    <meta property="og:type" content="website">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primario: #ff85a2; --secundario: #fce4ec; --texto: #4a4a4a; --whatsapp: #25d366; }
+        :root { 
+            --primario: #ff85a2; 
+            --secundario: #fce4ec; 
+            --texto: #333333; /* Texto un poco más oscuro para mejor contraste */
+            --whatsapp: #25d366; 
+        }
         
-        * { box-sizing: border-box; } /* Evita que el padding agrande los elementos */
+        * { box-sizing: border-box; }
 
         body { 
             font-family: 'Poppins', sans-serif; 
             background-color: var(--secundario); 
             color: var(--texto); 
             margin: 0; 
-            padding: 0;
-            padding-bottom: 140px; 
+            padding-bottom: 160px; 
+            font-size: 16px; /* Tamaño base cómodo para lectura */
         }
 
         header { 
             background-color: var(--primario); 
             color: white; 
             text-align: center; 
-            padding: 2rem 1rem; 
+            padding: 2.5rem 1rem; 
             border-bottom-left-radius: 30px; 
             border-bottom-right-radius: 30px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .brand-title { font-size: 2.2rem; font-weight: 700; display: block; line-height: 1.2; }
-        header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
+        .brand-title { font-size: 2.4rem; font-weight: 700; display: block; line-height: 1.2; }
+        header p { margin: 8px 0 0; font-size: 1.1rem; opacity: 0.9; }
 
-        /* AJUSTE DE MÁRGENES: Ahora usa 95% en móviles para no dejar tanto aire */
-        .container { 
-            padding: 15px 10px; 
-            width: 95%; 
-            max-width: 500px; 
-            margin: auto; 
-        }
+        .container { padding: 15px 10px; width: 95%; max-width: 550px; margin: auto; }
         
         .categoria { 
             background: white; 
             border-radius: 20px; 
-            padding: 20px 15px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            padding: 25px 15px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08); 
             text-align: center; 
         }
 
         h2 { 
             color: var(--primario); 
-            font-size: 1.1rem; 
-            margin: 0 0 15px 0; 
+            font-size: 1.3rem; 
+            margin: 0 0 20px 0; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
         }
         
-        .pote-img {
-            height: auto;
-            margin-bottom: 8px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .pote-img { height: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
 
         .radio-tamano { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 12px; 
-            border: 1px solid #f0f0f0; 
-            border-radius: 15px; 
-            margin-bottom: 10px;
+            padding: 15px; 
+            border: 2px solid #f0f0f0; 
+            border-radius: 18px; 
+            margin-bottom: 12px;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .radio-tamano:hover { background-color: #fff9fa; border-color: var(--primario); }
-        input[type="radio"] { margin-bottom: 8px; transform: scale(1.2); accent-color: var(--primario); }
+        
+        /* Radio y Checkbox más grandes para fácil clic */
+        input[type="radio"], input[type="checkbox"] { 
+            transform: scale(1.5); 
+            accent-color: var(--primario); 
+            margin-bottom: 10px;
+        }
+
+        .radio-tamano span { font-size: 1.1rem; }
 
         .input-direccion { 
             width: 100%; 
-            padding: 14px; 
-            border: 1px solid #eee; 
-            border-radius: 12px; 
+            padding: 16px; 
+            border: 2px solid #eee; 
+            border-radius: 15px; 
             font-family: inherit;
             text-align: center;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
         }
 
         .opcion { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 12px 5px; 
-            border-bottom: 1px solid #f9f9f9; 
+            padding: 15px 5px; 
+            border-bottom: 1px solid #f2f2f2; 
             cursor: pointer;
             width: 100%;
+            font-size: 1.1rem;
         }
         
-        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primario); }
+        input[type="checkbox"] { margin: 0 15px 0 0; }
 
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            background-color: var(--whatsapp); color: white; padding: 18px; 
-            border-radius: 30px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3); 
-            width: 92%; max-width: 460px; border: none; cursor: pointer; z-index: 1000;
+            background-color: var(--whatsapp); color: white; padding: 20px; 
+            border-radius: 35px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); 
+            width: 92%; max-width: 480px; border: none; cursor: pointer; z-index: 1000;
             text-align: center;
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -133,19 +129,19 @@
             <h2>📏 1. Elegí el tamaño</h2>
             
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 90px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
                 <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
                 <span><strong>1 KG</strong> - $14.000</span>
             </label>
 
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 75px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
                 <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
                 <span><strong>1/2 KG</strong> - $8.000</span>
             </label>
 
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 60px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
                 <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
                 <span><strong>1/4 KG</strong> - $4.000</span>
             </label>
@@ -168,7 +164,7 @@
 
         <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
             <strong>ENVIAR POR WHATSAPP</strong><br>
-            <span id="resumen-seleccion" style="font-size: 0.85rem; font-weight: normal;">Primero elegí un tamaño</span>
+            <span id="resumen-seleccion" style="font-size: 0.9rem; font-weight: normal;">Primero elegí un tamaño</span>
         </button>
     </form>
 </div>
