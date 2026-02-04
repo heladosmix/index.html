@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>🍦 Helados.mix - Pedidos</title>
     <meta property="og:title" content="Helados.mix - Catálogo Interactivo">
@@ -14,29 +14,75 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primario: #ff85a2; --secundario: #fce4ec; --texto: #4a4a4a; --whatsapp: #25d366; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--secundario); color: var(--texto); margin: 0; padding-bottom: 160px; }
-        header { background-color: var(--primario); color: white; text-align: center; padding: 2rem 1rem; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-        .brand-title { font-size: 2.8rem; font-weight: 700; display: block; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .container { padding: 15px; max-width: 500px; margin: auto; }
-        .categoria { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        h2 { color: var(--primario); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid var(--secundario); padding-bottom: 8px; }
-        .selector-tamano { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .radio-tamano { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 2px solid var(--secundario); border-radius: 12px; cursor: pointer; position: relative; }
-        input[type="radio"] { position: absolute; opacity: 0; }
-        input[type="radio"]:checked + .radio-content { background-color: var(--primario); color: white; width: 100%; margin: -12px; padding: 12px; border-radius: 10px; font-weight: bold; }
-        .opcion { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f2f2f2; cursor: pointer; }
-        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primario); margin-right: 15px; }
-        .input-direccion { width: 100%; padding: 15px; border: 2px solid var(--secundario); border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 1rem; box-sizing: border-box; outline: none; }
         
+        /* Ajuste de márgenes globales */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--secundario); 
+            color: var(--texto); 
+            margin: 0; 
+            padding: 0; /* Eliminamos el padding superior para que el header pegue arriba */
+            padding-bottom: 160px; 
+        }
+
+        header { 
+            background-color: var(--primario); 
+            color: white; 
+            text-align: center; 
+            padding: 1.5rem 1rem; 
+            border-bottom-left-radius: 30px; 
+            border-bottom-right-radius: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .brand-title { font-size: 2.2rem; font-weight: 700; display: block; line-height: 1.2; }
+        header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
+
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        
+        .categoria { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+        }
+
+        h2 { color: var(--primario); font-size: 1.1rem; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px; }
+        
+        /* Ajuste de los botones de tamaño */
+        .radio-tamano { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px; 
+            border: 1px solid #eee; 
+            border-radius: 12px; 
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        input[type="radio"]:checked + .radio-content { font-weight: bold; color: var(--primario); }
+
+        .input-direccion { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #eee; 
+            border-radius: 10px; 
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .opcion { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
+        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--primario); }
+
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            background-color: var(--whatsapp); color: white; padding: 18px 30px; 
-            border-radius: 50px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5); 
-            width: 90%; border: none; cursor: pointer; z-index: 1000; text-align: center;
+            background-color: var(--whatsapp); color: white; padding: 15px; 
+            border-radius: 25px; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); 
+            width: 90%; max-width: 450px; border: none; cursor: pointer; z-index: 1000;
         }
-        .btn-texto-principal { font-size: 1.2rem; font-weight: 700; display: block; }
-        .info-seleccion { font-size: 0.9rem; opacity: 0.95; }
-        .precio-tag { float: right; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -50,20 +96,18 @@
     <form id="pedidoForm">
         <div class="categoria">
             <h2>📏 1. Elegí el tamaño</h2>
-            <div class="selector-tamano">
-                <label class="radio-tamano">
-                    <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
-                    <div class="radio-content">1 KG <span class="precio-tag">$14.000</span></div>
-                </label>
-                <label class="radio-tamano">
-                    <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
-                    <div class="radio-content">1/2 KG <span class="precio-tag">$8.000</span></div>
-                </label>
-                <label class="radio-tamano">
-                    <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
-                    <div class="radio-content">1/4 KG <span class="precio-tag">$4.000</span></div>
-                </label>
-            </div>
+            <label class="radio-tamano">
+                <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
+                <span>1 KG</span> <strong>$14.000</strong>
+            </label>
+            <label class="radio-tamano">
+                <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
+                <span>1/2 KG</span> <strong>$8.000</strong>
+            </label>
+            <label class="radio-tamano">
+                <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
+                <span>1/4 KG</span> <strong>$4.000</strong>
+            </label>
         </div>
 
         <div class="categoria">
@@ -82,8 +126,8 @@
         </div>
 
         <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
-            <span class="btn-texto-principal">ENVIAR POR WHATSAPP</span>
-            <span id="resumen-seleccion" class="info-seleccion">Primero elegí un tamaño</span>
+            <strong>ENVIAR POR WHATSAPP</strong><br>
+            <span id="resumen-seleccion" style="font-size: 0.8rem; font-weight: normal;">Primero elegí un tamaño</span>
         </button>
     </form>
 </div>
@@ -107,13 +151,9 @@
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const resumen = document.getElementById('resumen-seleccion');
 
-        if (!tamano) {
-            resumen.innerText = "Primero elegí un tamaño";
-            return;
-        }
-
-        const elegidos = seleccionados.length;
-        resumen.innerText = elegidos === 0 ? "Seleccioná tus sabores" : `Llevás ${elegidos} ${elegidos === 1 ? 'sabor seleccionado' : 'sabores seleccionados'}`;
+        if (!tamano) { resumen.innerText = "Primero elegí un tamaño"; return; }
+        const n = seleccionados.length;
+        resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor seleccionado' : 'sabores seleccionados'}`;
     }
 
     function enviarWhatsApp() {
@@ -121,17 +161,15 @@
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const direccion = document.getElementById('direccion').value;
 
-        if (!tamano) { alert("Por favor, seleccioná un tamaño primero."); return; }
+        if (!tamano) { alert("Elegí un tamaño."); return; }
         if (seleccionados.length === 0) { alert("Elegí al menos un sabor."); return; }
-        if (direccion.trim() === "") { alert("Por favor, ingresá tu dirección."); return; }
+        if (direccion.trim() === "") { alert("Ingresá tu dirección."); return; }
 
         let lista = "";
         seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
 
-        const miTelefono = "5491137610574"; 
-        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}%0A_Enviado desde el catálogo interactivo_`;
-
-        window.open(`https://wa.me/${miTelefono}?text=${msj}`, '_blank');
+        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}`;
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
     }
 </script>
 </body>
