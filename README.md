@@ -15,19 +15,22 @@
     <style>
         :root { --primario: #ff85a2; --secundario: #fce4ec; --texto: #4a4a4a; --whatsapp: #25d366; }
         
+        * { box-sizing: border-box; } /* Evita que el padding agrande los elementos */
+
         body { 
             font-family: 'Poppins', sans-serif; 
             background-color: var(--secundario); 
             color: var(--texto); 
             margin: 0; 
-            padding-bottom: 160px; 
+            padding: 0;
+            padding-bottom: 140px; 
         }
 
         header { 
             background-color: var(--primario); 
             color: white; 
             text-align: center; 
-            padding: 1.5rem 1rem; 
+            padding: 2rem 1rem; 
             border-bottom-left-radius: 30px; 
             border-bottom-right-radius: 30px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -36,12 +39,18 @@
         .brand-title { font-size: 2.2rem; font-weight: 700; display: block; line-height: 1.2; }
         header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
 
-        .container { padding: 15px; max-width: 500px; margin: auto; }
+        /* AJUSTE DE MÁRGENES: Ahora usa 95% en móviles para no dejar tanto aire */
+        .container { 
+            padding: 15px 10px; 
+            width: 95%; 
+            max-width: 500px; 
+            margin: auto; 
+        }
         
         .categoria { 
             background: white; 
             border-radius: 20px; 
-            padding: 20px; 
+            padding: 20px 15px; 
             margin-bottom: 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
             text-align: center; 
@@ -57,57 +66,56 @@
             gap: 8px; 
         }
         
-        /* Imagen de los potes térmicos */
         .pote-img {
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         .radio-tamano { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 15px; 
-            border: 1px solid #eee; 
-            border-radius: 12px; 
+            padding: 12px; 
+            border: 1px solid #f0f0f0; 
+            border-radius: 15px; 
             margin-bottom: 10px;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        .radio-tamano:hover { background-color: #fff9fa; }
-        input[type="radio"] { margin-bottom: 10px; transform: scale(1.3); accent-color: var(--primario); }
+        .radio-tamano:hover { background-color: #fff9fa; border-color: var(--primario); }
+        input[type="radio"] { margin-bottom: 8px; transform: scale(1.2); accent-color: var(--primario); }
 
         .input-direccion { 
             width: 100%; 
-            padding: 12px; 
+            padding: 14px; 
             border: 1px solid #eee; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             font-family: inherit;
-            box-sizing: border-box;
             text-align: center;
+            font-size: 0.95rem;
         }
 
         .opcion { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 10px 0; 
+            padding: 12px 5px; 
             border-bottom: 1px solid #f9f9f9; 
             cursor: pointer;
+            width: 100%;
         }
         
-        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--primario); }
+        input[type="checkbox"] { width: 22px; height: 22px; margin-right: 12px; accent-color: var(--primario); }
 
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            background-color: var(--whatsapp); color: white; padding: 15px; 
-            border-radius: 25px; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); 
-            width: 90%; max-width: 450px; border: none; cursor: pointer; z-index: 1000;
+            background-color: var(--whatsapp); color: white; padding: 18px; 
+            border-radius: 30px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3); 
+            width: 92%; max-width: 460px; border: none; cursor: pointer; z-index: 1000;
             text-align: center;
         }
     </style>
@@ -125,19 +133,19 @@
             <h2>📏 1. Elegí el tamaño</h2>
             
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 90px;">
                 <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
                 <span><strong>1 KG</strong> - $14.000</span>
             </label>
 
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 75px;">
                 <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
                 <span><strong>1/2 KG</strong> - $8.000</span>
             </label>
 
             <label class="radio-tamano">
-                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 60px;">
                 <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
                 <span><strong>1/4 KG</strong> - $4.000</span>
             </label>
@@ -145,7 +153,7 @@
 
         <div class="categoria">
             <h2>🏠 2. Dirección (Opcional)</h2>
-            <input type="text" id="direccion" class="input-direccion" placeholder="Ej: Calle Falsa 123 (o dejar vacío para retirar)">
+            <input type="text" id="direccion" class="input-direccion" placeholder="Calle y número (o retiro local)">
         </div>
 
         <div class="categoria">
@@ -160,7 +168,7 @@
 
         <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
             <strong>ENVIAR POR WHATSAPP</strong><br>
-            <span id="resumen-seleccion" style="font-size: 0.8rem; font-weight: normal;">Primero elegí un tamaño</span>
+            <span id="resumen-seleccion" style="font-size: 0.85rem; font-weight: normal;">Primero elegí un tamaño</span>
         </button>
     </form>
 </div>
@@ -186,7 +194,7 @@
 
         if (!tamano) { resumen.innerText = "Primero elegí un tamaño"; return; }
         const n = seleccionados.length;
-        resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor seleccionado' : 'sabores seleccionados'}`;
+        resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
     }
 
     function enviarWhatsApp() {
