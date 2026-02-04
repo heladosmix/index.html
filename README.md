@@ -15,13 +15,11 @@
     <style>
         :root { --primario: #ff85a2; --secundario: #fce4ec; --texto: #4a4a4a; --whatsapp: #25d366; }
         
-        /* Ajuste de márgenes globales */
         body { 
             font-family: 'Poppins', sans-serif; 
             background-color: var(--secundario); 
             color: var(--texto); 
             margin: 0; 
-            padding: 0; /* Eliminamos el padding superior para que el header pegue arriba */
             padding-bottom: 160px; 
         }
 
@@ -46,24 +44,43 @@
             padding: 20px; 
             margin-bottom: 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            text-align: center; 
         }
 
-        h2 { color: var(--primario); font-size: 1.1rem; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px; }
+        h2 { 
+            color: var(--primario); 
+            font-size: 1.1rem; 
+            margin: 0 0 15px 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+        }
         
-        /* Ajuste de los botones de tamaño */
+        /* Imagen de los potes térmicos */
+        .pote-img {
+            height: auto;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
         .radio-tamano { 
             display: flex; 
-            justify-content: space-between; 
+            flex-direction: column; 
             align-items: center; 
-            padding: 12px; 
+            padding: 15px; 
             border: 1px solid #eee; 
             border-radius: 12px; 
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        input[type="radio"]:checked + .radio-content { font-weight: bold; color: var(--primario); }
+        .radio-tamano:hover { background-color: #fff9fa; }
+        input[type="radio"] { margin-bottom: 10px; transform: scale(1.3); accent-color: var(--primario); }
 
         .input-direccion { 
             width: 100%; 
@@ -72,9 +89,18 @@
             border-radius: 10px; 
             font-family: inherit;
             box-sizing: border-box;
+            text-align: center;
         }
 
-        .opcion { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
+        .opcion { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 10px 0; 
+            border-bottom: 1px solid #f9f9f9; 
+            cursor: pointer;
+        }
+        
         input[type="checkbox"] { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--primario); }
 
         .btn-flotante { 
@@ -82,6 +108,7 @@
             background-color: var(--whatsapp); color: white; padding: 15px; 
             border-radius: 25px; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); 
             width: 90%; max-width: 450px; border: none; cursor: pointer; z-index: 1000;
+            text-align: center;
         }
     </style>
 </head>
@@ -96,23 +123,29 @@
     <form id="pedidoForm">
         <div class="categoria">
             <h2>📏 1. Elegí el tamaño</h2>
+            
             <label class="radio-tamano">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
                 <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
-                <span>1 KG</span> <strong>$14.000</strong>
+                <span><strong>1 KG</strong> - $14.000</span>
             </label>
+
             <label class="radio-tamano">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
                 <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
-                <span>1/2 KG</span> <strong>$8.000</strong>
+                <span><strong>1/2 KG</strong> - $8.000</span>
             </label>
+
             <label class="radio-tamano">
+                <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
                 <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
-                <span>1/4 KG</span> <strong>$4.000</strong>
+                <span><strong>1/4 KG</strong> - $4.000</span>
             </label>
         </div>
 
         <div class="categoria">
-            <h2>🏠 2. Dirección de entrega</h2>
-            <input type="text" id="direccion" class="input-direccion" placeholder="Ej: Calle Falsa 123, Rafael Calzada">
+            <h2>🏠 2. Dirección (Opcional)</h2>
+            <input type="text" id="direccion" class="input-direccion" placeholder="Ej: Calle Falsa 123 (o dejar vacío para retirar)">
         </div>
 
         <div class="categoria">
@@ -159,16 +192,17 @@
     function enviarWhatsApp() {
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-        const direccion = document.getElementById('direccion').value;
+        const direccion = document.getElementById('direccion').value.trim();
 
         if (!tamano) { alert("Elegí un tamaño."); return; }
         if (seleccionados.length === 0) { alert("Elegí al menos un sabor."); return; }
-        if (direccion.trim() === "") { alert("Ingresá tu dirección."); return; }
 
         let lista = "";
         seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
 
-        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}`;
+        const dirTexto = direccion === "" ? "Retiro en local / A convenir" : direccion;
+
+        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${dirTexto}%0A%0A*Sabores:*%0A${lista}`;
         window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
     }
 </script>
