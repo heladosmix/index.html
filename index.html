@@ -176,10 +176,40 @@
 </div>
 
 <script>
-    const saboresCrema = ["Almendrado", "Tramontana", "Dulce de leche", "Chocotorta", "Banana split", "Flan con dulce", "Chocolate", "Frutilla a la crema", "Americana", "Menta granizada", "Dulce granizado", "Vainilla", "Granizado", "Banana", "Cielo", "Chocolate al rhum", "Frutos del bosque", "Rockler", "Marroc", "Dolca", "Mouse de limon", "Pistacho", "Chantilly con frutilla", "Arcoiris"];
-    const saboresAgua = ["Ananá al agua", "Frutilla al agua", "Limón al agua", "Durazno"];
-
-    function generarLista(lista, idContenedor) {
+    const saboresCrema = [
+    "🌰 Almendrado", 
+    "🍪 Tramontana", 
+    "🍯 Dulce de leche", 
+    "🍫 Chocotorta", 
+    "🍌 Banana split", 
+    "🍮 Flan con dulce", 
+    "🍫 Chocolate", 
+    "🍓 Frutilla a la crema", 
+    "🍦 Crema Americana", 
+    "🌿 Menta granizada", 
+    "🍫 Dulce granizado", 
+    "🍦 Vainilla", 
+    "❄️ Granizado", 
+    "🍌 Banana", 
+    "☁️ Cielo", 
+    "🥃 Chocolate al Rhum", 
+    "🍒 Frutos del bosque", 
+    "🍬 Rockler", 
+    "🍫 Chocolate Marroc", 
+    "🍌 Banana Dolca", 
+    "🥜 Pistacho", 
+    "🍰 Chantilly con frutilla", 
+    "🍫 Chocolate Cadbury", 
+    "🌈 Arcoiris"
+];
+   const saboresAgua = [
+    "🍍 Ananá al agua", 
+    "🍓 Frutilla al agua", 
+    "🍋 Limón al agua", 
+    "🍑 Durazno"
+];
+    
+  function generarLista(lista, idContenedor) {
         const contenedor = document.getElementById(idContenedor);
         lista.sort().forEach(s => {
             contenedor.innerHTML += `<label class="opcion"><input type="checkbox" name="sabor" value="${s}" onchange="actualizarInfo()"> <span>${s}</span></label>`;
