@@ -112,6 +112,24 @@
         
         input[type="checkbox"] { margin: 0 15px 0 0; }
 
+        /* Estilos para la nueva sección de Alias */
+        .cuadro-alias {
+            display: inline-block;
+            background-color: #fff0f3;
+            border: 2px dashed var(--primario);
+            padding: 12px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #d81b60;
+            margin-top: 10px;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .cuadro-alias:active { transform: scale(0.95); background-color: #ffdde4; }
+        #mensajeCopiado { color: #2ecc71; font-size: 0.9rem; font-weight: bold; margin-top: 8px; }
+
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
             background-color: var(--whatsapp); color: white; padding: 20px; 
@@ -168,55 +186,45 @@
             <div id="lista-agua"></div>
         </div>
 
+        <div class="categoria">
+            <h2>💳 5. Datos de Pago</h2>
+            <p style="margin-bottom: 10px; font-size: 0.95rem;">Toca el alias para copiarlo:</p>
+            <div class="cuadro-alias" onclick="copiarAlias()">
+                <span id="aliasText">helados.mix</span>
+            </div>
+            <div id="mensajeCopiado" style="visibility: hidden;">¡Copiado al portapapeles! ✅</div>
+        </div>
+
         <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
             <strong>ENVIAR POR WHATSAPP</strong><br>
             <span id="resumen-seleccion" style="font-size: 0.9rem; font-weight: normal;">Primero elegí un tamaño</span>
         </button>
     </form>
+
     <div style="text-align: center; background: white; padding: 20px; border-radius: 20px; margin: 20px auto; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-    <p style="margin-bottom: 10px; font-weight: bold; color: #ff85a2;">🍦✨</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix">
-    <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">heladosmix.github.io</p></div>
+        <p style="margin-bottom: 10px; font-weight: bold; color: #ff85a2;">🍦✨</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix">
+        <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">heladosmix.github.io</p>
+    </div>
 
 </div>
 
 <script>
     const saboresCrema = [
-    "🌰 Almendrado", 
-    "🍪 Tramontana", 
-    "🍯 Dulce de leche", 
-    "🍫 Chocotorta", 
-    "🍌 Banana split", 
-    "🍮 Flan con dulce", 
-    "🍫 Chocolate", 
-    "🍓 Frutilla a la crema", 
-    "🍦 Crema Americana", 
-    "🌿 Menta granizada", 
-    "🍫 Dulce granizado", 
-    "🍦 Vainilla", 
-    "❄️ Granizado", 
-    "🍌 Banana", 
-    "☁️ Cielo", 
-    "🥃 --", 
-    "🍒 Frutos del bosque", 
-    "🍬 Rockler", 
-    "🍫 Chocolate Marroc", 
-    "🍌 Banana Dolca", 
-    "🥜 Pistacho", 
-    "🍰 Chantilly con frutilla", 
-    "🍫 Chocolate Cadbury", 
-    "🌈 Arcoiris"
-];
-   const saboresAgua = [
-    "🍍 Ananá al agua", 
-    "🍓 Frutilla al agua", 
-    "🍋 Limón al agua", 
-    "🍑 Durazno"
-];
+        "🌰 Almendrado", "🍪 Tramontana", "🍯 Dulce de leche", "🍫 Chocotorta", 
+        "🍌 Banana split", "🍮 Flan con dulce", "🍫 Chocolate", "🍓 Frutilla a la crema", 
+        "🍦 Crema Americana", "🌿 Menta granizada", "🍫 Dulce granizado", "🍦 Vainilla", 
+        "❄️ Granizado", "🍌 Banana", "☁️ Cielo", "🥃 --", "🍒 Frutos del bosque", 
+        "🍬 Rockler", "🍫 Chocolate Marroc", "🍌 Banana Dolca", "🥜 Pistacho", 
+        "🍰 Chantilly con frutilla", "🍫 Chocolate Cadbury", "🌈 Arcoiris"
+    ];
+    const saboresAgua = [
+        "🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"
+    ];
     
-  function generarLista(lista, idContenedor) {
+    function generarLista(lista, idContenedor) {
         const contenedor = document.getElementById(idContenedor);
-        lista.sort().forEach(s => {
+        [...lista].sort().forEach(s => {
             contenedor.innerHTML += `<label class="opcion"><input type="checkbox" name="sabor" value="${s}" onchange="actualizarInfo()"> <span>${s}</span></label>`;
         });
     }
@@ -232,6 +240,16 @@
         if (!tamano) { resumen.innerText = "Primero elegí un tamaño"; return; }
         const n = seleccionados.length;
         resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
+    }
+
+    // Nueva función para copiar el alias
+    function copiarAlias() {
+        const alias = document.getElementById("aliasText").innerText;
+        navigator.clipboard.writeText(alias).then(() => {
+            const msj = document.getElementById("mensajeCopiado");
+            msj.style.visibility = "visible";
+            setTimeout(() => { msj.style.visibility = "hidden"; }, 2000);
+        });
     }
 
     function enviarWhatsApp() {
