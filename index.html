@@ -21,8 +21,10 @@
         .btn-alias { background-color: var(--mp-azul); color: white; padding: 15px; border-radius: 12px; border: none; width: 100%; font-weight: bold; cursor: pointer; }
         .btn-float { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--whatsapp); color: white; padding: 20px; border-radius: 35px; width: 90%; max-width: 400px; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
         
-        /* Títulos de sabores en celeste */
         .titulo-sabores { color: var(--celeste-titulos); font-size: 1rem; text-transform: uppercase; margin: 25px 0 10px; text-align: center; font-weight: bold; }
+        
+        /* Estilo para el total */
+        .total-box { font-size: 1.5rem; font-weight: bold; color: var(--primario); text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -35,11 +37,11 @@
 <div class="container">
     <div class="categoria">
         <h2>1. ¿Qué vas a llevar?</h2>
-        <label class="opcion"><input type="checkbox" name="prod" value="1 KG"> <span><strong>1 KG</strong> - $14.000</span></label>
-        <label class="opcion"><input type="checkbox" name="prod" value="1/2 KG"> <span><strong>1/2 KG</strong> - $8.000</span></label>
-        <label class="opcion"><input type="checkbox" name="prod" value="1/4 KG"> <span><strong>1/4 KG</strong> - $4.000</span></label>
-        <label class="opcion"><input type="checkbox" name="prod" value="Conos Simples (x5)"> <span><strong>Conos Simples (x5)</strong> - $1.000</span></label>
-        <label class="opcion"><input type="checkbox" name="prod" value="Conos Crocantes (x3)"> <span><strong>Conos Crocantes (x3)</strong> - $1.000</span></label>
+        <label class="opcion"><input type="checkbox" name="prod" value="1 KG" data-precio="14000" onchange="actualizarTotal()"> <span><strong>1 KG</strong> - $14.000</span></label>
+        <label class="opcion"><input type="checkbox" name="prod" value="1/2 KG" data-precio="8000" onchange="actualizarTotal()"> <span><strong>1/2 KG</strong> - $8.000</span></label>
+        <label class="opcion"><input type="checkbox" name="prod" value="1/4 KG" data-precio="4000" onchange="actualizarTotal()"> <span><strong>1/4 KG</strong> - $4.000</span></label>
+        <label class="opcion"><input type="checkbox" name="prod" value="Conos Simples (x5)" data-precio="1000" onchange="actualizarTotal()"> <span><strong>Conos Simples (x5)</strong> - $1.000</span></label>
+        <label class="opcion"><input type="checkbox" name="prod" value="Conos Crocantes (x3)" data-precio="1000" onchange="actualizarTotal()"> <span><strong>Conos Crocantes (x3)</strong> - $1.000</span></label>
     </div>
 
     <div class="categoria">
@@ -57,6 +59,8 @@
 
     <div class="categoria">
         <h2>4. Pago</h2>
+        <div class="total-box">Total: $<span id="montoTotal">0</span></div>
+        
         <button type="button" class="btn-alias" onclick="copiar()">
             Copiar Alias: <strong>helados.mix</strong>
         </button>
@@ -81,6 +85,16 @@
     cargar(crema, 'lista-crema');
     cargar(agua, 'lista-agua');
 
+    // FUNCIÓN DE SUMA AGREGADA
+    function actualizarTotal() {
+        const productos = document.querySelectorAll('input[name="prod"]:checked');
+        let total = 0;
+        productos.forEach(p => {
+            total += parseInt(p.dataset.precio);
+        });
+        document.getElementById('montoTotal').innerText = total.toLocaleString('es-AR');
+    }
+
     function copiar() {
         navigator.clipboard.writeText("helados.mix").then(() => {
             document.getElementById('msj').style.visibility = "visible";
@@ -91,11 +105,15 @@
     function enviar() {
         const p = document.querySelectorAll('input[name="prod"]:checked');
         const s = document.querySelectorAll('input[name="s"]:checked');
+        const totalFinal = document.getElementById('montoTotal').innerText;
+
         if (p.length === 0) return alert("Elegí un helado");
+        
         let txt = "¡Hola! Mi pedido:%0A";
         p.forEach(x => txt += "• " + x.value + "%0A");
         txt += "%0A*Sabores:*%0A";
         s.forEach(x => txt += "✅ " + x.value + "%0A");
+        txt += "%0A*Total:* $" + totalFinal; // Agregamos el total al mensaje de WhatsApp
         txt += "%0A*Dir:* " + (document.getElementById('dir').value || "Retiro");
         window.open("https://wa.me/5491137610574?text=" + txt);
     }
