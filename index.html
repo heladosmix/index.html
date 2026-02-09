@@ -7,117 +7,130 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primario: #ff85a2; 
-            --secundario: #fce4ec; 
-            --texto: #333333; 
-            --whatsapp: #25d366; 
-            --mp-azul: #009EE3;
-            --mp-verde: #00A15E;
+            --primario: #ff85a2; --secundario: #fce4ec; --texto: #333333; 
+            --whatsapp: #25d366; --mp-azul: #009EE3; --mp-verde: #00A15E;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--secundario); color: var(--texto); margin: 0; padding-bottom: 180px; }
-        header { background-color: var(--primario); color: white; text-align: center; padding: 2rem 1rem; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        header { background-color: var(--primario); color: white; text-align: center; padding: 1.5rem 1rem; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
         .container { padding: 15px 10px; width: 95%; max-width: 550px; margin: auto; }
         .categoria { background: white; border-radius: 20px; padding: 20px 15px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-align: center; }
-        h2 { color: var(--primario); font-size: 1.2rem; margin-bottom: 15px; }
-        h3 { color: #888; font-size: 1rem; margin: 15px 0 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
-        .producto-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 2px solid #f0f0f0; border-radius: 15px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; }
-        .producto-item:has(input:checked) { border-color: var(--primario); background-color: #fff9fa; }
+        /* Tabla de productos */
+        .tabla-productos { width: 100%; border-collapse: collapse; }
+        .tabla-productos td { padding: 12px 5px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .prod-nombre { text-align: left; font-size: 0.95rem; }
+        .prod-precio { color: #888; font-size: 0.85rem; }
+        
+        /* Input de cantidad */
+        .cant-input { 
+            width: 50px; padding: 8px; border: 2px solid var(--primario); 
+            border-radius: 8px; text-align: center; font-weight: bold; 
+            font-family: inherit; outline: none;
+        }
+        .cant-input:focus { background-color: #fff9fa; }
 
         .opcion { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f2f2f2; cursor: pointer; width: 100%; text-align: left; }
         input[type="checkbox"] { transform: scale(1.3); accent-color: var(--primario); margin-right: 15px; }
-        
-        .input-direccion { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; text-align: center; font-family: inherit; font-size: 1rem; }
-        .total-box { font-size: 1.7rem; font-weight: bold; margin-bottom: 10px; color: var(--texto); }
-        .cuadro-alias { background-color: var(--mp-azul); color: white; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; display: inline-block; transition: 0.3s; border: none; }
-        
+        .input-direccion { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; text-align: center; font-family: inherit; }
+        .total-box { font-size: 1.8rem; font-weight: bold; color: var(--texto); margin-bottom: 10px; }
+        .cuadro-alias { background-color: var(--mp-azul); color: white; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; display: inline-block; transition: 0.3s; }
         .btn-flotante { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--whatsapp); color: white; padding: 18px; border-radius: 35px; width: 92%; max-width: 480px; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; }
+        h3 { color: #888; font-size: 1rem; margin: 15px 0 5px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 style="margin:0; font-size: 2.2rem;">Helados.mix</h1>
+    <h1 style="margin:0;">Helados.mix</h1>
     <p style="margin:0; opacity: 0.9;">Hacé tu pedido online</p>
 </header>
 
 <div class="container">
     <form id="pedidoForm">
         <div class="categoria">
-            <h2>🍦 1. Elegí tus productos</h2>
-            <label class="producto-item"><span><strong>1 KG</strong> - $14.000</span><input type="checkbox" name="prod" value="1 KG" data-precio="14000" onchange="actualizarTodo()"></label>
-            <label class="producto-item"><span><strong>1/2 KG</strong> - $8.000</span><input type="checkbox" name="prod" value="1/2 KG" data-precio="8000" onchange="actualizarTodo()"></label>
-            <label class="producto-item"><span><strong>1/4 KG</strong> - $4.000</span><input type="checkbox" name="prod" value="1/4 KG" data-precio="4000" onchange="actualizarTodo()"></label>
-            <label class="producto-item"><span><strong>🍦 Conos Simples (x5)</strong> - $1.000</span><input type="checkbox" name="prod" value="Conos Simples (x5)" data-precio="1000" onchange="actualizarTodo()"></label>
-            <label class="producto-item"><span><strong>✨ Conos Crocantes (x3)</strong> - $1.000</span><input type="checkbox" name="prod" value="Conos Crocantes (x3)" data-precio="1000" onchange="actualizarTodo()"></label>
+            <h2 style="color:var(--primario); font-size: 1.2rem;">🍦 1. Elegí Cantidades</h2>
+            <table class="tabla-productos">
+                <tr>
+                    <td class="prod-nombre"><strong>1 KG</strong><br><span class="prod-precio">$14.000</span></td>
+                    <td><input type="number" class="cant-input" value="0" min="0" data-nombre="1 KG" data-precio="14000" onchange="actualizarTodo()"></td>
+                </tr>
+                <tr>
+                    <td class="prod-nombre"><strong>1/2 KG</strong><br><span class="prod-precio">$8.000</span></td>
+                    <td><input type="number" class="cant-input" value="0" min="0" data-nombre="1/2 KG" data-precio="8000" onchange="actualizarTodo()"></td>
+                </tr>
+                <tr>
+                    <td class="prod-nombre"><strong>1/4 KG</strong><br><span class="prod-precio">$4.000</span></td>
+                    <td><input type="number" class="cant-input" value="0" min="0" data-nombre="1/4 KG" data-precio="4000" onchange="actualizarTodo()"></td>
+                </tr>
+                <tr>
+                    <td class="prod-nombre"><strong>Conos Simples (x5)</strong><br><span class="prod-precio">$1.000</span></td>
+                    <td><input type="number" class="cant-input" value="0" min="0" data-nombre="Conos Simples (x5)" data-precio="1000" onchange="actualizarTodo()"></td>
+                </tr>
+                <tr>
+                    <td class="prod-nombre"><strong>Conos Crocantes (x3)</strong><br><span class="prod-precio">$1.000</span></td>
+                    <td><input type="number" class="cant-input" value="0" min="0" data-nombre="Conos Crocantes (x3)" data-precio="1000" onchange="actualizarTodo()"></td>
+                </tr>
+            </table>
         </div>
 
         <div class="categoria">
-            <h2>🏠 2. Dirección</h2>
+            <h2 style="color:var(--primario); font-size: 1.2rem;">🏠 2. Dirección</h2>
             <input type="text" id="direccion" class="input-direccion" placeholder="Calle y número o retiro local">
         </div>
 
         <div class="categoria">
-            <h2>🍨 3. Seleccioná los sabores</h2>
-            
+            <h2 style="color:var(--primario); font-size: 1.2rem;">🍨 3. Seleccioná los sabores</h2>
             <h3>Crema</h3>
             <div id="lista-crema"></div>
-            
             <h3>Agua</h3>
             <div id="lista-agua"></div>
         </div>
 
         <div class="categoria">
-            <h2>💳 4. Pago</h2>
+            <h2 style="color:var(--primario); font-size: 1.2rem;">💳 4. Pago</h2>
             <div class="total-box">Total: $<span id="totalSuma">0</span></div>
-            <p style="font-size: 0.9rem; margin-bottom: 10px;">Tocá el botón azul para copiar el alias:</p>
             <div class="cuadro-alias" id="btnAlias" onclick="copiarAlias()">
-                <span id="aliasText">helados.mix</span>
+                Copiar Alias: <span id="aliasText">helados.mix</span>
             </div>
-            <div id="mensajeCopiado" style="visibility: hidden; color: var(--mp-azul); font-weight: bold; margin-top: 8px;">¡Alias copiado! ✅</div>
+            <div id="mensajeCopiado" style="visibility: hidden; color: var(--mp-azul); font-weight: bold; margin-top: 8px;">¡Copiado! ✅</div>
         </div>
 
         <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
             <strong>ENVIAR POR WHATSAPP</strong><br>
-            <span id="resumen-seleccion" style="font-size: 0.85rem; font-weight: normal;">Primero elegí tus helados</span>
+            <span id="resumen-seleccion">Indicá qué productos querés</span>
         </button>
     </form>
 </div>
 
 <script>
-    const saboresCrema = [
-        "🌰 Almendrado", "🍪 Tramontana", "🍯 Dulce de leche", "🍫 Chocotorta", "🍌 Banana split", 
-        "🍮 Flan con dulce", "🍫 Chocolate", "🍓 Frutilla a la crema", "🍦 Crema Americana", 
-        "🌿 Menta granizada", "🍫 Dulce granizado", "🍦 Vainilla", "❄️ Granizado", "🍌 Banana", 
-        "☁️ Cielo", "🍒 Frutos del bosque", "🍫 Chocolate Marroc", "🥜 Pistacho", 
-        "🍰 Chantilly con frutilla", "🍫 Chocolate Cadbury", "🌈 Arcoiris"
-    ];
-
-    const saboresAgua = [
-        "🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"
-    ];
+    const saboresCrema = ["🌰 Almendrado", "🍪 Tramontana", "🍯 Dulce de leche", "🍫 Chocotorta", "🍌 Banana split", "🍮 Flan con dulce", "🍫 Chocolate", "🍓 Frutilla a la crema", "🍦 Americana", "🌿 Menta granizada", "🍦 Vainilla", "❄️ Granizado", "🍌 Banana", "☁️ Cielo", "🍒 Frutos del bosque", "🍫 Marroc", "🥜 Pistacho", "🍰 Chantilly", "🍫 Cadbury", "🌈 Arcoiris"];
+    const saboresAgua = ["🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"];
     
-    function cargarSabores(lista, idContenedor) {
-        const div = document.getElementById(idContenedor);
+    function cargarSabores(lista, id) {
+        const div = document.getElementById(id);
         lista.sort().forEach(s => {
             div.innerHTML += `<label class="opcion"><input type="checkbox" name="sabor" value="${s}"> <span>${s}</span></label>`;
         });
     }
-
     cargarSabores(saboresCrema, 'lista-crema');
     cargarSabores(saboresAgua, 'lista-agua');
 
     function actualizarTodo() {
-        const seleccionados = document.querySelectorAll('input[name="prod"]:checked');
+        const inputs = document.querySelectorAll('.cant-input');
         let total = 0;
-        let nombres = [];
-        seleccionados.forEach(p => {
-            total += parseInt(p.getAttribute('data-precio'));
-            nombres.push(p.value);
+        let detalle = [];
+
+        inputs.forEach(i => {
+            const cant = parseInt(i.value);
+            if (cant > 0) {
+                total += cant * parseInt(i.dataset.precio);
+                detalle.push(`${cant}x ${i.dataset.nombre}`);
+            }
         });
+
         document.getElementById('totalSuma').innerText = total.toLocaleString('es-AR');
-        document.getElementById('resumen-seleccion').innerText = nombres.length === 0 ? "Primero elegí tus helados" : "Llevás: " + nombres.join(" + ");
+        document.getElementById('resumen-seleccion').innerText = detalle.length > 0 ? "Llevás: " + detalle.join(" + ") : "Indicá qué productos querés";
     }
 
     function copiarAlias() {
@@ -134,22 +147,23 @@
     }
 
     function enviarWhatsApp() {
-        const prods = document.querySelectorAll('input[name="prod"]:checked');
+        const inputs = document.querySelectorAll('.cant-input');
         const sabs = document.querySelectorAll('input[name="sabor"]:checked');
-        const direccion = document.getElementById("direccion").value.trim() || "Retiro en local";
+        const dir = document.getElementById("direccion").value.trim() || "Retiro en local";
         const total = document.getElementById('totalSuma').innerText;
 
-        if (prods.length === 0) return alert("¡Elegí al menos un producto!");
-        
-        let mensaje = "¡Hola *Helados.mix*! 👋%0A%0A*Mi Pedido:*%0A";
-        prods.forEach(p => mensaje += "• " + p.value + "%0A");
-        
-        if(sabs.length > 0) {
-            mensaje += "%0A*Sabores:*%0A";
-            sabs.forEach(s => mensaje += "✅ " + s.value + "%0A");
-        }
-        mensaje += `%0A*Dirección:* ${direccion}%0A%0A*TOTAL A PAGAR: $${total}*`;
-        window.open("https://wa.me/5491137610574?text=" + mensaje);
+        let pedido = "";
+        inputs.forEach(i => {
+            if(parseInt(i.value) > 0) pedido += `• ${i.value} unidad/es de ${i.dataset.nombre}%0A`;
+        });
+
+        if (!pedido) return alert("Elegí al menos un producto.");
+
+        let saboresTxt = "";
+        sabs.forEach(s => saboresTxt += "✅ " + s.value + "%0A");
+
+        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:*%0A${pedido}%0A*Sabores:*%0A${saboresTxt || "A elección"}%0A*Dirección:* ${dir}%0A%0A*TOTAL: $${total}*`;
+        window.open("https://wa.me/5491137610574?text=" + msj);
     }
 </script>
 </body>
