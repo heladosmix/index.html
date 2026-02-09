@@ -18,6 +18,10 @@
             --secundario: #fce4ec; 
             --texto: #333333; 
             --whatsapp: #25d366; 
+            /* Colores Mercado Pago */
+            --mp-azul: #009EE3;
+            --mp-azul-oscuro: #007EB5;
+            --mp-verde: #00A15E;
         }
         
         * { box-sizing: border-box; }
@@ -112,23 +116,34 @@
         
         input[type="checkbox"] { margin: 0 15px 0 0; }
 
-        /* Estilos para la nueva sección de Alias */
+        /* --- Estilo Mercado Pago para el botón de Alias --- */
         .cuadro-alias {
             display: inline-block;
-            background-color: #fff0f3;
-            border: 2px dashed var(--primario);
-            padding: 12px 25px;
-            border-radius: 15px;
+            background-color: var(--mp-azul);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 1.3rem;
-            color: #d81b60;
             margin-top: 10px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             user-select: none;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 158, 227, 0.2);
         }
-        .cuadro-alias:active { transform: scale(0.95); background-color: #ffdde4; }
-        #mensajeCopiado { color: #2ecc71; font-size: 0.9rem; font-weight: bold; margin-top: 8px; }
+        .cuadro-alias:hover { 
+            background-color: var(--mp-azul-oscuro); 
+        }
+        .cuadro-alias:active { 
+            transform: scale(0.95); 
+        }
+        #mensajeCopiado { 
+            color: var(--mp-azul); 
+            font-size: 0.9rem; 
+            font-weight: bold; 
+            margin-top: 8px; 
+        }
 
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
@@ -188,8 +203,8 @@
 
         <div class="categoria">
             <h2>💳 5. Datos de Pago</h2>
-            <p style="margin-bottom: 10px; font-size: 0.95rem;">Toca el alias para copiarlo:</p>
-            <div class="cuadro-alias" onclick="copiarAlias()">
+            <p style="margin-bottom: 10px; font-size: 0.95rem;">Toca el botón para copiar el alias:</p>
+            <div class="cuadro-alias" id="btnAlias" onclick="copiarAlias()">
                 <span id="aliasText">helados.mix</span>
             </div>
             <div id="mensajeCopiado" style="visibility: hidden;">¡Copiado al portapapeles! ✅</div>
@@ -214,12 +229,12 @@
         "🌰 Almendrado", "🍪 Tramontana", "🍯 Dulce de leche", "🍫 Chocotorta", 
         "🍌 Banana split", "🍮 Flan con dulce", "🍫 Chocolate", "🍓 Frutilla a la crema", 
         "🍦 Crema Americana", "🌿 Menta granizada", "🍫 Dulce granizado", "🍦 Vainilla", 
-        "❄️ Granizado", "🍌 Banana", "☁️ Cielo", "🥃 --", "🍒 Frutos del bosque", 
+        "❄️ Granizado", "🍌 Banana", "☁️ Cielo", "🥃 Sambayón", "🍒 Frutos del bosque", 
         "🍬 Rockler", "🍫 Chocolate Marroc", "🍌 Banana Dolca", "🥜 Pistacho", 
         "🍰 Chantilly con frutilla", "🍫 Chocolate Cadbury", "🌈 Arcoiris"
     ];
     const saboresAgua = [
-        "🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"
+        " Pineapple 🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"
     ];
     
     function generarLista(lista, idContenedor) {
@@ -242,13 +257,20 @@
         resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
     }
 
-    // Nueva función para copiar el alias
+    // Función mejorada para copiar el alias con feedback de color
     function copiarAlias() {
         const alias = document.getElementById("aliasText").innerText;
+        const btn = document.getElementById("btnAlias");
+        const msj = document.getElementById("mensajeCopiado");
+
         navigator.clipboard.writeText(alias).then(() => {
-            const msj = document.getElementById("mensajeCopiado");
             msj.style.visibility = "visible";
-            setTimeout(() => { msj.style.visibility = "hidden"; }, 2000);
+            btn.style.backgroundColor = "var(--mp-verde)"; // Se pone verde al copiar
+            
+            setTimeout(() => { 
+                msj.style.visibility = "hidden"; 
+                btn.style.backgroundColor = ""; // Vuelve al azul original
+            }, 2000);
         });
     }
 
