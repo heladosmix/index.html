@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍦Promos Helados.mix</title>
+     <title>🍦Promos Helados.mix</title>
     
     <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
     <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
     <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
-
     <style>
+    .subtitulo-celeste {
+    color: #00bfff; /* Un celeste vibrante y fresco */
+    font-size: 1.5rem; /* Más grande que el texto común */
+    font-weight: bold;
+    margin-bottom: 25px;
+    display: block;}
+
         :root {
             --primario: #ff8fab;
             --secundario: #fb6f92;
@@ -48,15 +54,34 @@
     </style>
 </head>
 <body>
-    <h1>🍦 Helados.mix 🍦</h1>
-    <p>Seleccioná tu combo y armalo como quieras</p>
+  <h1>🍦 Helados.mix 🍦</h1>
+    
+    <h2 style="color: #fb6f92; margin: 20px 0 5px 0; font-size: 2rem;">¡Promos!</h2>
+    
+    <span style="color: #00bfff; font-size: 1.6rem; font-weight: bold; display: block; margin-bottom: 30px; line-height: 1.2;">
+        Seleccioná tu combo y armalo como quieras
+    </span>
+
     <div class="contenedor-promos">
-        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', 'c1')"><h3>1 KG + 1/4 KG</h3><span class="precio">$12.500</span></div>
-        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', 'c2')"><h3>1/2 KG + 1/4 KG</h3><span class="precio">$8.200</span></div>
-        <div class="card" id="c3" onclick="ver('2 x 1/4 KG', 'c3')"><h3>2 x 1/4 KG</h3><span class="precio">$5.500</span></div>
+        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', 'c1')">
+            <h3>1 KG + 1/4 KG</h3>
+            <span class="precio">$12.500</span>
+        </div>
+
+        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', 'c2')">
+            <h3>1/2 KG + 1/4 KG</h3>
+            <span class="precio">$8.200</span>
+        </div>
+        
+        <div class="card" id="c3" onclick="ver('2 x 1/4 KG', 'c3')">
+            <h3>2 x 1/4 KG</h3>
+            <span class="precio">$5.500</span>
+        </div>
+
         <div class="card" id="c4" onclick="ver('Súper 2 Kilos', 'c4')">
-            <span style="background:var(--primario);color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;position:absolute;top:-10px;left:50%;transform:translateX(-50%);">TOP</span>
-            <h3>DOS KILOS</h3><span class="precio">$22.000</span>
+            <span style="background:var(--primario); color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem; position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-weight:bold;">TOP</span>
+            <h3>DOS KILOS</h3>
+            <span class="precio">$22.000</span>
         </div>
     </div>
     <div id="seccion-sabores">
