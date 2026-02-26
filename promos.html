@@ -11,6 +11,27 @@
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
     <style>
+    .btn-volver-celeste {
+    display: inline-block;
+    background-color: #00bfff; /* El mismo celeste del subtítulo */
+    color: white !important;
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 30px 0;
+    box-shadow: 0 4px 15px rgba(0,191,255,0.4);
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-volver-celeste:hover {
+    transform: scale(1.05);
+    background-color: #0099cc;
+    box-shadow: 0 6px 20px rgba(0,191,255,0.6);
+}
+    
     .subtitulo-celeste {
     color: #00bfff; /* Un celeste vibrante y fresco */
     font-size: 1.5rem; /* Más grande que el texto común */
@@ -148,5 +169,11 @@
             window.open(`https://wa.me/${miNum}?text=${encodeURIComponent(msj)}`, '_blank');
         }
     </script>
+    <div style="text-align: center; width: 100%;">
+        <a href="index.html" class="btn-volver-celeste">
+            ⬅️ Volver a los Sabores
+        </a>
+    </div>
 </body>
 </html>
+
