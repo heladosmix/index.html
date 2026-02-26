@@ -198,6 +198,34 @@
             text-align: center;
             font-size: 1.1rem;
         }
+        /* Estilo para el botón de enlace a Promos */
+.btn-promos-link {
+    display: inline-block;
+    background-color: #00bfff; /* Celeste vibrante */
+    color: white !important;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(0,191,255,0.4);
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-promos-link:hover {
+    transform: scale(1.05);
+    background-color: #0099cc;
+    box-shadow: 0 6px 20px rgba(0,191,255,0.6);
+}
+
+.contenedor-boton {
+    text-align: center;
+    
+    width: 100%;
+}
     </style>
 </head>
 
@@ -212,6 +240,11 @@
         <form id="pedidoForm">
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
+                <div class="contenedor-boton">
+        <a href="https://heladosmix.github.io/index.html/promos.html" class="btn-promos-link">
+            ✨ ¡Ver Promos Imperdibles! 🍦
+        </a>
+    </div>
 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
