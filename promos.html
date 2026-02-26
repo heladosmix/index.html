@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promos Helados.mix</title>
+    <title>🍦Promos Helados.mix</title>
+    
+    <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
+    <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
+    <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
+    <meta property="og:url" content="https://heladosmix.github.io/index.html">
+    <meta property="og:type" content="website">
+
     <style>
         :root {
             --primario: #ff8fab;
@@ -12,10 +19,7 @@
             --texto: #4a4a4a;
         }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); text-align: center; padding: 20px; color: var(--texto); }
-        
-        h1 { color: var(--secundario); }
         .contenedor-promos { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        
         .card { 
             background: white; border-radius: 20px; padding: 20px; width: 180px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 3px solid transparent; 
@@ -25,115 +29,99 @@
         .card.activa { border-color: var(--secundario); background: #fff5f7; }
         .card h3, .card p, .card span { pointer-events: none; }
         .precio { font-size: 1.3rem; font-weight: bold; color: #333; display: block; margin-top: 10px; }
-
         #seccion-sabores { 
             display: none; background: white; padding: 25px; border-radius: 25px; 
             max-width: 600px; margin: 20px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: left;
         }
-
         .categoria-titulo { font-weight: bold; color: var(--secundario); display: block; border-bottom: 2px solid var(--fondo); margin: 15px 0 10px; }
         .lista-sabores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        label { display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; }
+        label { display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; padding: 5px; border-radius: 5px; }
+        label:hover { background: var(--fondo); }
         input[type="checkbox"] { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--secundario); }
-
-        /* EL BOTÓN QUE FALTA */
         .btn-ws { 
             background-color: #25d366; color: white; padding: 18px; border: none;
             border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; 
-            margin-top: 25px; width: 100%; transition: 0.3s; display: block;
+            margin-top: 25px; width: 100%; transition: 0.3s;
         }
-        .btn-ws:hover { background-color: #1ebe57; transform: scale(1.02); }
-
+        .btn-ws:hover { background-color: #1ebe57; }
         @media (max-width: 600px) { .lista-sabores { grid-template-columns: 1fr; } .card { width: 140px; } }
     </style>
 </head>
 <body>
-
     <h1>🍦 Helados.mix 🍦</h1>
-    <p>Elegí tu combo para ver los sabores</p>
-
+    <p>Seleccioná tu combo y armalo como quieras</p>
     <div class="contenedor-promos">
-        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', 'c1')">
-            <h3>1 KG + 1/4 KG</h3>
-            <span class="precio">$12.500</span>
-        </div>
-        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', 'c2')">
-            <h3>1/2 KG + 1/4 KG</h3>
-            <span class="precio">$8.200</span>
-        </div>
-        <div class="card" id="c3" onclick="ver('2 x 1/4 KG', 'c3')">
-            <h3>2 x 1/4 KG</h3>
-            <span class="precio">$5.500</span>
-        </div>
+        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', 'c1')"><h3>1 KG + 1/4 KG</h3><span class="precio">$12.500</span></div>
+        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', 'c2')"><h3>1/2 KG + 1/4 KG</h3><span class="precio">$8.200</span></div>
+        <div class="card" id="c3" onclick="ver('2 x 1/4 KG', 'c3')"><h3>2 x 1/4 KG</h3><span class="precio">$5.500</span></div>
         <div class="card" id="c4" onclick="ver('Súper 2 Kilos', 'c4')">
-            <span style="background:var(--primario);color:white;padding:2px 5px;border-radius:5px;font-size:0.7rem;">TOP</span>
-            <h3>DOS KILOS</h3>
-            <span class="precio">$22.000</span>
+            <span style="background:var(--primario);color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;position:absolute;top:-10px;left:50%;transform:translateX(-50%);">TOP</span>
+            <h3>DOS KILOS</h3><span class="precio">$22.000</span>
         </div>
     </div>
-
     <div id="seccion-sabores">
         <h2 id="nom-p" style="text-align: center; color: var(--secundario); margin-top:0;"></h2>
-        
-        <span class="categoria-titulo">Cremas</span>
+        <span class="categoria-titulo">Nuestras Cremas 🍦</span>
         <div class="lista-sabores">
-            <label><input type="checkbox" value="Dulce de Leche"> Dulce de Leche</label>
-            <label><input type="checkbox" value="Chocolate"> Chocolate</label>
-            <label><input type="checkbox" value="Tramontana"> Tramontana</label>
-            <label><input type="checkbox" value="Menta Granizada"> Menta Granizada</label>
+            <label><input type="checkbox" value="Almendrado"> 🥜 Almendrado</label>
+            <label><input type="checkbox" value="Tramontana"> 🍪 Tramontana</label>
+            <label><input type="checkbox" value="Dulce de leche"> 🍯 Dulce de leche</label>
+            <label><input type="checkbox" value="Chocotorta"> 🍰 Chocotorta</label>
+            <label><input type="checkbox" value="Banana split"> 🍌 Banana split</label>
+            <label><input type="checkbox" value="Flan con dulce"> 🍮 Flan con dulce</label>
+            <label><input type="checkbox" value="Chocolate"> 🍫 Chocolate</label>
+            <label><input type="checkbox" value="Frutilla a la crema"> 🍓 Frutilla a la crema</label>
+            <label><input type="checkbox" value="Americana"> 🥛 Americana</label>
+            <label><input type="checkbox" value="Menta granizada"> 🌿 Menta granizada</label>
+            <label><input type="checkbox" value="Dulce granizado"> 🍫 Dulce granizado</label>
+            <label><input type="checkbox" value="Vainilla"> 🌼 Vainilla</label>
+            <label><input type="checkbox" value="Granizado"> ❄️ Granizado</label>
+            <label><input type="checkbox" value="Banana"> 🍌 Banana</label>
+            <label><input type="checkbox" value="Cielo"> ☁️ Cielo</label>
+            <label><input type="checkbox" value="Chocolate al rhum"> 🥃 Chocolate al rhum</label>
+            <label><input type="checkbox" value="Frutos del bosque"> 🫐 Frutos del bosque</label>
+            <label><input type="checkbox" value="Rockler"> 🍬 Rockler</label>
+            <label><input type="checkbox" value="Marroc"> 🍫 Marroc</label>
+            <label><input type="checkbox" value="Dolca"> ☕ Dolca</label>
+            <label><input type="checkbox" value="Mouse de limon"> 🍋 Mouse de limón</label>
+            <label><input type="checkbox" value="Pistacho"> 🟢 Pistacho</label>
+            <label><input type="checkbox" value="Chantilly con frutilla"> 🧁 Chantilly c/ frutilla</label>
+            <label><input type="checkbox" value="Arcoiris"> 🌈 Arcoiris</label>
         </div>
-
-        <span class="categoria-titulo">Frutales</span>
+        <span class="categoria-titulo">Frutales al Agua 🍋</span>
         <div class="lista-sabores">
-            <label><input type="checkbox" value="Limón"> Limón</label>
-            <label><input type="checkbox" value="Frutilla"> Frutilla</label>
-            <label><input type="checkbox" value="Ananá"> Ananá</label>
+            <label><input type="checkbox" value="Ananá al agua"> 🍍 Ananá al agua</label>
+            <label><input type="checkbox" value="Frutilla al agua"> 🍓 Frutilla al agua</label>
+            <label><input type="checkbox" value="Limón al agua"> 🍋 Limón al agua</label>
+            <label><input type="checkbox" value="Durazno"> 🍑 Durazno</label>
         </div>
-
-        <button class="btn-ws" onclick="enviar()">
-            Pedir por WhatsApp 📱
-        </button>
+        <button class="btn-ws" onclick="enviar()">Pedir por WhatsApp 📱</button>
     </div>
-
     <script>
         let elegida = "";
-
         function ver(nombre, id) {
             const panel = document.getElementById('seccion-sabores');
             const titulo = document.getElementById('nom-p');
             const cards = document.querySelectorAll('.card');
-
+            const limpiarChecks = () => { document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false); };
             if (elegida === nombre && panel.style.display === "block") {
-                panel.style.display = "none";
-                elegida = "";
-                document.getElementById(id).classList.remove('activa');
+                panel.style.display = "none"; elegida = "";
+                document.getElementById(id).classList.remove('activa'); limpiarChecks();
             } else {
-                cards.forEach(c => c.classList.remove('activa'));
+                limpiarChecks(); cards.forEach(c => c.classList.remove('activa'));
                 document.getElementById(id).classList.add('activa');
-                elegida = nombre;
-                titulo.innerText = "Armando: " + nombre;
-                panel.style.display = "block";
-                panel.scrollIntoView({ behavior: 'smooth' });
+                elegida = nombre; titulo.innerText = "Armando: " + nombre;
+                panel.style.display = "block"; panel.scrollIntoView({ behavior: 'smooth' });
             }
         }
-
         function enviar() {
             const checks = document.querySelectorAll('input:checked');
-            let gustos = [];
-            checks.forEach(c => gustos.push(c.value));
-            
-            if (gustos.length === 0) {
-                alert("Por favor, seleccioná al menos un sabor.");
-                return;
-            }
-
-            // REEMPLAZÁ CON TU NÚMERO
-            const miNum = "5491137610574"; 
-            const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\n\nSabores:\n- ${gustos.join("\n- ")}`;
-            
+            let gustos = []; checks.forEach(c => gustos.push(c.value));
+            if (gustos.length === 0) return alert("Por favor, seleccioná al menos un sabor.");
+            const miNum = "5491137610574"; // PONÉ TU NÚMERO AQUÍ
+            const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\n\nSabores elegidos:\n✅ ${gustos.join("\n✅ ")}`;
             window.open(`https://wa.me/${miNum}?text=${encodeURIComponent(msj)}`, '_blank');
         }
     </script>
 </body>
-
 </html>
