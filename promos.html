@@ -55,14 +55,14 @@
         /* --- AJUSTE EXCLUSIVO PARA MÓVILES --- */
         @media (max-width: 768px) {
             body {
-                padding-bottom: 110px !important; /* Espacio para que el botón no tape el contenido */
+                padding-bottom: 110px !important; 
             }
 
             .btn-volver-celeste {
                 position: fixed;
                 bottom: 20px;
                 left: 50%;
-                transform: translateX(-50%); /* Centrado horizontal */
+                transform: translateX(-50%); 
                 z-index: 9999;
                 margin: 0;
                 width: 85%;
@@ -71,20 +71,11 @@
             }
 
             .btn-volver-celeste:hover {
-                /* Se mantiene el translateX para que no se desplace al tocarlo */
                 transform: translateX(-50%) scale(1.05);
             }
         }
 
         /* --- RESTO DE ESTILOS --- */
-        .subtitulo-celeste {
-            color: var(--celeste);
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 25px;
-            display: block;
-        }
-
         .contenedor-promos { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
         
         .card { 
@@ -131,27 +122,28 @@
     </span>
 
     <div class="contenedor-promos">
-        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', 'c1')">
+        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', '$15.000', 'c1')">
             <h3>1 KG + 1/4 KG</h3>
             <span class="precio">$15.000</span>
         </div>
 
-        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', 'c2')">
+        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', '$10.000', 'c2')">
             <h3>1/2 KG + 1/4 KG</h3>
             <span class="precio">$10.000</span>
         </div>
         
-        <div class="card" id="c3" onclick="ver('1Kg+1/2KG', 'c3')">
+        <div class="card" id="c3" onclick="ver('1Kg+1/2KG', '$20.000', 'c3')">
             <h3>1KG+1/2KG</h3>
             <span class="precio">$20.000</span>
         </div>
 
-        <div class="card" id="c4" onclick="ver('Súper 2 Kilos', 'c4')">
+        <div class="card" id="c4" onclick="ver('Súper 2 Kilos', '$24.000', 'c4')">
             <span style="background:var(--primario); color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem; position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-weight:bold;">TOP</span>
             <h3>DOS KILOS</h3>
             <span class="precio">$24.000</span>
         </div>
     </div>
+
     <div id="seccion-sabores">
         <h2 id="nom-p" style="text-align: center; color: var(--secundario); margin-top:0;"></h2>
         <span class="categoria-titulo">Nuestras Cremas 🍦</span>
@@ -174,7 +166,6 @@
             <label><input type="checkbox" value="Chocolate al rhum"> 🥃 Chocolate al rhum </label>
             <label><input type="checkbox" value="Frutos del bosque"> 🌳🌳Frutos del Bosque </label>
              <label><input type="checkbox" value="Dolca"> 🍌 Bananita Dolca </label>
-            
             <label><input type="checkbox" value="Pistacho"> 🟢 Pistacho</label>
             <label><input type="checkbox" value="Chantilly con frutilla"> 🧁 Chantilly c/ frutilla</label>
             <label><input type="checkbox" value="Arcoiris"> 🌈 Arcoiris</label>
@@ -189,32 +180,52 @@
         </div>
         <button class="btn-ws" onclick="enviar()">Pedir por WhatsApp </button>
     </div>
+
     <script>
         let elegida = "";
-        function ver(nombre, id) {
+        let precioElegido = "";
+
+        function ver(nombre, precio, id) {
             const panel = document.getElementById('seccion-sabores');
             const titulo = document.getElementById('nom-p');
             const cards = document.querySelectorAll('.card');
             const limpiarChecks = () => { document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false); };
+
             if (elegida === nombre && panel.style.display === "block") {
-                panel.style.display = "none"; elegida = "";
-                document.getElementById(id).classList.remove('activa'); limpiarChecks();
+                panel.style.display = "none"; 
+                elegida = "";
+                precioElegido = "";
+                document.getElementById(id).classList.remove('activa'); 
+                limpiarChecks();
             } else {
-                limpiarChecks(); cards.forEach(c => c.classList.remove('activa'));
+                limpiarChecks(); 
+                cards.forEach(c => c.classList.remove('activa'));
                 document.getElementById(id).classList.add('activa');
-                elegida = nombre; titulo.innerText = "Armando: " + nombre;
-                panel.style.display = "block"; panel.scrollIntoView({ behavior: 'smooth' });
+                
+                elegida = nombre;
+                precioElegido = precio; // Guardamos el precio
+                titulo.innerText = "Armando: " + nombre + " (" + precio + ")";
+                
+                panel.style.display = "block"; 
+                panel.scrollIntoView({ behavior: 'smooth' });
             }
         }
+
         function enviar() {
             const checks = document.querySelectorAll('input:checked');
-            let gustos = []; checks.forEach(c => gustos.push(c.value));
+            let gustos = []; 
+            checks.forEach(c => gustos.push(c.value));
+            
             if (gustos.length === 0) return alert("Por favor, seleccioná al menos un sabor.");
-            const miNum = "5491137610574"; // PONÉ TU NÚMERO AQUÍ
-            const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\n\nSabores elegidos:\n✅ ${gustos.join("\n✅ ")}`;
+            
+            const miNum = "5491137610574"; 
+            // Ahora incluimos el precio en el mensaje de WhatsApp
+            const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\nPrecio: *${precioElegido}*\n\nSabores elegidos:\n✅ ${gustos.join("\n✅ ")}`;
+            
             window.open(`https://wa.me/${miNum}?text=${encodeURIComponent(msj)}`, '_blank');
         }
     </script>
+
     <div style="text-align: center; width: 100%;">
         <a href="index.html" class="btn-volver-celeste">
             ⬅️ Volver a los Sabores
@@ -222,10 +233,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
