@@ -10,7 +10,8 @@
     <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
-    
+    <link rel="icon" href="https://heladosmix.github.io/index.html/logo.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
     <style>
         :root {
             --primario: #ff8fab;
@@ -29,7 +30,7 @@
             margin: 0;
         }
 
-        /* --- ESTILO BOTÓN VOLVER (PC) --- */
+        /* --- ESTILO BOTÓN VOLVER --- */
         .btn-volver-celeste {
             display: inline-block;
             background-color: var(--celeste);
@@ -49,33 +50,17 @@
         .btn-volver-celeste:hover {
             transform: scale(1.05);
             background-color: #0099cc;
-            box-shadow: 0 6px 20px rgba(0,191,255,0.6);
         }
 
-        /* --- AJUSTE EXCLUSIVO PARA MÓVILES --- */
         @media (max-width: 768px) {
-            body {
-                padding-bottom: 110px !important; 
-            }
-
+            body { padding-bottom: 110px !important; }
             .btn-volver-celeste {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%); 
-                z-index: 9999;
-                margin: 0;
-                width: 85%;
-                max-width: 320px;
-                white-space: nowrap;
-            }
-
-            .btn-volver-celeste:hover {
-                transform: translateX(-50%) scale(1.05);
+                position: fixed; bottom: 20px; left: 50%;
+                transform: translateX(-50%); z-index: 9999;
+                margin: 0; width: 85%; max-width: 320px;
             }
         }
 
-        /* --- RESTO DE ESTILOS --- */
         .contenedor-promos { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
         
         .card { 
@@ -146,44 +131,43 @@
 
     <div id="seccion-sabores">
         <h2 id="nom-p" style="text-align: center; color: var(--secundario); margin-top:0;"></h2>
+        
         <span class="categoria-titulo">Nuestras Cremas 🍦</span>
-        <div class="lista-sabores">
-            <label><input type="checkbox" value="Almendrado"> 🥜 Almendrado</label>
-            <label><input type="checkbox" value="Tramontana"> 🍪 Tramontana </label>
-            <label><input type="checkbox" value="Dulce de leche"> 🍯 Dulce de leche</label>
-            <label><input type="checkbox" value="Chocotorta">🍫 Chocotorta </label>
-            <label><input type="checkbox" value="Banana split"> 🍌 Banana split</label>
-            <label><input type="checkbox" value="Flan con dulce"> 🍮 Flan con dulce</label>
-            <label><input type="checkbox" value="Chocolate"> 🍫 Chocolate</label>
-            <label><input type="checkbox" value="Frutilla a la crema"> 🍓 Frutilla a la Crema </label>
-            <label><input type="checkbox" value="Americana"> 🥛 Americana</label>
-            <label><input type="checkbox" value="Menta granizada"> 🌿 Menta granizada</label>
-            <label><input type="checkbox" value="Dulce granizado"> 🍫 Dulce granizado</label>
-            <label><input type="checkbox" value="Vainilla">🌼Vainilla</label>
-            <label><input type="checkbox" value="Granizado"> ❄️ Granizado</label>
-            <label><input type="checkbox" value="Banana"> 🍌 Banana</label>
-            <label><input type="checkbox" value="Cielo"> ☁️ Crema del Cielo</label>
-            <label><input type="checkbox" value="Chocolate al rhum"> 🥃 Chocolate al rhum </label>
-            <label><input type="checkbox" value="Frutos del bosque"> 🌳🌳Frutos del Bosque </label>
-             <label><input type="checkbox" value="Dolca"> 🍌 Bananita Dolca </label>
-            <label><input type="checkbox" value="Pistacho"> 🟢 Pistacho</label>
-            <label><input type="checkbox" value="Chantilly con frutilla"> 🧁 Chantilly c/ frutilla</label>
-            <label><input type="checkbox" value="Arcoiris"> 🌈 Arcoiris</label>
-             <label><input type="checkbox" value="Cadbury"> 🍫Chocolate Cadbury</label>
-        </div>
+        <div id="lista-crema" class="lista-sabores">Cargando...</div>
+
         <span class="categoria-titulo">Frutales al Agua 🍋</span>
-        <div class="lista-sabores">
-            <label><input type="checkbox" value="Ananá al agua"> 🍍 Ananá al agua</label>
-            <label><input type="checkbox" value="Frutilla al agua"> 🍓 Frutilla al agua</label>
-            <label><input type="checkbox" value="Limón al agua"> 🍋 Limón al agua</label>
-            <label><input type="checkbox" value="Durazno"> 🍑 Durazno</label>
-        </div>
+        <div id="lista-agua" class="lista-sabores">Cargando...</div>
+
         <button class="btn-ws" onclick="enviar()">Pedir por WhatsApp </button>
     </div>
 
     <script>
+        const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
         let elegida = "";
         let precioElegido = "";
+
+        async function cargarSaboresDesdeExcel() {
+            try {
+                const res = await fetch(urlPlanilla + '&t=' + new Date().getTime());
+                const texto = await res.text();
+                const filas = texto.split(/\r?\n/).slice(1);
+                
+                const contCrema = document.getElementById('lista-crema');
+                const contAgua = document.getElementById('lista-agua');
+                contCrema.innerHTML = ""; contAgua.innerHTML = "";
+
+                filas.forEach(f => {
+                    const col = f.split(',').map(c => c.replace(/"/g, "").trim());
+                    if (col.length >= 3 && col[2].toLowerCase() === "si") {
+                        const html = `<label><input type="checkbox" value="${col[0]}"> ${col[0]}</label>`;
+                        if (col[1] === "saboresCrema") contCrema.innerHTML += html;
+                        if (col[1] === "saboresAgua") contAgua.innerHTML += html;
+                    }
+                });
+            } catch (e) {
+                console.error("Error al cargar sabores");
+            }
+        }
 
         function ver(nombre, precio, id) {
             const panel = document.getElementById('seccion-sabores');
@@ -192,38 +176,27 @@
             const limpiarChecks = () => { document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false); };
 
             if (elegida === nombre && panel.style.display === "block") {
-                panel.style.display = "none"; 
-                elegida = "";
-                precioElegido = "";
-                document.getElementById(id).classList.remove('activa'); 
-                limpiarChecks();
+                panel.style.display = "none"; elegida = ""; precioElegido = "";
+                document.getElementById(id).classList.remove('activa'); limpiarChecks();
             } else {
-                limpiarChecks(); 
-                cards.forEach(c => c.classList.remove('activa'));
+                limpiarChecks(); cards.forEach(c => c.classList.remove('activa'));
                 document.getElementById(id).classList.add('activa');
-                
-                elegida = nombre;
-                precioElegido = precio; // Guardamos el precio
+                elegida = nombre; precioElegido = precio;
                 titulo.innerText = "Armando: " + nombre + " (" + precio + ")";
-                
-                panel.style.display = "block"; 
-                panel.scrollIntoView({ behavior: 'smooth' });
+                panel.style.display = "block"; panel.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
         function enviar() {
             const checks = document.querySelectorAll('input:checked');
-            let gustos = []; 
-            checks.forEach(c => gustos.push(c.value));
-            
+            let gustos = []; checks.forEach(c => gustos.push(c.value));
             if (gustos.length === 0) return alert("Por favor, seleccioná al menos un sabor.");
-            
             const miNum = "5491137610574"; 
-            // Ahora incluimos el precio en el mensaje de WhatsApp
             const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\nPrecio: *${precioElegido}*\n\nSabores elegidos:\n✅ ${gustos.join("\n✅ ")}`;
-            
             window.open(`https://wa.me/${miNum}?text=${encodeURIComponent(msj)}`, '_blank');
         }
+
+        window.onload = cargarSaboresDesdeExcel;
     </script>
 
     <div style="text-align: center; width: 100%;">
@@ -233,5 +206,3 @@
     </div>
 </body>
 </html>
-
-
