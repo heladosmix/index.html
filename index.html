@@ -11,7 +11,8 @@
     <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
-
+<link rel="icon" href="https://heladosmix.github.io/index.html/logo.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -19,7 +20,6 @@
             --secundario: #fce4ec;
             --texto: #333333;
             --whatsapp: #25d366;
-            /* Colores Mercado Pago */
             --mp-azul: #009EE3;
             --mp-azul-oscuro: #007EB5;
             --mp-verde: #00A15E;
@@ -148,7 +148,6 @@
             margin: 0 15px 0 0;
         }
 
-        /* --- Estilo Mercado Pago para el botón de Alias --- */
         .cuadro-alias {
             display: inline-block;
             background-color: var(--mp-azul);
@@ -167,10 +166,6 @@
 
         .cuadro-alias:hover {
             background-color: var(--mp-azul-oscuro);
-        }
-
-        .cuadro-alias:active {
-            transform: scale(0.95);
         }
 
         #mensajeCopiado {
@@ -198,34 +193,27 @@
             text-align: center;
             font-size: 1.1rem;
         }
-        /* Estilo para el botón de enlace a Promos */
-.btn-promos-link {
-    display: inline-block;
-    background-color: #00bfff; /* Celeste vibrante */
-    color: white !important;
-    padding: 15px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin: 25px 0;
-    box-shadow: 0 4px 15px rgba(0,191,255,0.4);
-    transition: 0.3s;
-    border: none;
-    cursor: pointer;
-}
 
-.btn-promos-link:hover {
-    transform: scale(1.05);
-    background-color: #0099cc;
-    box-shadow: 0 6px 20px rgba(0,191,255,0.6);
-}
+        .btn-promos-link {
+            display: inline-block;
+            background-color: #00bfff;
+            color: white !important;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,191,255,0.4);
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
 
-.contenedor-boton {
-    text-align: center;
-    
-    width: 100%;
-}
+        .contenedor-boton {
+            text-align: center;
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -241,10 +229,10 @@
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
                 <div class="contenedor-boton">
-        <a href="https://heladosmix.github.io/index.html/promos.html" class="btn-promos-link">
-            ✨ ¡Ver Promos Imperdibles! 🍦
-        </a>
-    </div>
+                    <a href="https://heladosmix.github.io/index.html/promos.html" class="btn-promos-link">
+                        ✨ ¡Ver Promos Imperdibles! 🍦
+                    </a>
+                </div>
 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
@@ -272,12 +260,12 @@
 
             <div class="categoria">
                 <h2>🍨 3. Sabores a la Crema</h2>
-                <div id="lista-crema"></div>
+                <div id="lista-crema">Cargando sabores...</div>
             </div>
 
             <div class="categoria">
                 <h2>🍋 4. Sabores al Agua</h2>
-                <div id="lista-agua"></div>
+                <div id="lista-agua">Cargando sabores...</div>
             </div>
 
             <div class="categoria">
@@ -303,81 +291,106 @@
 
     </div>
 
-    <script>
-        const saboresCrema = [
-            "🌰 Almendrado", "🍪tramontna",
-            "🍌 Banana split", "🍮 Flan con dulce", "🍯 Dulce de leche","🍫 Chocotorta", "🍫 Chocolate","🍫 Chocolate al Room","🍓Frutilla a la crema",
-            "🍦 Crema Americana", "🌿 Menta granizada", "🍫 Dulce granizado", "🌸 Vainilla",
-            "❄️ Granizado", "🍌 Banana", "☁️ Cielo", "🌳🌳 Frutos del bosque", "🍌 Banana Dolca", "🥜 Pistacho",
-            "🍰 Chantilly con frutilla", "🍫Chocolate Cadbury", "🌈 Arcoiris"
-        ];
-        const saboresAgua = [
-            "🍍 Ananá al agua", "🍓 Frutilla al agua", "🍋 Limón al agua", "🍑 Durazno"
-        ];
-
-        function generarLista(lista, idContenedor) {
-            const contenedor = document.getElementById(idContenedor);
-            [...lista].sort().forEach(s => {
-                contenedor.innerHTML += `<label class="opcion"><input type="checkbox" name="sabor" value="${s}" onchange="actualizarInfo()"> <span>${s}</span></label>`;
-            });
-        }
-
-        generarLista(saboresCrema, 'lista-crema');
-        generarLista(saboresAgua, 'lista-agua');
-
-        function actualizarInfo() {
-            const tamano = document.querySelector('input[name="tamano"]:checked');
-            const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-            const resumen = document.getElementById('resumen-seleccion');
-
-            if (!tamano) {
-                resumen.innerText = "Primero elegí un tamaño";
-                return;
-            }
-            const n = seleccionados.length;
-            resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
-        }
-
-        // Función mejorada para copiar el alias con feedback de color
-        function copiarAlias() {
-            const alias = document.getElementById("aliasText").innerText;
-            const btn = document.getElementById("btnAlias");
-            const msj = document.getElementById("mensajeCopiado");
-
-            navigator.clipboard.writeText(alias).then(() => {
-                msj.style.visibility = "visible";
-                btn.style.backgroundColor = "var(--mp-verde)"; // Se pone verde al copiar
-
-                setTimeout(() => {
-                    msj.style.visibility = "hidden";
-                    btn.style.backgroundColor = ""; // Vuelve al azul original
-                }, 2000);
-            });
-        }
-
-        function enviarWhatsApp() {
-            const tamano = document.querySelector('input[name="tamano"]:checked');
-            const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-            const direccion = document.getElementById('direccion').value.trim();
-
-            if (!tamano) {
-                alert("Elegí un tamaño.");
-                return;
-            }
-            if (seleccionados.length === 0) {
-                alert("Elegí al menos un sabor.");
-                return;
-            }
-
-            let lista = "";
-            seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
-
-            const dirTexto = direccion === "" ? "Retiro en local / A convenir" : direccion;
-
-            const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${dirTexto}%0A%0A*Sabores:*%0A${lista}`;
-            window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
-        }
-    </script>
+    
 </body>
 
-</html>
+</html><script>
+    const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
+
+    async function cargarSabores() {
+        try {
+            // Agregamos un número aleatorio al final para evitar que Google use datos viejos
+            const respuesta = await fetch(urlPlanilla + '&version=' + Math.random());
+            const texto = await respuesta.text();
+            
+            const filas = texto.split(/\r?\n/);
+            const contCrema = document.getElementById('lista-crema');
+            const contAgua = document.getElementById('lista-agua');
+            
+            // Verificamos que los contenedores existan antes de limpiar
+            if (contCrema) contCrema.innerHTML = "";
+            if (contAgua) contAgua.innerHTML = "";
+
+            for (let i = 1; i < filas.length; i++) {
+                if (!filas[i].trim()) continue;
+
+                // Limpiamos comillas y espacios de cada columna
+                let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
+                
+                if (columnas.length >= 3) {
+                    let nombre = columnas[0];
+                    let categoria = columnas[1]; 
+                    let disponible = columnas[2].toLowerCase();
+
+                    if (disponible === "si") {
+                        const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo()"> <span>${nombre}</span></label>`;
+                        
+                        // Comparación exacta con lo que tenés en el Excel
+                        if (categoria === "saboresCrema" && contCrema) {
+                            contCrema.innerHTML += htmlSabor;
+                        } else if (categoria === "saboresAgua" && contAgua) {
+                            contAgua.innerHTML += htmlSabor;
+                        }
+                    }
+                }
+            }
+
+            // Si no hay sabores, mostramos un mensaje de ayuda
+            if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
+            if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
+
+        } catch (error) {
+            console.error("Error:", error);
+            if(document.getElementById('lista-crema')) {
+                document.getElementById('lista-crema').innerHTML = "Error al conectar. Probá recargando la página.";
+            }
+        }
+    }
+
+    function actualizarInfo() {
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const resumen = document.getElementById('resumen-seleccion');
+        
+        if (!tamano) {
+            resumen.innerText = "Primero elegí un tamaño";
+            return;
+        }
+        
+        const n = seleccionados.length;
+        resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
+    }
+
+    function copiarAlias() {
+        const alias = "helados.mix";
+        navigator.clipboard.writeText(alias).then(() => {
+            const msj = document.getElementById("mensajeCopiado");
+            msj.style.visibility = "visible";
+            setTimeout(() => msj.style.visibility = "hidden", 2000);
+        });
+    }
+
+    function enviarWhatsApp() {
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
+
+        if (!tamano) {
+            alert("Por favor, elegí un tamaño.");
+            return;
+        }
+        if (seleccionados.length === 0) {
+            alert("Por favor, seleccioná al menos un sabor.");
+            return;
+        }
+
+        let lista = "";
+        seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
+
+        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}`;
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+    }
+
+    // Iniciamos la carga
+    window.onload = cargarSabores;
+</script>
