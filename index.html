@@ -376,18 +376,37 @@
     }
 
     function actualizarInfo() {
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-        const resumen = document.getElementById('resumen-seleccion');
-        
-        if (!tamano) {
-            resumen.innerText = "Primero elegí un tamaño";
-            return;
-        }
-        
-        const n = seleccionados.length;
-        resumen.innerText = n === 0 ? "Seleccioná tus sabores" : `Llevás ${n} ${n === 1 ? 'sabor' : 'sabores'} seleccionados`;
+    const tamano = document.querySelector('input[name="tamano"]:checked');
+    const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+    const resumen = document.getElementById('resumen-seleccion');
+    
+    if (!tamano) {
+        resumen.innerText = "Primero elegí un tamaño";
+        return;
     }
+    
+    // 1. Obtener precio base del helado según la opción seleccionada
+    let precioTotal = 0;
+    if (tamano.value.includes("1 KG")) precioTotal = 14000;
+    else if (tamano.value.includes("1/2 KG")) precioTotal = 8000;
+    else if (tamano.value.includes("1/4 KG")) precioTotal = 4000;
+
+    // 2. Detectar si se seleccionaron los conos en la lista y sumar $1000 por cada opción marcada
+    let contadorSaboresReales = 0;
+    
+    seleccionados.forEach(sabor => {
+        if (sabor.value.includes("Conos Comunes") || sabor.value.includes("Conos Dulces")) {
+            precioTotal += 1000; // Suma los 1000 de la promo de conos
+        } else {
+            contadorSaboresReales++; // Solo cuenta como sabor real si no es un cono
+        }
+    });
+    
+    // 3. Armar el texto del resumen para el botón flotante
+    let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
+    
+    resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
+}
 
     function copiarAlias() {
         const alias = "helados.mix";
@@ -398,26 +417,54 @@
         });
     }
 
-    function enviarWhatsApp() {
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-        const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
+   function enviarWhatsApp() {
+    const tamano = document.querySelector('input[name="tamano"]:checked');
+    const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+    const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
 
-        if (!tamano) {
-            alert("Por favor, elegí un tamaño.");
-            return;
-        }
-        if (seleccionados.length === 0) {
-            alert("Por favor, seleccioná al menos un sabor.");
-            return;
-        }
-
-        let lista = "";
-        seleccionados.forEach(s => lista += "✅ " + s.value + "%0A");
-
-        const msj = `¡Hola *Helados.mix*! 👋%0A%0A*Pedido:* ${tamano.value}%0A*Dirección:* ${direccion}%0A%0A*Sabores:*%0A${lista}`;
-        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+    if (!tamano) {
+        alert("Por favor, elegí un tamaño.");
+        return;
     }
+    if (seleccionados.length === 0) {
+        alert("Por favor, seleccioná al menos un sabor.");
+        return;
+    }
+
+    // Calcular total base del helado
+    let granTotal = 0;
+    if (tamano.value.includes("1 KG")) granTotal = 14000;
+    else if (tamano.value.includes("1/2 KG")) granTotal = 8000;
+    else if (tamano.value.includes("1/4 KG")) granTotal = 4000;
+
+    let listaSabores = "";
+    let listaConos = "";
+
+    seleccionados.forEach(s => {
+        if (s.value.includes("Conos Comunes") || s.value.includes("Conos Dulces")) {
+            granTotal += 1000; // Suma el precio al total general
+            listaConos += `🍦 *${s.value}*%0A`; // Lo separa en una sección de conos para el mensaje
+        } else {
+            listaSabores += `✅ ${s.value}%0A`; // Lo deja en la lista de gustos normales
+        }
+    });
+
+    // Construcción del mensaje de WhatsApp limpio y ordenado
+    let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
+    msj += `*Pedido:* ${tamano.value}%0A`;
+    msj += `*Dirección:* ${direccion}%0A%0A`;
+    
+    if (listaSabores !== "") {
+        msj += `*Sabores:*%0A${listaSabores}%0A`;
+    }
+    if (listaConos !== "") {
+        msj += `*Adicionales:*%0A${listaConos}%0A`;
+    }
+    
+    msj += `*Total a Pagar:* $${granTotal.toLocaleString('es-AR')}`;
+    
+    window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+}
 
     // Iniciamos la carga
     window.onload = cargarSabores;
