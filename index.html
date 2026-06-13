@@ -352,8 +352,19 @@
         }
     }
 
-    // Función exclusiva para simular la lluvia de papelitos de la Selección
+  // Función exclusiva para simular la lluvia de papelitos de la Selección con sonido de silbato
     function lanzarPapelitosMundial() {
+        // 1. Crear y reproducir el sonido del silbato de forma automática
+        const silbato = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-84.wav');
+        silbato.volume = 0.4; // Volumen intermedio para que no sature el celu del cliente
+        
+        silbato.play().catch(error => {
+            // Nota técnica: Los navegadores modernos bloquean el sonido automático si el usuario 
+            // no tocó la pantalla antes. Si se bloquea, el código sigue corriendo sin tirar error.
+            console.log("El navegador bloqueó el sonido automático hasta que haya interacción:", error);
+        });
+
+        // 2. Efecto visual de los papelitos
         const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A']; // Celeste, Blanco y Dorado
 
         // Ráfaga desde la izquierda
