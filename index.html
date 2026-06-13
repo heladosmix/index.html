@@ -16,9 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primario: #ff85a2;
-            --secundario: #fce4ec;
-            --texto: #333333;
+            /* Paleta Mundialista de Argentina */
+            --primario: #74ACDF;          /* Celeste Selección */
+            --secundario: #EBF3FA;        /* Azul grisáceo muy claro y limpio para el fondo */
+            --texto: #1A365D;             /* Azul marino oscuro para mejor lectura */
+            --dorado-mundial: #F4B41A;    /* Dorado Sol de Mayo para destacar */
             --whatsapp: #25d366;
             --mp-azul: #009EE3;
             --mp-azul-oscuro: #007EB5;
@@ -39,8 +41,9 @@
         }
 
         header {
-            background-color: var(--primario);
-            color: white;
+            /* Degradado Celeste y Blanco */
+            background: linear-gradient(135deg, #74ACDF 0%, #A5D1F3 100%);
+            color: #1A365D; /* Texto oscuro para que contraste excelente sobre el celeste */
             text-align: center;
             padding: 2.5rem 1rem;
             border-bottom-left-radius: 30px;
@@ -53,12 +56,14 @@
             font-weight: 700;
             display: block;
             line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
         }
 
         header p {
             margin: 8px 0 0;
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
+            font-weight: bold;
         }
 
         .container {
@@ -73,18 +78,20 @@
             border-radius: 20px;
             padding: 25px 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(116, 172, 223, 0.15); /* Sombra sutil celeste */
             text-align: center;
         }
 
         h2 {
-            color: var(--primario);
+            color: var(--texto);
             font-size: 1.3rem;
             margin: 0 0 20px 0;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 8px;
         }
 
         .pote-img {
@@ -100,7 +107,7 @@
             flex-direction: column;
             align-items: center;
             padding: 15px;
-            border: 2px solid #f0f0f0;
+            border: 2px solid #e2e8f0;
             border-radius: 18px;
             margin-bottom: 12px;
             cursor: pointer;
@@ -108,7 +115,7 @@
         }
 
         .radio-tamano:hover {
-            background-color: #fff9fa;
+            background-color: #F0F7FD; /* Destello celeste claro al pasar el mouse */
             border-color: var(--primario);
         }
 
@@ -126,11 +133,17 @@
         .input-direccion {
             width: 100%;
             padding: 16px;
-            border: 2px solid #eee;
+            border: 2px solid #e2e8f0;
             border-radius: 15px;
             font-family: inherit;
             text-align: center;
             font-size: 1.1rem;
+            color: var(--texto);
+        }
+
+        .input-direccion:focus {
+            outline: none;
+            border-color: var(--primario);
         }
 
         .opcion {
@@ -196,15 +209,15 @@
 
         .btn-promos-link {
             display: inline-block;
-            background-color: #00bfff;
-            color: white !important;
+            background-color: var(--dorado-mundial); /* Botón de promos en dorado de campeón */
+            color: #1A365D !important;               /* Texto oscuro para contraste perfecto */
             padding: 15px 30px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
             margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(0,191,255,0.4);
+            box-shadow: 0 4px 15px rgba(244,180,26,0.4);
             transition: 0.3s;
             border: none;
             cursor: pointer;
@@ -220,8 +233,8 @@
 <body>
 
     <header>
-        <span class="brand-title">Helados.mix</span>
-        <p>Catálogo Interactivo</p>
+        <span class="brand-title">⭐⭐⭐ Helados.mix</span>
+        <p>Catálogo Interactivo ⚽  🏆</p>
     </header>
 
     <div class="container">
@@ -229,13 +242,7 @@
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
                 
-              <!--PROMOS  <div class="contenedor-boton">
-                    <a href="https://heladosmix.github.io/index.html/promos.html" class="btn-promos-link">
-                        ✨ ¡Ver Promos Imperdibles! 🍦
-                    </a>
-                </div>  -->
-
-                <label class="radio-tamano">
+              <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
                     <input type="radio" name="tamano" value="1 KG ($14.000)" onchange="actualizarInfo()">
                     <span><strong>1 KG</strong> - $14.000</span>
@@ -285,18 +292,20 @@
         </form>
 
         <div style="text-align: center; background: white; padding: 20px; border-radius: 20px; margin: 20px auto; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            <p style="margin-bottom: 10px; font-weight: bold; color: #ff85a2;">🍦✨</p>
+            <p style="margin-bottom: 10px; font-weight: bold; color: #74ACDF;">🏆🇦🇷🏆</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix">
             <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">heladosmix.github.io</p>
         </div>
 
     </div>
-    <script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
     const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
 
     async function cargarSabores() {
         try {
-            // Agregamos un número aleatorio al final para evitar que Google use datos viejos
             const respuesta = await fetch(urlPlanilla + '&version=' + Math.random());
             const texto = await respuesta.text();
             
@@ -304,14 +313,12 @@
             const contCrema = document.getElementById('lista-crema');
             const contAgua = document.getElementById('lista-agua');
             
-            // Verificamos que los contenedores existan antes de limpiar
             if (contCrema) contCrema.innerHTML = "";
             if (contAgua) contAgua.innerHTML = "";
 
             for (let i = 1; i < filas.length; i++) {
                 if (!filas[i].trim()) continue;
 
-                // Limpiamos comillas y espacios de cada columna
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
                 if (columnas.length >= 3) {
@@ -322,7 +329,6 @@
                     if (disponible === "si") {
                         const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo()"> <span>${nombre}</span></label>`;
                         
-                        // Comparación exacta con lo que tenés en el Excel
                         if (categoria === "saboresCrema" && contCrema) {
                             contCrema.innerHTML += htmlSabor;
                         } else if (categoria === "saboresAgua" && contAgua) {
@@ -332,9 +338,11 @@
                 }
             }
 
-            // Si no hay sabores, mostramos un mensaje de ayuda
             if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
             if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
+
+            // Lanzar ráfaga mundialista cuando todo termine de cargar correctamente
+            lanzarPapelitosMundial();
 
         } catch (error) {
             console.error("Error:", error);
@@ -342,6 +350,29 @@
                 document.getElementById('lista-crema').innerHTML = "Error al conectar. Probá recargando la página.";
             }
         }
+    }
+
+    // Función exclusiva para simular la lluvia de papelitos de la Selección
+    function lanzarPapelitosMundial() {
+        const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A']; // Celeste, Blanco y Dorado
+
+        // Ráfaga desde la izquierda
+        confetti({
+            particleCount: 120,
+            angle: 60,
+            spread: 70,
+            origin: { x: 0, y: 0.8 },
+            colors: coloresMundial
+        });
+
+        // Ráfaga desde la derecha
+        confetti({
+            particleCount: 120,
+            angle: 120,
+            spread: 70,
+            origin: { x: 1, y: 0.8 },
+            colors: coloresMundial
+        });
     }
 
     function actualizarInfo() {
