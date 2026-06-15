@@ -440,8 +440,15 @@
         });
     }
 
+   
     function enviarWhatsApp() {
-        reproducircorrect(); // <--- ¡Listo! Suena al tocar el botón verde flotante
+    // === REPRODUCIR SONIDO CAMPANA ===
+    const sonidoCampana = document.getElementById("sonidoCopiar");
+    if (sonidoCampana) {
+        sonidoCampana.currentTime = 0;
+        sonidoCampana.play().catch(error => console.log("Error al reproducir:", error));
+    }
+    // =================================
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
