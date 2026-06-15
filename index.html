@@ -304,6 +304,14 @@
 <script>
     const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
 
+    function reproducirClick() {
+    const click = document.getElementById("sonidoClick");
+    if (click) {
+        click.currentTime = 0; // Reinicia por si hacen toques rápidos
+        click.play().catch(e => console.log("Click bloqueado por el navegador"));
+    }
+}
+
     async function cargarSabores() {
         try {
             const respuesta = await fetch(urlPlanilla + '&version=' + Math.random());
@@ -385,6 +393,7 @@
 }
 
     function actualizarInfo() {
+        reproducirClick(); // <--- ¡Listo! Suena cada vez que eligen tamaño o sabor
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const resumen = document.getElementById('resumen-seleccion');
@@ -432,6 +441,7 @@
     }
 
     function enviarWhatsApp() {
+        reproducirClick(); // <--- ¡Listo! Suena al tocar el botón verde flotante
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
@@ -485,5 +495,6 @@
 </script>
     <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
     <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
+    <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
 </body>
 </html>
