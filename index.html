@@ -419,14 +419,22 @@
     resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
 }
 
-    function copiarAlias() {
-        const alias = "helados.mix";
-        navigator.clipboard.writeText(alias).then(() => {
-            const msj = document.getElementById("mensajeCopiado");
-            msj.style.visibility = "visible";
-            setTimeout(() => msj.style.visibility = "hidden", 2000);
-        });
-    }
+  function copiarAlias() {
+    const alias = "helados.mix";
+    navigator.clipboard.writeText(alias).then(() => {
+        // === REPRODUCIR SONIDO CAMPANA ===
+        const sonido = document.getElementById("sonidoCopiar");
+        if (sonidop) { // Verificación por seguridad
+            sonido.currentTime = 0; // Reinicia por si hacen clics seguidos
+            sonido.play().catch(error => console.log("Error al reproducir:", error));
+        }
+        // =================================
+
+        const msj = document.getElementById("mensajeCopiado");
+        msj.style.visibility = "visible";
+        setTimeout(() => msj.style.visibility = "hidden", 2000);
+    });
+}
 
    function enviarWhatsApp() {
     const tamano = document.querySelector('input[name="tamano"]:checked');
@@ -480,5 +488,6 @@
     // Iniciamos la carga
     window.onload = cargarSabores;
 </script>
+    <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
 </body>
 </html>
