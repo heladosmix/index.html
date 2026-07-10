@@ -161,31 +161,52 @@
             margin: 0 15px 0 0;
         }
 
-        .cuadro-alias {
-            display: inline-block;
-            background-color: var(--mp-azul);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.3rem;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-            user-select: none;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0, 158, 227, 0.2);
+        .contenedor-alias-nuevo {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
         }
 
-        .cuadro-alias:hover {
-            background-color: var(--mp-azul-oscuro);
+        .cuadro-alias-nuevo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #F0F7FD;
+            border: 2px dashed #009EE3; /* El borde punteado invita a interactuar */
+            border-radius: 12px;
+            padding: 14px 20px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .cuadro-alias-nuevo:active {
+            transform: scale(0.97);
+            background-color: #E1F0FF;
+        }
+
+        .alias-texto-resaltado {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--texto);
+            letter-spacing: 0.5px;
+        }
+
+        .alias-icono {
+            font-size: 1.3rem;
+            background: white;
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
 
         #mensajeCopiado {
-            color: var(--mp-azul);
-            font-size: 0.9rem;
+            color: var(--mp-azul-oscuro);
+            font-size: 0.95rem;
             font-weight: bold;
-            margin-top: 8px;
+            margin-top: 10px;
+            transition: opacity 0.2s ease;
         }
 
         .btn-flotante {
@@ -238,6 +259,21 @@
     </header>
 
     <div class="container">
+        
+        <div class="categoria">
+            <h2>🤝 ALIAS MERCADO PAGO</h2>
+            <p style="margin-bottom: 15px; font-size: 1rem; font-weight: bold; color: #555;">👇 Toca el recuadro para copiar el alias:</p>
+            
+            <div class="contenedor-alias-nuevo">
+                <div class="cuadro-alias-nuevo" id="btnAlias" onclick="copiarAlias()">
+                    <span class="alias-texto-resaltado" id="aliasText">helados.mix</span>
+                    <span class="alias-icono">📋</span>
+                </div>
+            </div>
+
+            <div id="mensajeCopiado" style="opacity: 0;">¡Copiado con éxito! 🎉🍦</div>
+        </div>
+
         <form id="pedidoForm">
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
@@ -276,15 +312,6 @@
                 <div id="lista-agua">Cargando sabores...</div>
             </div>
 
-            <div class="categoria">
-                <h2>🤝 ALIAS MERCADO PAGO</h2>
-                <p style="margin-bottom: 10px; font-size: 0.95rem;">Toca el botón para copiar el alias:</p>
-                <div class="cuadro-alias" id="btnAlias" onclick="copiarAlias()">
-                    <span id="aliasText">helados.mix</span>
-                </div>
-                <div id="mensajeCopiado" style="visibility: hidden;">¡Copiado al portapapeles! ✅</div>
-            </div>
-
             <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
                 <strong>ENVIAR POR WHATSAPP</strong><br>
                 <span id="resumen-seleccion" style="font-size: 0.9rem; font-weight: normal;">Primero elegí un tamaño</span>
@@ -305,12 +332,12 @@
     const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
 
     function reproducirClick() {
-    const click = document.getElementById("sonidoClick");
-    if (click) {
-        click.currentTime = 0; // Reinicia por si hacen toques rápidos
-        click.play().catch(e => console.log("Click bloqueado por el navegador"));
+        const click = document.getElementById("sonidoClick");
+        if (click) {
+            click.currentTime = 0; // Reinicia por si hacen toques rápidos
+            click.play().catch(e => console.log("Click bloqueado por el navegador"));
+        }
     }
-}
 
     async function cargarSabores() {
         try {
@@ -360,40 +387,40 @@
         }
     }
 
-   function lanzarPapelitosMundial() {
-    // 1. Llamar al sonido del silbato propio que está en el HTML
-    const silbato = document.getElementById("sonidoSilbato");
-    if (silbato) {
-        silbato.volume = 0.4; // Volumen intermedio
-        silbato.play().catch(error => {
-            console.log("El navegador bloqueó el sonido automático hasta que haya interacción:", error);
+    function lanzarPapelitosMundial() {
+        // 1. Llamar al sonido del silbato propio que está en el HTML
+        const silbato = document.getElementById("sonidoSilbato");
+        if (silbato) {
+            silbato.volume = 0.4; // Volumen intermedio
+            silbato.play().catch(error => {
+                console.log("El navegador bloqueó el sonido automático hasta que haya interacción:", error);
+            });
+        }
+
+        // 2. Efecto visual de los papelitos
+        const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A']; // Celeste, Blanco y Dorado
+
+        // Ráfaga desde la izquierda
+        confetti({
+            particleCount: 120,
+            angle: 60,
+            spread: 70,
+            origin: { x: 0, y: 0.8 },
+            colors: coloresMundial
+        });
+
+        // Ráfaga desde la derecha
+        confetti({
+            particleCount: 120,
+            angle: 120,
+            spread: 70,
+            origin: { x: 1, y: 0.8 },
+            colors: coloresMundial
         });
     }
 
-    // 2. Efecto visual de los papelitos
-    const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A']; // Celeste, Blanco y Dorado
-
-    // Ráfaga desde la izquierda
-    confetti({
-        particleCount: 120,
-        angle: 60,
-        spread: 70,
-        origin: { x: 0, y: 0.8 },
-        colors: coloresMundial
-    });
-
-    // Ráfaga desde la derecha
-    confetti({
-        particleCount: 120,
-        angle: 120,
-        spread: 70,
-        origin: { x: 1, y: 0.8 },
-        colors: coloresMundial
-    });
-}
-
     function actualizarInfo() {
-        reproducirClick(); // <--- ¡Listo! Suena cada vez que eligen tamaño o sabor
+        reproducirClick(); // <--- Suena cada vez que eligen tamaño o sabor
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const resumen = document.getElementById('resumen-seleccion');
@@ -435,20 +462,23 @@
             // =================================
 
             const msj = document.getElementById("mensajeCopiado");
-            msj.style.visibility = "visible";
-            setTimeout(() => msj.style.visibility = "hidden", 2000);
+            msj.style.opacity = "1";
+            
+            // Desaparece sutilmente a los 2 segundos
+            setTimeout(() => {
+                msj.style.opacity = "0";
+            }, 2000);
         });
     }
 
-   
     function enviarWhatsApp() {
-    // === REPRODUCIR SONIDO CAMPANA ===
-    const sonidoCampana = document.getElementById("sonidoCopiar");
-    if (sonidoCampana) {
-        sonidoCampana.currentTime = 0;
-        sonidoCampana.play().catch(error => console.log("Error al reproducir:", error));
-    }
-    // =================================
+        // === REPRODUCIR SONIDO CAMPANA ===
+        const sonidoCampana = document.getElementById("sonidoCopiar");
+        if (sonidoCampana) {
+            sonidoCampana.currentTime = 0;
+            sonidoCampana.play().catch(error => console.log("Error al reproducir:", error));
+        }
+        // =================================
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
@@ -492,7 +522,6 @@
             msj += `*Adicionales:*%0A${listaConos}%0A`;
         }
         
-        // Aquí se aplica el formato de negrita usando los asteriscos fijos
         msj += `*Total a Pagar: $${granTotal.toLocaleString('es-AR')}*`;
         
         window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
