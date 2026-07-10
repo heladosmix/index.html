@@ -41,9 +41,8 @@
         }
 
         header {
-            /* Degradado Celeste y Blanco */
             background: linear-gradient(135deg, #74ACDF 0%, #A5D1F3 100%);
-            color: #1A365D; /* Texto oscuro para que contraste excelente sobre el celeste */
+            color: #1A365D; 
             text-align: center;
             padding: 2.5rem 1rem;
             border-bottom-left-radius: 30px;
@@ -78,7 +77,7 @@
             border-radius: 20px;
             padding: 25px 15px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(116, 172, 223, 0.15); /* Sombra sutil celeste */
+            box-shadow: 0 4px 15px rgba(116, 172, 223, 0.15);
             text-align: center;
         }
 
@@ -115,7 +114,7 @@
         }
 
         .radio-tamano:hover {
-            background-color: #F0F7FD; /* Destello celeste claro al pasar el mouse */
+            background-color: #F0F7FD;
             border-color: var(--primario);
         }
 
@@ -163,27 +162,52 @@
 
         .contenedor-alias-nuevo {
             width: 100%;
-            max-width: 320px;
+            max-width: 340px;
             margin: 0 auto;
         }
 
+        /* DISEÑO REPOTENCIADO DEL BOTÓN DE ALIAS */
         .cuadro-alias-nuevo {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #F0F7FD;
-            border: 2px dashed #009EE3; /* El borde punteado invita a interactuar */
-            border-radius: 12px;
-            padding: 14px 20px;
+            border: 2px dashed #009EE3;
+            border-radius: 14px;
+            padding: 12px 15px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             user-select: none;
+            /* Animación de pulso continuo para llamar la atención */
+            animation: pulsoAtencion 3s infinite;
         }
 
-        .cuadro-alias-nuevo:active {
-            transform: scale(0.97);
+        /* Animación suave de respiración */
+        @keyframes pulsoAtencion {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.2); }
+            50% { transform: scale(1.02); box-shadow: 0 0 12px 4px rgba(0, 158, 227, 0.15); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.2); }
+        }
+
+        .cuadro-alias-nuevo:hover {
+            transform: scale(1.03) !important;
             background-color: #E1F0FF;
+            animation: none; /* Frena el pulso si el mouse está encima */
+        }
+
+        /* ANIMACIÓN AL COPIAR EXÍTOSAMENTE */
+        .cuadro-alias-nuevo.copiado-exito {
+            animation: titilarVerde 0.6s ease-out !important;
+            background-color: #E8F5E9 !important;
+            border-color: var(--mp-verde) !important;
+        }
+
+        @keyframes titilarVerde {
+            0% { transform: scale(1); }
+            30% { transform: scale(0.95); background-color: #C8E6C9; border-color: var(--mp-verde); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .alias-texto-resaltado {
@@ -191,22 +215,45 @@
             font-weight: bold;
             color: var(--texto);
             letter-spacing: 0.5px;
+            margin-left: 5px;
         }
 
-        .alias-icono {
-            font-size: 1.3rem;
-            background: white;
-            padding: 6px;
+        /* BOTÓN DE ACCIÓN EXPLÍCITO INTERNO */
+        .badge-copiar {
+            background-color: #009EE3;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 8px 12px;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,158,227,0.2);
+            transition: background-color 0.2s;
+        }
+        
+        .cuadro-alias-nuevo:hover .badge-copiar {
+            background-color: #007EB5;
+        }
+
+        /* Cambia el color del badge interno a verde al copiar */
+        .cuadro-alias-nuevo.copiado-exito .badge-copiar {
+            background-color: var(--mp-verde) !important;
         }
 
         #mensajeCopiado {
-            color: var(--mp-azul-oscuro);
+            color: var(--mp-verde);
             font-size: 0.95rem;
             font-weight: bold;
             margin-top: 10px;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(5px);
+        }
+
+        #mensajeCopiado.visible {
+            opacity: 1 !important;
+            transform: translateY(0);
         }
 
         .btn-flotante {
@@ -227,27 +274,6 @@
             text-align: center;
             font-size: 1.1rem;
         }
-
-        .btn-promos-link {
-            display: inline-block;
-            background-color: var(--dorado-mundial); /* Botón de promos en dorado de campeón */
-            color: #1A365D !important;               /* Texto oscuro para contraste perfecto */
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(244,180,26,0.4);
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .contenedor-boton {
-            text-align: center;
-            width: 100%;
-        }
     </style>
 </head>
 
@@ -255,23 +281,25 @@
 
     <header>
         <span class="brand-title">⭐⭐⭐ Helados.mix</span>
-        <p>Catálogo Interactivo ⚽  🏆</p>
+        <p>Catálogo Interactivo ⚽ 🏆</p>
     </header>
 
     <div class="container">
         
         <div class="categoria">
             <h2>🤝 ALIAS MERCADO PAGO</h2>
-            <p style="margin-bottom: 15px; font-size: 1rem; font-weight: bold; color: #555;">👇 Toca el recuadro para copiar el alias:</p>
+            <p style="margin-bottom: 15px; font-size: 1.05rem; font-weight: bold; color: #333;">👉 ¡Toca el recuadro azul para copiar el alias! 👇</p>
             
             <div class="contenedor-alias-nuevo">
                 <div class="cuadro-alias-nuevo" id="btnAlias" onclick="copiarAlias()">
                     <span class="alias-texto-resaltado" id="aliasText">helados.mix</span>
-                    <span class="alias-icono">📋</span>
+                    <div class="badge-copiar" id="badgeCopiar">
+                        <span>📋</span> <span>COPIAR</span>
+                    </div>
                 </div>
             </div>
 
-            <div id="mensajeCopiado" style="opacity: 0;">¡Copiado con éxito! 🎉🍦</div>
+            <div id="mensajeCopiado" style="opacity: 0;">¡Alias copiado! 🎉🍦</div>
         </div>
 
         <form id="pedidoForm">
@@ -334,7 +362,7 @@
     function reproducirClick() {
         const click = document.getElementById("sonidoClick");
         if (click) {
-            click.currentTime = 0; // Reinicia por si hacen toques rápidos
+            click.currentTime = 0;
             click.play().catch(e => console.log("Click bloqueado por el navegador"));
         }
     }
@@ -358,15 +386,15 @@
                 
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
-                    let categoria = columnas[1]; 
+                    let category = columnas[1]; 
                     let disponible = columnas[2].toLowerCase();
 
                     if (disponible === "si") {
                         const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo()"> <span>${nombre}</span></label>`;
                         
-                        if (categoria === "saboresCrema" && contCrema) {
+                        if (category === "saboresCrema" && contCrema) {
                             contCrema.innerHTML += htmlSabor;
-                        } else if (categoria === "saboresAgua" && contAgua) {
+                        } else if (category === "saboresAgua" && contAgua) {
                             contAgua.innerHTML += htmlSabor;
                         }
                     }
@@ -376,7 +404,6 @@
             if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
             if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
 
-            // Lanzar ráfaga mundialista cuando todo termine de cargar correctamente
             lanzarPapelitosMundial();
 
         } catch (error) {
@@ -388,19 +415,16 @@
     }
 
     function lanzarPapelitosMundial() {
-        // 1. Llamar al sonido del silbato propio que está en el HTML
         const silbato = document.getElementById("sonidoSilbato");
         if (silbato) {
-            silbato.volume = 0.4; // Volumen intermedio
+            silbato.volume = 0.4;
             silbato.play().catch(error => {
-                console.log("El navegador bloqueó el sonido automático hasta que haya interacción:", error);
+                console.log("El navegador bloqueó el sonido automático:", error);
             });
         }
 
-        // 2. Efecto visual de los papelitos
-        const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A']; // Celeste, Blanco y Dorado
+        const coloresMundial = ['#74ACDF', '#FFFFFF', '#F4B41A'];
 
-        // Ráfaga desde la izquierda
         confetti({
             particleCount: 120,
             angle: 60,
@@ -409,7 +433,6 @@
             colors: coloresMundial
         });
 
-        // Ráfaga desde la derecha
         confetti({
             particleCount: 120,
             angle: 120,
@@ -420,7 +443,7 @@
     }
 
     function actualizarInfo() {
-        reproducirClick(); // <--- Suena cada vez que eligen tamaño o sabor
+        reproducirClick();
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const resumen = document.getElementById('resumen-seleccion');
@@ -452,33 +475,40 @@
 
     function copiarAlias() {
         const alias = "helados.mix";
+        const cuadro = document.getElementById("btnAlias");
+        const msj = document.getElementById("mensajeCopiado");
+        const badge = document.getElementById("badgeCopiar");
+
         navigator.clipboard.writeText(alias).then(() => {
-            // === REPRODUCIR SONIDO CAMPANA ===
             const sonido = document.getElementById("sonidoCopiar");
             if (sonido) { 
                 sonido.currentTime = 0; 
                 sonido.play().catch(error => console.log("Error al reproducir:", error));
             }
-            // =================================
 
-            const msj = document.getElementById("mensajeCopiado");
-            msj.style.opacity = "1";
+            // Cambiar texto de badge interno temporalmente
+            if(badge) badge.innerHTML = "<span>✓</span> <span>COPIADO</span>";
+
+            cuadro.classList.add("copiado-exito");
+            msj.classList.add("visible");
             
-            // Desaparece sutilmente a los 2 segundos
             setTimeout(() => {
-                msj.style.opacity = "0";
+                cuadro.classList.remove("copiado-exito");
+            }, 600);
+
+            setTimeout(() => {
+                msj.classList.remove("visible");
+                if(badge) badge.innerHTML = "<span>📋</span> <span>COPIAR</span>";
             }, 2000);
         });
     }
 
     function enviarWhatsApp() {
-        // === REPRODUCIR SONIDO CAMPANA ===
         const sonidoCampana = document.getElementById("sonidoCopiar");
         if (sonidoCampana) {
             sonidoCampana.currentTime = 0;
             sonidoCampana.play().catch(error => console.log("Error al reproducir:", error));
         }
-        // =================================
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
@@ -492,7 +522,6 @@
             return;
         }
 
-        // Calcular total base del helado (Sincronizado a $15.000 el Kilo)
         let granTotal = 0;
         if (tamano.value.includes("1 KG")) granTotal = 15000;
         else if (tamano.value.includes("1/2 KG")) granTotal = 8000;
@@ -510,7 +539,6 @@
             }
         });
 
-        // Construcción del mensaje de WhatsApp con Negrita en el Total Final
         let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
         msj += `*Pedido:* ${tamano.value}%0A`;
         msj += `*Dirección:* ${direccion}%0A%0A`;
