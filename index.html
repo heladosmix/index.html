@@ -294,7 +294,7 @@
                 <div class="cuadro-alias-nuevo" id="btnAlias" onclick="copiarAlias()">
                     <span class="alias-texto-resaltado" id="aliasText">helados.mix</span>
                     <div class="badge-copiar" id="badgeCopiar">
-                        <span>📋</span> <span>COPIAR</span>
+                        <span>📋</span> <span>COPIAR ALIAS</span>
                     </div>
                 </div>
             </div>
@@ -322,6 +322,16 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
                     <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
                     <span><strong>1/4 KG</strong> - $4.000</span>
+                </label>
+                
+                <label class="radio-tamano">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" style="width: 70px; height: auto;">
+                        <span style="font-size: 1.8rem; font-weight: bold; color: var(--primario); line-height: 1; user-select: none;">+</span>
+                        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" style="width: 55px; height: auto;">
+                    </div>
+                    <input type="radio" name="tamano" value="1/2 + 1/4 KG ($10.000) 5 sabores" onchange="actualizarInfo()">
+                    <span><strong>1/2 + 1/4 KG (5 sabores)</strong> - $10.000</span>
                 </label>
             </div>
 
@@ -455,6 +465,7 @@
         
         let precioTotal = 0;
         if (tamano.value.includes("1 KG")) precioTotal = 15000;
+        else if (tamano.value.includes("1/2 + 1/4 KG")) precioTotal = 10000;
         else if (tamano.value.includes("1/2 KG")) precioTotal = 8000;
         else if (tamano.value.includes("1/4 KG")) precioTotal = 4000;
 
@@ -524,6 +535,7 @@
 
         let granTotal = 0;
         if (tamano.value.includes("1 KG")) granTotal = 15000;
+        else if (tamano.value.includes("1/2 + 1/4 KG")) granTotal = 10000;
         else if (tamano.value.includes("1/2 KG")) granTotal = 8000;
         else if (tamano.value.includes("1/4 KG")) granTotal = 4000;
 
