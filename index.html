@@ -166,7 +166,6 @@
             margin: 0 auto;
         }
 
-        /* DISEÑO REPOTENCIADO DEL BOTÓN DE ALIAS */
         .cuadro-alias-nuevo {
             display: flex;
             align-items: center;
@@ -179,11 +178,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
             user-select: none;
-            /* Animación de pulso continuo para llamar la atención */
             animation: pulsoAtencion 3s infinite;
         }
 
-        /* Animación suave de respiración */
         @keyframes pulsoAtencion {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.2); }
             50% { transform: scale(1.02); box-shadow: 0 0 12px 4px rgba(0, 158, 227, 0.15); }
@@ -193,10 +190,9 @@
         .cuadro-alias-nuevo:hover {
             transform: scale(1.03) !important;
             background-color: #E1F0FF;
-            animation: none; /* Frena el pulso si el mouse está encima */
+            animation: none;
         }
 
-        /* ANIMACIÓN AL COPIAR EXÍTOSAMENTE */
         .cuadro-alias-nuevo.copiado-exito {
             animation: titilarVerde 0.6s ease-out !important;
             background-color: #E8F5E9 !important;
@@ -218,7 +214,6 @@
             margin-left: 5px;
         }
 
-        /* BOTÓN DE ACCIÓN EXPLÍCITO INTERNO */
         .badge-copiar {
             background-color: #009EE3;
             color: white;
@@ -237,7 +232,6 @@
             background-color: #007EB5;
         }
 
-        /* Cambia el color del badge interno a verde al copiar */
         .cuadro-alias-nuevo.copiado-exito .badge-copiar {
             background-color: var(--mp-verde) !important;
         }
@@ -266,7 +260,7 @@
             padding: 20px;
             border-radius: 35px;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
-            width: 92%;
+            width: calc(100% - 30px); /* Ajuste dinámico perfecto para pantallas móviles */
             max-width: 480px;
             border: none;
             cursor: pointer;
@@ -274,10 +268,25 @@
             text-align: center;
             font-size: 1.1rem;
         }
+        .precio-tag {
+    background-color: #FFF9E6; /* Un fondo amarillo/dorado súper suave */
+    color: #D49000;            /* Un tono dorado oscuro/marrón para que contraste perfecto y se lea bien */
+    border: 1px solid rgba(244, 180, 26, 0.3); /* Borde sutil dorado */
+    padding: 4px 10px;         /* Espaciado interno para que parezca una etiqueta */
+    border-radius: 12px;       /* Bordes redondeados bien estéticos */
+    font-weight: bold;         /* Texto en negrita */
+    font-size: 1.1rem;         /* Un cachito más grande que el resto del texto */
+    display: inline-block;     /* Para que respete el empaquetado */
+    margin-left: 5px;          /* Separación del texto anterior */
+}
     </style>
 </head>
 
 <body>
+
+    <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
+    <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
+    <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
 
     <header>
         <span class="brand-title">⭐⭐⭐ Helados.mix</span>
@@ -306,33 +315,33 @@
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
                 
-                <label class="radio-tamano">
-                    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
-                    <input type="radio" name="tamano" value="1 KG ($15.000)" onchange="actualizarInfo()">
-                    <span><strong>1 KG</strong> - $15.000</span>
-                </label>
+               <label class="radio-tamano">
+    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
+    <input type="radio" name="tamano" value="1 KG ($15.000) 4 sabores" onchange="actualizarInfo()">
+    <span><strong>1 KG (4 sabores)</strong> <span class="precio-tag">$15.000</span></span>
+</label>
 
-                <label class="radio-tamano">
-                    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
-                    <input type="radio" name="tamano" value="1/2 KG ($8.000)" onchange="actualizarInfo()">
-                    <span><strong>1/2 KG</strong> - $8.000</span>
-                </label>
+<label class="radio-tamano">
+    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
+    <input type="radio" name="tamano" value="1/2 KG ($8.000) 3 sabores" onchange="actualizarInfo()">
+    <span><strong>1/2 KG (3 sabores)</strong> <span class="precio-tag">$8.000</span></span>
+</label>
 
-                <label class="radio-tamano">
-                    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
-                    <input type="radio" name="tamano" value="1/4 KG ($4.000)" onchange="actualizarInfo()">
-                    <span><strong>1/4 KG</strong> - $4.000</span>
-                </label>
-                
-                <label class="radio-tamano">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
-                        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" style="width: 70px; height: auto;">
-                        <span style="font-size: 1.8rem; font-weight: bold; color: var(--primario); line-height: 1; user-select: none;">+</span>
-                        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" style="width: 55px; height: auto;">
-                    </div>
-                    <input type="radio" name="tamano" value="1/2 + 1/4 KG ($10.000) 5 sabores" onchange="actualizarInfo()">
-                    <span><strong>1/2 + 1/4 KG (5 sabores)</strong> - $10.000</span>
-                </label>
+<label class="radio-tamano">
+    <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
+    <input type="radio" name="tamano" value="1/4 KG ($4.000) 2 sabores" onchange="actualizarInfo()">
+    <span><strong>1/4 KG (2 sabores)</strong> <span class="precio-tag">$4.000</span></span>
+</label>
+
+<label class="radio-tamano">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" style="width: 70px; height: auto;">
+        <span style="font-size: 1.8rem; font-weight: bold; color: var(--primario); line-height: 1; user-select: none;">+</span>
+        <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" style="width: 55px; height: auto;">
+    </div>
+    <input type="radio" name="tamano" value="1/2 + 1/4 KG ($10.000) 5 sabores" onchange="actualizarInfo()">
+    <span><strong>1/2 + 1/4 KG (5 sabores)</strong> <span class="precio-tag">$10.000</span></span>
+</label>
             </div>
 
             <div class="categoria">
@@ -497,7 +506,6 @@
                 sonido.play().catch(error => console.log("Error al reproducir:", error));
             }
 
-            // Cambiar texto de badge interno temporalmente
             if(badge) badge.innerHTML = "<span>✓</span> <span>COPIADO</span>";
 
             cuadro.classList.add("copiado-exito");
@@ -509,7 +517,7 @@
 
             setTimeout(() => {
                 msj.classList.remove("visible");
-                if(badge) badge.innerHTML = "<span>📋</span> <span>COPIAR</span>";
+                if(badge) badge.innerHTML = "<span>COPIAR ALIAS</span>";
             }, 2000);
         });
     }
@@ -569,8 +577,5 @@
 
     window.onload = cargarSabores;
 </script>
-    <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
-    <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
-    <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
 </body>
 </html>
