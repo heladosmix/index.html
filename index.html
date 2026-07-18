@@ -522,6 +522,7 @@
         });
     }
 
+    
     function enviarWhatsApp() {
         const sonidoCampana = document.getElementById("sonidoCopiar");
         if (sonidoCampana) {
@@ -559,8 +560,14 @@
             }
         });
 
+        // Modificamos el texto del pedido para que si incluye el combo, reemplace el "+" común por el emoji grande ➕
+        let textoPedido = tamano.value;
+        if (textoPedido.includes("1/2 + 1/4")) {
+            textoPedido = textoPedido.replace("1/2 + 1/4", "1/2 %E2%9E%95 1/4"); // %E2%9E%95 es el emoji ➕ en código web
+        }
+
         let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
-        msj += `*Pedido:* ${tamano.value}%0A`;
+        msj += `*Pedido:* ${textoPedido}%0A`;
         msj += `*Dirección:* ${direccion}%0A%0A`;
         
         if (listaSabores !== "") {
