@@ -356,6 +356,8 @@
     <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
     <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
     <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
+    <!-- Agrega esta línea justo debajo de la de click.mp3 -->
+<audio id="sonidoSabor" src="sabor.mp3" preload="auto"></audio>
 <!-- Cartel flotante superior fijo -->
 <div id="cartelTamanoFlotante" class="cartel-flotante-top">
     <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
@@ -463,6 +465,14 @@
         }
     }
 
+    function reproducirSonidoSabor() {
+        const sonidoSabor = document.getElementById("sonidoSabor");
+        if (sonidoSabor) {
+            sonidoSabor.currentTime = 0;
+            sonidoSabor.play().catch(e => console.log("Sonido de sabor bloqueado"));
+        }
+    }
+
     async function cargarSabores() {
         try {
             const respuesta = await fetch(urlPlanilla + '&version=' + Math.random());
@@ -486,7 +496,7 @@
                     let disponible = columnas[2].toLowerCase();
 
                     if (disponible === "si") {
-                        const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo()"> <span>${nombre}</span></label>`;
+                        const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
                         
                         if (category === "saboresCrema" && contCrema) {
                             contCrema.innerHTML += htmlSabor;
@@ -500,7 +510,7 @@
             if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
             if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
 
-           lanzarBurbujasBienvenida();
+            lanzarBurbujasBienvenida();
 
         } catch (error) {
             console.error("Error:", error);
@@ -510,146 +520,145 @@
         }
     }
 
-  function lanzarBurbujasBienvenida() {
-    // 1. Reproducir sonido suave de bienvenida (burbuja/pop)
-    const sonidoBienvenida = document.getElementById("sonidoSilbato");
-    if (sonidoBienvenida) {
-        sonidoBienvenida.volume = 0.25;
-        sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
+    function lanzarBurbujasBienvenida() {
+        const sonidoBienvenida = document.getElementById("sonidoSilbato");
+        if (sonidoBienvenida) {
+            sonidoBienvenida.volume = 0.25;
+            sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.id = "canvasBurbujas";
+        canvas.style.position = "fixed";
+        canvas.style.top = "0";
+        canvas.style.left = "0";
+        canvas.style.width = "100vw";
+        canvas.style.height = "100vh";
+        canvas.style.pointerEvents = "none";
+        canvas.style.zIndex = "9999";
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext("2d");
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const burbujas = [];
+        const cantidad = 35;
+
+        for (let i = 0; i < cantidad; i++) {
+            burbujas.push({
+                x: Math.random() * width,
+                y: height + Math.random() * 30 + 5,
+                radio: Math.random() * 12 + 8,
+                velocidadY: Math.random() * 3 + 4.5,
+                oscilacion: Math.random() * 0.05,
+                angulo: Math.random() * Math.PI * 2,
+                opacidad: Math.random() * 0.5 + 0.4
+            });
+        }
+
+        let animacionId;
+        let tiempoInicio = performance.now();
+
+        function animar(tiempoActual) {
+            ctx.clearRect(0, 0, width, height);
+
+            let burbujasVisibles = 0;
+
+            burbujas.forEach(b => {
+                b.y -= b.velocidadY;
+                b.angulo += b.oscilacion;
+                b.x += Math.sin(b.angulo) * 0.8;
+
+                if (b.y + b.radio > 0) {
+                    burbujasVisibles++;
+
+                    ctx.beginPath();
+                    ctx.arc(b.x, b.y, b.radio, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 180, 216, ${b.opacidad * 0.25})`;
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacidad * 0.8})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(b.x - b.radio * 0.3, b.y - b.radio * 0.3, b.radio * 0.25, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${b.opacidad})`;
+                    ctx.fill();
+                }
+            });
+
+            if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
+                animacionId = requestAnimationFrame(animar);
+            } else {
+                cancelAnimationFrame(animacionId);
+                canvas.remove();
+            }
+        }
+
+        animacionId = requestAnimationFrame(animar);
     }
 
-    // 2. Crear el lienzo (canvas) transparente para las burbujas
-    const canvas = document.createElement("canvas");
-    canvas.id = "canvasBurbujas";
-    canvas.style.position = "fixed";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.pointerEvents = "none";
-    canvas.style.zIndex = "9999";
-    document.body.appendChild(canvas);
+    function actualizarInfo(tipoOrigen) {
+        if (tipoOrigen === 'sabor') {
+            reproducirSonidoSabor();
+        } else {
+            reproducirClick();
+        }
 
-    const ctx = canvas.getContext("2d");
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const resumen = document.getElementById('resumen-seleccion');
+        
+        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+        const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
 
-    // Crear array de burbujas
-    const burbujas = [];
-    const cantidad = 35;
+        if (!tamano) {
+            if (resumen) resumen.innerText = "Primero elegí un tamaño";
+            if (cartelFlotante) cartelFlotante.style.display = "none";
+            return;
+        }
+        
+        let precioTotal = 0;
+        let mensajeFlotante = "";
 
-    for (let i = 0; i < cantidad; i++) {
-        burbujas.push({
-            x: Math.random() * width,
-            y: height + Math.random() * 30 + 5, // AHORA: Empiezan bien pegadas al borde de abajo
-            radio: Math.random() * 12 + 8,
-            velocidadY: Math.random() * 3 + 4.5, // AHORA: Suben más del doble de rápido (4.5 a 7.5 px/frame)
-            oscilacion: Math.random() * 0.05,
-            angulo: Math.random() * Math.PI * 2,
-            opacidad: Math.random() * 0.5 + 0.4
-        });
-    }
+        if (tamano.value.includes("1 KG") && !tamano.value.includes("1/2")) {
+            precioTotal = 15000;
+            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 4 sabores)";
+        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
+            precioTotal = 10000;
+            mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
+        } else if (tamano.value.includes("1/2 KG")) {
+            precioTotal = 8000;
+            mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
+        } else if (tamano.value.includes("1/4 KG")) {
+            precioTotal = 4000;
+            mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
+        }
 
-    let animacionId;
-    let tiempoInicio = performance.now();
+        if (cartelFlotante && textoTamanoFlotante) {
+            textoTamanoFlotante.innerText = mensajeFlotante;
+            if (window.scrollY >= 400) {
+                cartelFlotante.style.display = "block";
+            }
+        }
 
-    function animar(tiempoActual) {
-        ctx.clearRect(0, 0, width, height);
-
-        let burbujasVisibles = 0;
-
-        burbujas.forEach(b => {
-            b.y -= b.velocidadY;
-            b.angulo += b.oscilacion;
-            b.x += Math.sin(b.angulo) * 0.8;
-
-            if (b.y + b.radio > 0) {
-                burbujasVisibles++;
-
-                // Dibujar el cuerpo de la burbuja
-                ctx.beginPath();
-                ctx.arc(b.x, b.y, b.radio, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(0, 180, 216, ${b.opacidad * 0.25})`;
-                ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacidad * 0.8})`;
-                ctx.lineWidth = 1.5;
-                ctx.fill();
-                ctx.stroke();
-
-                // Dibujar brillo/reflejo en la burbuja
-                ctx.beginPath();
-                ctx.arc(b.x - b.radio * 0.3, b.y - b.radio * 0.3, b.radio * 0.25, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${b.opacidad})`;
-                ctx.fill();
+        let contadorSaboresReales = 0;
+        
+        seleccionados.forEach(sabor => {
+            if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
+                precioTotal += 1000; 
+            } else {
+                contadorSaboresReales++; 
             }
         });
-
-        // AHORA: Máximo 2500ms (2.5 segundos) de duración total
-        if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
-            animacionId = requestAnimationFrame(animar);
-        } else {
-            // Eliminar el canvas al terminar la animación
-            cancelAnimationFrame(animacionId);
-            canvas.remove();
+        
+        let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
+        
+        if (resumen) {
+            resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
         }
     }
-
-    animacionId = requestAnimationFrame(animar);
-}
-
- function actualizarInfo() {
-    reproducirClick();
-    const tamano = document.querySelector('input[name="tamano"]:checked');
-    const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-    const resumen = document.getElementById('resumen-seleccion');
-    
-    const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-    const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
-
-    if (!tamano) {
-        if (resumen) resumen.innerText = "Primero elegí un tamaño";
-        if (cartelFlotante) cartelFlotante.style.display = "none"; // Oculto si no hay tamaño
-        return;
-    }
-    
-    let precioTotal = 0;
-    let mensajeFlotante = "";
-
-    if (tamano.value.includes("1 KG") && !tamano.value.includes("1/2")) {
-        precioTotal = 15000;
-        mensajeFlotante = "✔️ 1 KG seleccionado (Elegí  4 sabores)";
-    } else if (tamano.value.includes("1/2 + 1/4 KG")) {
-        precioTotal = 10000;
-        mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
-    } else if (tamano.value.includes("1/2 KG")) {
-        precioTotal = 8000;
-        mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
-    } else if (tamano.value.includes("1/4 KG")) {
-        precioTotal = 4000;
-        mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
-    }
-
-    // Actualizar texto y MOSTRAR el cartel flotante únicamente ahora que eligió un tamaño
-    if (cartelFlotante && textoTamanoFlotante) {
-        textoTamanoFlotante.innerText = mensajeFlotante;
-        cartelFlotante.style.display = "block"; 
-    }
-
-    let contadorSaboresReales = 0;
-    
-    seleccionados.forEach(sabor => {
-        if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
-            precioTotal += 1000; 
-        } else {
-            contadorSaboresReales++; 
-        }
-    });
-    
-    let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
-    
-    if (resumen) {
-        resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
-    }
-}
 
     function copiarAlias() {
         const alias = "helados.mix";
@@ -739,18 +748,17 @@
     }
 
     window.onload = cargarSabores;
+
     window.addEventListener("scroll", function() {
-    const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-    const tamano = document.querySelector('input[name="tamano"]:checked');
-    
-    // Si el usuario vuelve a la parte superior de la pantalla (menos de 200px de scroll)
-    if (window.scrollY < 400) {
-        if (cartelFlotante) cartelFlotante.style.display = "none";
-    } else {
-        // Si bajó y ya tiene un tamaño seleccionado, vuelve a mostrar el cartel
-        if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
-    }
-});
+        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        
+        if (window.scrollY < 400) {
+            if (cartelFlotante) cartelFlotante.style.display = "none";
+        } else {
+            if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
+        }
+    });
 </script>
 </body>
 </html>
