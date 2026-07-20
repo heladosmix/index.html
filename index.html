@@ -20,8 +20,8 @@
             --primario: #FF477E;          /* Rosa Frutilla / Frambuesa */
             --primario-hover: #E63946;    /* Rosa Intenso */
             --secundario: #FFF9F5;        /* Fondo Crema Suave */
-            --texto: #2D3142;             /* Gris Oscuro / Marrón profundo */
-            --destacado: #00B894;         /* Verde Menta Fresco */
+            --texto: #2D3142;              /* Gris Oscuro / Marrón profundo */
+            --destacado: #00B894;          /* Verde Menta Fresco */
             --whatsapp: #25d366;
             --mp-azul: #009EE3;
             --mp-azul-oscuro: #007EB5;
@@ -541,7 +541,7 @@
         let contadorSaboresReales = 0;
         
         seleccionados.forEach(sabor => {
-            if (sabor.value.includes("Conos Comunes") || sabor.value.includes("Conos Dulces")) {
+            if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
                 precioTotal += 1000; 
             } else {
                 contadorSaboresReales++; 
@@ -611,7 +611,7 @@
         let listaConos = "";
 
         seleccionados.forEach(s => {
-            if (s.value.includes("Conos Comunes") || s.value.includes("Conos Dulces")) {
+            if (s.value.toLowerCase().includes("cono") || s.value.toLowerCase().includes("adicional")) {
                 granTotal += 1000; 
                 listaConos += `🍦 *${s.value}*%0A`; 
             } else {
