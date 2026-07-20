@@ -473,11 +473,11 @@
         }
     }
 
-   function lanzarBurbujasBienvenida() {
+  function lanzarBurbujasBienvenida() {
     // 1. Reproducir sonido suave de bienvenida (burbuja/pop)
-    const sonidoBienvenida = document.getElementById("sonidoSilbato"); // o el nuevo ID que le pongas
+    const sonidoBienvenida = document.getElementById("sonidoSilbato");
     if (sonidoBienvenida) {
-        sonidoBienvenida.volume = 0.25; // Volumen suave (25%)
+        sonidoBienvenida.volume = 0.25;
         sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
     }
 
@@ -489,7 +489,7 @@
     canvas.style.left = "0";
     canvas.style.width = "100vw";
     canvas.style.height = "100vh";
-    canvas.style.pointerEvents = "none"; // Para que el cliente pueda hacer click abajo sin problemas
+    canvas.style.pointerEvents = "none";
     canvas.style.zIndex = "9999";
     document.body.appendChild(canvas);
 
@@ -497,17 +497,17 @@
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    // Crear array de burbujas con tamaños y colores variados
+    // Crear array de burbujas
     const burbujas = [];
-    const cantidad = 35; // Cantidad de burbujas
+    const cantidad = 35;
 
     for (let i = 0; i < cantidad; i++) {
         burbujas.push({
             x: Math.random() * width,
-            y: height + Math.random() * 100 + 20, // Empiezan debajo de la pantalla
-            radio: Math.random() * 12 + 8, // Tamaño entre 8px y 20px
-            velocidadY: Math.random() * 2 + 1.5, // Velocidad de subida
-            oscilacion: Math.random() * 0.05, // Balanceo horizontal
+            y: height + Math.random() * 30 + 5, // AHORA: Empiezan bien pegadas al borde de abajo
+            radio: Math.random() * 12 + 8,
+            velocidadY: Math.random() * 3 + 4.5, // AHORA: Suben más del doble de rápido (4.5 a 7.5 px/frame)
+            oscilacion: Math.random() * 0.05,
             angulo: Math.random() * Math.PI * 2,
             opacidad: Math.random() * 0.5 + 0.4
         });
@@ -524,7 +524,7 @@
         burbujas.forEach(b => {
             b.y -= b.velocidadY;
             b.angulo += b.oscilacion;
-            b.x += Math.sin(b.angulo) * 0.8; // Movimiento suave hacia los lados
+            b.x += Math.sin(b.angulo) * 0.8;
 
             if (b.y + b.radio > 0) {
                 burbujasVisibles++;
@@ -532,8 +532,8 @@
                 // Dibujar el cuerpo de la burbuja
                 ctx.beginPath();
                 ctx.arc(b.x, b.y, b.radio, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(0, 180, 216, ${b.opacidad * 0.25})`; // Celeste pastel transparente
-                ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacidad * 0.8})`; // Borde blanco brillante
+                ctx.fillStyle = `rgba(0, 180, 216, ${b.opacidad * 0.25})`;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacidad * 0.8})`;
                 ctx.lineWidth = 1.5;
                 ctx.fill();
                 ctx.stroke();
@@ -546,8 +546,8 @@
             }
         });
 
-        // Continuar la animación mientras queden burbujas en pantalla
-        if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 6000) {
+        // AHORA: Máximo 2500ms (2.5 segundos) de duración total
+        if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
             animacionId = requestAnimationFrame(animar);
         } else {
             // Eliminar el canvas al terminar la animación
@@ -556,7 +556,7 @@
         }
     }
 
-    requestAnimationFrame(animar);
+    animacionId = requestAnimationFrame(animar);
 }
 
     function actualizarInfo() {
