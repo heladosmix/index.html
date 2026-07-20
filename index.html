@@ -314,6 +314,36 @@
             display: inline-block;
             margin-left: 5px;
         }
+        
+      .cartel-flotante-top {
+    position: fixed !important;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    
+    color: #ffffff;
+    text-align: center;
+    padding: 8px 18px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    font-weight: bold;
+    font-size: 13px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    
+    width: auto;
+    max-width: 90vw;
+    pointer-events: none;
+    
+    /* Oculto por defecto */
+    display: none; 
+    transition: opacity 0.3s ease;
+}
     </style>
 </head>
 
@@ -410,6 +440,10 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix">
             <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">heladosmix.github.io</p>
         </div>
+        <!-- Cartel flotante superior fijo -->
+<div id="cartelTamanoFlotante" class="cartel-flotante-top">
+    <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
+</div>
 
     </div>
 
@@ -559,58 +593,60 @@
     animacionId = requestAnimationFrame(animar);
 }
 
-    function actualizarInfo() {
-        reproducirClick();
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-        const resumen = document.getElementById('resumen-seleccion');
-        
-        const divSugerencia = document.getElementById('sugerenciaSabores');
-        const textoSugerencia = document.getElementById('textoSugerencia');
+ function actualizarInfo() {
+    reproducirClick();
+    const tamano = document.querySelector('input[name="tamano"]:checked');
+    const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+    const resumen = document.getElementById('resumen-seleccion');
+    
+    const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+    const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
 
-        if (!tamano) {
-            resumen.innerText = "Primero elegí un tamaño";
-            divSugerencia.style.display = "none";
-            return;
+    if (!tamano) {
+        if (resumen) resumen.innerText = "Primero elegí un tamaño";
+        if (cartelFlotante) cartelFlotante.style.display = "none"; // Oculto si no hay tamaño
+        return;
+    }
+    
+    let precioTotal = 0;
+    let mensajeFlotante = "";
+
+    if (tamano.value.includes("1 KG") && !tamano.value.includes("1/2")) {
+        precioTotal = 15000;
+        mensajeFlotante = "📌 1 KG seleccionado (Elegí hasta 4 sabores)";
+    } else if (tamano.value.includes("1/2 + 1/4 KG")) {
+        precioTotal = 10000;
+        mensajeFlotante = "📌 1/2 + 1/4 KG seleccionado (Elegí hasta 5 sabores)";
+    } else if (tamano.value.includes("1/2 KG")) {
+        precioTotal = 8000;
+        mensajeFlotante = "📌 1/2 KG seleccionado (Elegí hasta 3 sabores)";
+    } else if (tamano.value.includes("1/4 KG")) {
+        precioTotal = 4000;
+        mensajeFlotante = "📌 1/4 KG seleccionado (Elegí hasta 2 sabores)";
+    }
+
+    // Actualizar texto y MOSTRAR el cartel flotante únicamente ahora que eligió un tamaño
+    if (cartelFlotante && textoTamanoFlotante) {
+        textoTamanoFlotante.innerText = mensajeFlotante;
+        cartelFlotante.style.display = "block"; 
+    }
+
+    let contadorSaboresReales = 0;
+    
+    seleccionados.forEach(sabor => {
+        if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
+            precioTotal += 1000; 
+        } else {
+            contadorSaboresReales++; 
         }
-        
-        let precioTotal = 0;
-        let cartelSabores = "";
-
-        if (tamano.value.includes("1 KG")) {
-            precioTotal = 15000;
-            cartelSabores = "1 KG selecciona 4 sabores";
-        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
-            precioTotal = 10000;
-            cartelSabores = "1/2 + 1/4 selecciona 5 sabores";
-        } else if (tamano.value.includes("1/2 KG")) {
-            precioTotal = 8000;
-            cartelSabores = "1/2 KG selecciona 3 sabores";
-        } else if (tamano.value.includes("1/4 KG")) {
-            precioTotal = 4000;
-            cartelSabores = "1/4 KG selecciona 2 sabores";
-        }
-
-        // Mostrar cartel de sugerencia
-        if (cartelSabores !== "") {
-            textoSugerencia.innerText = cartelSabores;
-            divSugerencia.style.display = "block";
-        }
-
-        let contadorSaboresReales = 0;
-        
-        seleccionados.forEach(sabor => {
-            if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
-                precioTotal += 1000; 
-            } else {
-                contadorSaboresReales++; 
-            }
-        });
-        
-        let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
-        
+    });
+    
+    let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
+    
+    if (resumen) {
         resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
     }
+}
 
     function copiarAlias() {
         const alias = "helados.mix";
@@ -700,6 +736,18 @@
     }
 
     window.onload = cargarSabores;
+    window.addEventListener("scroll", function() {
+    const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+    const tamano = document.querySelector('input[name="tamano"]:checked');
+    
+    // Si el usuario vuelve a la parte superior de la pantalla (menos de 200px de scroll)
+    if (window.scrollY < 400) {
+        if (cartelFlotante) cartelFlotante.style.display = "none";
+    } else {
+        // Si bajó y ya tiene un tamaño seleccionado, vuelve a mostrar el cartel
+        if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
+    }
+});
 </script>
 </body>
 </html>
