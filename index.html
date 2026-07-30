@@ -8,11 +8,11 @@
 
     <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
     <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
-    <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
+    <meta property="og:image" content="https://heladosmix.github.io/logo.jpg?v=500">
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
-    <link rel="icon" href="https://heladosmix.github.io/index.html/logo.jpg" type="image/jpeg">
-    <link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
+    <link rel="icon" href="https://heladosmix.github.io/logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="https://heladosmix.github.io/logo.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -315,39 +315,31 @@
             margin-left: 5px;
         }
         
-    .cartel-flotante-top {
-    position: fixed !important;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    
-    /* Ancho exacto que usa el botón de WhatsApp */
-    width: calc(100% - 30px);
-    max-width: 480px; /* Mismo límite que tu botón verde */
-    box-sizing: border-box;
-    
-    /* Colores y estilo visual */
-    background:rgba(238, 245, 39);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: #4a2e18;
-    
-    text-align: center;
-    padding: 14px 15px; /* Más espacio vertical para que tenga cuerpo */
-    border-radius: 35px; /* Misma curva que el botón verde */
-    border: 2px solid rgba(230, 74, 115, 0.4);
-    
-    /* Tipografía más grande y clara */
-    font-weight: bold;
-    font-size: 1.05rem; 
-    line-height: 1.3;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
-    
-    pointer-events: none;
-    display: none; 
-    transition: opacity 0.3s ease;
-}
+        .cartel-flotante-top {
+            position: fixed !important;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: calc(100% - 30px);
+            max-width: 480px;
+            box-sizing: border-box;
+            background: rgba(238, 245, 39);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #4a2e18;
+            text-align: center;
+            padding: 14px 15px;
+            border-radius: 35px;
+            border: 2px solid rgba(230, 74, 115, 0.4);
+            font-weight: bold;
+            font-size: 1.05rem; 
+            line-height: 1.3;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+            pointer-events: none;
+            display: none; 
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
 
@@ -356,12 +348,13 @@
     <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
     <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
     <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
-    <!-- Agrega esta línea justo debajo de la de click.mp3 -->
-<audio id="sonidoSabor" src="sabor.mp3" preload="auto"></audio>
-<!-- Cartel flotante superior fijo -->
-<div id="cartelTamanoFlotante" class="cartel-flotante-top">
-    <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
-</div>
+    <audio id="sonidoSabor" src="sabor.mp3" preload="auto"></audio>
+
+    <!-- Cartel flotante superior fijo -->
+    <div id="cartelTamanoFlotante" class="cartel-flotante-top">
+        <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
+    </div>
+
     <header>
         <span class="brand-title">🍦 Helados.mix</span>
         <p>Catálogo de Pedidos Online 🍓✨</p>
@@ -391,8 +384,8 @@
                 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
-                    <input type="radio" name="tamano" value="1 KG ($15.000) 4 sabores" onchange="actualizarInfo()">
-                    <span><strong>1 KG (4 sabores)</strong> <span class="precio-tag">$15.000</span></span>
+                    <input type="radio" name="tamano" value="1 KG ($16.000) 5 sabores" onchange="actualizarInfo()">
+                    <span><strong>1 KG (5 sabores)</strong> <span class="precio-tag">$16.000</span></span>
                 </label>
 
                 <label class="radio-tamano">
@@ -449,10 +442,8 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix">
             <p style="font-size: 0.8rem; margin-top: 5px; color: #888;">heladosmix.github.io</p>
         </div>
-       
+        
     </div>
- 
-
 
 <script>
     const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
@@ -622,12 +613,12 @@
         let precioTotal = 0;
         let mensajeFlotante = "";
 
-        if (tamano.value.includes("1 KG") && !tamano.value.includes("1/2")) {
-            precioTotal = 15000;
-            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 4 sabores)";
-        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
+        if (tamano.value.includes("1/2 + 1/4 KG")) {
             precioTotal = 10000;
             mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
+        } else if (tamano.value.includes("1 KG")) {
+            precioTotal = 16000;
+            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
         } else if (tamano.value.includes("1/2 KG")) {
             precioTotal = 8000;
             mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
@@ -709,10 +700,15 @@
         }
 
         let granTotal = 0;
-        if (tamano.value.includes("1 KG")) granTotal = 15000;
-        else if (tamano.value.includes("1/2 + 1/4 KG")) granTotal = 10000;
-        else if (tamano.value.includes("1/2 KG")) granTotal = 8000;
-        else if (tamano.value.includes("1/4 KG")) granTotal = 4000;
+        if (tamano.value.includes("1/2 + 1/4 KG")) {
+            granTotal = 10000;
+        } else if (tamano.value.includes("1 KG")) {
+            granTotal = 16000;
+        } else if (tamano.value.includes("1/2 KG")) {
+            granTotal = 8000;
+        } else if (tamano.value.includes("1/4 KG")) {
+            granTotal = 4000;
+        }
 
         let listaSabores = "";
         let listaConos = "";
