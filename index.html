@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍦 Helados.mix - Pedidos</title>
 
@@ -384,20 +384,20 @@
                 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1 KG" class="pote-img" style="width: 100px;">
-                    <input type="radio" name="tamano" value="1 KG ($16.000) 5 sabores" onchange="actualizarInfo()">
-                    <span><strong>1 KG (5 sabores)</strong> <span class="precio-tag">$16.000</span></span>
+                    <input type="radio" name="tamano" value="1 KG" onchange="actualizarInfo()">
+                    <span><strong>1 KG (5 sabores)</strong> <span class="precio-tag" id="tag-1KG">$ --</span></span>
                 </label>
 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/2 KG" class="pote-img" style="width: 85px;">
-                    <input type="radio" name="tamano" value="1/2 KG ($8.000) 3 sabores" onchange="actualizarInfo()">
-                    <span><strong>1/2 KG (3 sabores)</strong> <span class="precio-tag">$8.000</span></span>
+                    <input type="radio" name="tamano" value="1/2 KG" onchange="actualizarInfo()">
+                    <span><strong>1/2 KG (3 sabores)</strong> <span class="precio-tag" id="tag-12KG">$ --</span></span>
                 </label>
 
                 <label class="radio-tamano">
                     <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" class="pote-img" style="width: 70px;">
-                    <input type="radio" name="tamano" value="1/4 KG ($4.000) 2 sabores" onchange="actualizarInfo()">
-                    <span><strong>1/4 KG (2 sabores)</strong> <span class="precio-tag">$4.000</span></span>
+                    <input type="radio" name="tamano" value="1/4 KG" onchange="actualizarInfo()">
+                    <span><strong>1/4 KG (2 sabores)</strong> <span class="precio-tag" id="tag-14KG">$ --</span></span>
                 </label>
 
                 <label class="radio-tamano">
@@ -406,8 +406,8 @@
                         <span style="font-size: 1.8rem; font-weight: bold; color: var(--primario); line-height: 1; user-select: none;">+</span>
                         <img src="https://cdn-icons-png.flaticon.com/512/938/938063.png" alt="1/4 KG" style="width: 55px; height: auto;">
                     </div>
-                    <input type="radio" name="tamano" value="1/2 + 1/4 KG ($10.000) 5 sabores" onchange="actualizarInfo()">
-                    <span><strong>1/2 + 1/4 KG (5 sabores)</strong> <span class="precio-tag">$10.000</span></span>
+                    <input type="radio" name="tamano" value="1/2 + 1/4 KG" onchange="actualizarInfo()">
+                    <span><strong>1/2 + 1/4 KG (5 sabores)</strong> <span class="precio-tag" id="tag-1214KG">$ --</span></span>
                 </label>
 
                 <!-- Cartel de Sugerencia -->
@@ -448,6 +448,8 @@
 <script>
     const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
 
+    let preciosPlanilla = {};
+
     function reproducirClick() {
         const click = document.getElementById("sonidoClick");
         if (click) {
@@ -466,7 +468,7 @@
 
     async function cargarSabores() {
         try {
-            const respuesta = await fetch(urlPlanilla + '&version=' + Math.random());
+            const respuesta = await fetch(urlPlanilla + '&v=' + new Date().getTime());
             const texto = await respuesta.text();
             
             const filas = texto.split(/\r?\n/);
@@ -481,6 +483,7 @@
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
+                // 1. Procesar Sabores (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
@@ -496,19 +499,51 @@
                         }
                     }
                 }
+
+                // 2. Procesar Precios y Adicionales desde Excel (Columnas E, F, G)
+                if (columnas.length >= 7) {
+                    let prodNombre = columnas[4];
+                    let prodPrecio = parseFloat(columnas[5]);
+                    let prodEstado = columnas[6] ? columnas[6].toLowerCase() : "";
+
+                    if (prodEstado === "si" && prodNombre && !isNaN(prodPrecio)) {
+                        preciosPlanilla[prodNombre] = prodPrecio;
+                    }
+                }
             }
 
             if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
             if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
 
+            actualizarEtiquetasPreciosHTML();
             lanzarBurbujasBienvenida();
 
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error al cargar la planilla:", error);
             if(document.getElementById('lista-crema')) {
-                document.getElementById('lista-crema').innerHTML = "Error al conectar. Probá recargando la página.";
+                document.getElementById('lista-crema').innerHTML = "<p style='color:red;'>Conectando con la lista...</p>";
             }
         }
+    }
+
+    function actualizarEtiquetasPreciosHTML() {
+        const tag1 = document.getElementById("tag-1KG");
+        const tag12 = document.getElementById("tag-12KG");
+        const tag14 = document.getElementById("tag-14KG");
+        const tag1214 = document.getElementById("tag-1214KG");
+
+        if (tag1) tag1.innerText = preciosPlanilla["1 KG"] ? `$${preciosPlanilla["1 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag12) tag12.innerText = preciosPlanilla["1/2 KG"] ? `$${preciosPlanilla["1/2 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag14) tag14.innerText = preciosPlanilla["1/4 KG"] ? `$${preciosPlanilla["1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag1214) tag1214.innerText = preciosPlanilla["1/2 + 1/4 KG"] ? `$${preciosPlanilla["1/2 + 1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+    }
+
+    function obtenerPrecioBase(tamanoValor) {
+        if (tamanoValor.includes("1/2 + 1/4 KG")) return preciosPlanilla["1/2 + 1/4 KG"] || 0;
+        if (tamanoValor.includes("1 KG")) return preciosPlanilla["1 KG"] || 0;
+        if (tamanoValor.includes("1/2 KG")) return preciosPlanilla["1/2 KG"] || 0;
+        if (tamanoValor.includes("1/4 KG")) return preciosPlanilla["1/4 KG"] || 0;
+        return 0;
     }
 
     function lanzarBurbujasBienvenida() {
@@ -610,20 +645,16 @@
             return;
         }
         
-        let precioTotal = 0;
+        let precioTotal = obtenerPrecioBase(tamano.value);
         let mensajeFlotante = "";
 
         if (tamano.value.includes("1/2 + 1/4 KG")) {
-            precioTotal = 10000;
             mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
         } else if (tamano.value.includes("1 KG")) {
-            precioTotal = 16000;
             mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
         } else if (tamano.value.includes("1/2 KG")) {
-            precioTotal = 8000;
             mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
         } else if (tamano.value.includes("1/4 KG")) {
-            precioTotal = 4000;
             mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
         }
 
@@ -637,7 +668,9 @@
         let contadorSaboresReales = 0;
         
         seleccionados.forEach(sabor => {
-            if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
+            if (preciosPlanilla[sabor.value]) {
+                precioTotal += preciosPlanilla[sabor.value];
+            } else if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
                 precioTotal += 1000; 
             } else {
                 contadorSaboresReales++; 
@@ -699,22 +732,15 @@
             return;
         }
 
-        let granTotal = 0;
-        if (tamano.value.includes("1/2 + 1/4 KG")) {
-            granTotal = 10000;
-        } else if (tamano.value.includes("1 KG")) {
-            granTotal = 16000;
-        } else if (tamano.value.includes("1/2 KG")) {
-            granTotal = 8000;
-        } else if (tamano.value.includes("1/4 KG")) {
-            granTotal = 4000;
-        }
-
+        let granTotal = obtenerPrecioBase(tamano.value);
         let listaSabores = "";
         let listaConos = "";
 
         seleccionados.forEach(s => {
-            if (s.value.toLowerCase().includes("cono") || s.value.toLowerCase().includes("adicional")) {
+            if (preciosPlanilla[s.value]) {
+                granTotal += preciosPlanilla[s.value];
+                listaConos += `🍦 *${s.value}*%0A`;
+            } else if (s.value.toLowerCase().includes("cono") || s.value.toLowerCase().includes("adicional")) {
                 granTotal += 1000; 
                 listaConos += `🍦 *${s.value}*%0A`; 
             } else {
@@ -722,7 +748,7 @@
             }
         });
 
-        let textoPedido = tamano.value;
+        let textoPedido = `${tamano.value} ($${obtenerPrecioBase(tamano.value).toLocaleString('es-AR')})`;
         if (textoPedido.includes("1/2 + 1/4")) {
             textoPedido = textoPedido.replace("1/2 + 1/4", "1/2 %E2%9E%95 1/4");
         }
