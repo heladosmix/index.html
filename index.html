@@ -379,6 +379,7 @@
         </div>
 
         <form id="pedidoForm">
+            <!-- 1. TAMAÑO -->
             <div class="categoria">
                 <h2>📏 1. Elegí el tamaño</h2>
                 
@@ -416,16 +417,31 @@
                 </div>
             </div>
 
+            <!-- 2. DIRECCIÓN -->
             <div class="categoria">
                 <h2>🏠 2. Dirección (Opcional)</h2>
                 <input type="text" id="direccion" class="input-direccion" placeholder="Calle y número (o retiro local)">
             </div>
 
+            <!-- 3. SALSAS Y ADEREZOS -->
+            <div class="categoria">
+                <h2>🍯 Salsas y Aderezos</h2>
+                <div id="lista-salsas">Cargando salsas...</div>
+            </div>
+
+            <!-- 4. CONOS Y ADICIONALES -->
+            <div class="categoria">
+                <h2>🍦 Conos y Adicionales</h2>
+                <div id="lista-conos">Cargando adicionales...</div>
+            </div>
+
+            <!-- 5. SABORES A LA CREMA -->
             <div class="categoria">
                 <h2>🍨 Sabores a la Crema</h2>
                 <div id="lista-crema">Cargando sabores...</div>
             </div>
 
+            <!-- 6. SABORES AL AGUA -->
             <div class="categoria">
                 <h2>🍋 Sabores al Agua</h2>
                 <div id="lista-agua">Cargando sabores...</div>
@@ -474,28 +490,40 @@
             const filas = texto.split(/\r?\n/);
             const contCrema = document.getElementById('lista-crema');
             const contAgua = document.getElementById('lista-agua');
+            const contSalsas = document.getElementById('lista-salsas');
+            const contConos = document.getElementById('lista-conos');
             
             if (contCrema) contCrema.innerHTML = "";
             if (contAgua) contAgua.innerHTML = "";
+            if (contSalsas) contSalsas.innerHTML = "";
+            if (contConos) contConos.innerHTML = "";
 
             for (let i = 1; i < filas.length; i++) {
                 if (!filas[i].trim()) continue;
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
-                // 1. Procesar Sabores (Columnas A, B, C)
+                // 1. Procesar Sabores, Salsas y Adicionales (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
                     let disponible = columnas[2].toLowerCase();
 
                     if (disponible === "si") {
-                        const htmlSabor = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
-                        
-                        if (category === "saboresCrema" && contCrema) {
-                            contCrema.innerHTML += htmlSabor;
+                        const htmlItem = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
+                        const nombreMinuscula = nombre.toLowerCase();
+
+                        // Clasificación según categoría o palabra clave
+                        if (category === "salsas" || nombreMinuscula.includes("salsa")) {
+                            if (contSalsas) contSalsas.innerHTML += htmlItem;
+                        } else if (category === "conos" || category === "adicionales" || nombreMinuscula.includes("cono") || nombreMinuscula.includes("cucurucho")) {
+                            if (contConos) contConos.innerHTML += htmlItem;
+                        } else if (category === "saboresCrema" && contCrema) {
+                            contCrema.innerHTML += htmlItem;
                         } else if (category === "saboresAgua" && contAgua) {
-                            contAgua.innerHTML += htmlSabor;
+                            contAgua.innerHTML += htmlItem;
+                        } else {
+                            if (contCrema) contCrema.innerHTML += htmlItem;
                         }
                     }
                 }
@@ -514,6 +542,8 @@
 
             if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
             if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
+            if (contSalsas && contSalsas.innerHTML === "") contSalsas.innerHTML = "<p>No hay salsas activas.</p>";
+            if (contConos && contConos.innerHTML === "") contConos.innerHTML = "<p>No hay conos ni adicionales activos.</p>";
 
             actualizarEtiquetasPreciosHTML();
             lanzarBurbujasBienvenida();
@@ -668,9 +698,10 @@
         let contadorSaboresReales = 0;
         
         seleccionados.forEach(sabor => {
+            const valLower = sabor.value.toLowerCase();
             if (preciosPlanilla[sabor.value]) {
                 precioTotal += preciosPlanilla[sabor.value];
-            } else if (sabor.value.toLowerCase().includes("cono") || sabor.value.toLowerCase().includes("adicional")) {
+            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("salsa")) {
                 precioTotal += 1000; 
             } else {
                 contadorSaboresReales++; 
@@ -734,14 +765,24 @@
 
         let granTotal = obtenerPrecioBase(tamano.value);
         let listaSabores = "";
+        let listaSalsas = "";
         let listaConos = "";
 
         seleccionados.forEach(s => {
+            const valLower = s.value.toLowerCase();
+            let costo = 0;
+
             if (preciosPlanilla[s.value]) {
-                granTotal += preciosPlanilla[s.value];
-                listaConos += `🍦 *${s.value}*%0A`;
-            } else if (s.value.toLowerCase().includes("cono") || s.value.toLowerCase().includes("adicional")) {
-                granTotal += 1000; 
+                costo = preciosPlanilla[s.value];
+            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("salsa")) {
+                costo = 1000; 
+            }
+
+            granTotal += costo;
+
+            if (valLower.includes("salsa")) {
+                listaSalsas += `🍯 *${s.value}*%0A`;
+            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("cucurucho")) {
                 listaConos += `🍦 *${s.value}*%0A`; 
             } else {
                 listaSabores += `✅ ${s.value}%0A`; 
@@ -759,6 +800,9 @@
         
         if (listaSabores !== "") {
             msj += `*Sabores:*%0A${listaSabores}%0A`;
+        }
+        if (listaSalsas !== "") {
+            msj += `*Salsas:*%0A${listaSalsas}%0A`;
         }
         if (listaConos !== "") {
             msj += `*Adicionales:*%0A${listaConos}%0A`;
