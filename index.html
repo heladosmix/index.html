@@ -513,10 +513,10 @@
                         const htmlItem = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
                         const nombreMinuscula = nombre.toLowerCase();
 
-                        // Clasificación según categoría o palabra clave
+                        // Clasificación según categoría o palabra clave del Excel
                         if (category === "salsas" || nombreMinuscula.includes("salsa")) {
                             if (contSalsas) contSalsas.innerHTML += htmlItem;
-                        } else if (category === "conos" || category === "adicionales" || nombreMinuscula.includes("cono") || nombreMinuscula.includes("cucurucho")) {
+                        } else if (category === "conos" || category === "adicional" || category === "adicionales" || nombreMinuscula.includes("cono") || nombreMinuscula.includes("cucurucho") || nombreMinuscula.includes("pasas")) {
                             if (contConos) contConos.innerHTML += htmlItem;
                         } else if (category === "saboresCrema" && contCrema) {
                             contCrema.innerHTML += htmlItem;
@@ -528,7 +528,7 @@
                     }
                 }
 
-                // 2. Procesar Precios y Adicionales desde Excel (Columnas E, F, G)
+                // 2. Procesar Precios y Adicionales con costo desde Excel (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
@@ -699,11 +699,14 @@
         
         seleccionados.forEach(sabor => {
             const valLower = sabor.value.toLowerCase();
+            
+            // Solo se suma costo si existe un precio explícito definido en el Excel (p. ej., Conos)
             if (preciosPlanilla[sabor.value]) {
                 precioTotal += preciosPlanilla[sabor.value];
-            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("salsa")) {
-                precioTotal += 1000; 
-            } else {
+            }
+            
+            // Contamos únicamente como sabores de helado lo que NO sea salsa ni adicional
+            if (!valLower.includes("salsa") && !valLower.includes("cono") && !valLower.includes("adicional") && !valLower.includes("pasas")) {
                 contadorSaboresReales++; 
             }
         });
@@ -766,24 +769,26 @@
         let granTotal = obtenerPrecioBase(tamano.value);
         let listaSabores = "";
         let listaSalsas = "";
-        let listaConos = "";
+        let listaAdicionales = "";
 
         seleccionados.forEach(s => {
             const valLower = s.value.toLowerCase();
             let costo = 0;
 
+            // Sumar precio solo si se definió en la tabla de precios (columna E y F del Excel)
             if (preciosPlanilla[s.value]) {
                 costo = preciosPlanilla[s.value];
-            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("salsa")) {
-                costo = 1000; 
             }
 
             granTotal += costo;
 
+            // Clasificación limpia para el mensaje de WhatsApp
             if (valLower.includes("salsa")) {
                 listaSalsas += `🍯 *${s.value}*%0A`;
             } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("cucurucho")) {
-                listaConos += `🍦 *${s.value}*%0A`; 
+                listaAdicionales += `🍦 *${s.value}*%0A`; 
+            } else if (valLower.includes("pasas")) {
+                listaAdicionales += `🍇 *${s.value}*%0A`;
             } else {
                 listaSabores += `✅ ${s.value}%0A`; 
             }
@@ -804,8 +809,8 @@
         if (listaSalsas !== "") {
             msj += `*Salsas:*%0A${listaSalsas}%0A`;
         }
-        if (listaConos !== "") {
-            msj += `*Adicionales:*%0A${listaConos}%0A`;
+        if (listaAdicionales !== "") {
+            msj += `*Adicionales:*%0A${listaAdicionales}%0A`;
         }
         
         msj += `*Total a Pagar: $${granTotal.toLocaleString('es-AR')}*`;
