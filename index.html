@@ -503,17 +503,16 @@
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
-                // 1. Procesar Sabores, Salsas y Adicionales (Columnas A, B, C)
+                // 1. Procesar Sabores de la izquierda (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
                     let disponible = columnas[2].toLowerCase();
 
-                    if (disponible === "si") {
+                    if (disponible === "si" && nombre) {
                         const htmlItem = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
                         const nombreMinuscula = nombre.toLowerCase();
 
-                        // Clasificación según categoría o palabra clave del Excel
                         if (category === "salsas" || nombreMinuscula.includes("salsa")) {
                             if (contSalsas) contSalsas.innerHTML += htmlItem;
                         } else if (category === "conos" || category === "adicional" || category === "adicionales" || nombreMinuscula.includes("cono") || nombreMinuscula.includes("cucurucho") || nombreMinuscula.includes("pasas")) {
@@ -528,14 +527,23 @@
                     }
                 }
 
-                // 2. Procesar Precios y Adicionales con costo desde Excel (Columnas E, F, G)
+                // 2. Procesar Precios y Salsas de la derecha (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
                     let prodEstado = columnas[6] ? columnas[6].toLowerCase() : "";
 
-                    if (prodEstado === "si" && prodNombre && !isNaN(prodPrecio)) {
-                        preciosPlanilla[prodNombre] = prodPrecio;
+                    if (prodEstado === "si" && prodNombre) {
+                        // Guardar precio si tiene un valor numérico (ej: Kilos y Conos)
+                        if (!isNaN(prodPrecio)) {
+                            preciosPlanilla[prodNombre] = prodPrecio;
+                        }
+
+                        // Si es una Salsa activa cargada en la columna E, dibujarla en la lista de salsas sin costo
+                        if (prodNombre.toLowerCase().includes("salsa")) {
+                            const htmlSalsa = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contSalsas) contSalsas.innerHTML += htmlSalsa;
+                        }
                     }
                 }
             }
@@ -700,12 +708,10 @@
         seleccionados.forEach(sabor => {
             const valLower = sabor.value.toLowerCase();
             
-            // Solo se suma costo si existe un precio explícito definido en el Excel (p. ej., Conos)
             if (preciosPlanilla[sabor.value]) {
                 precioTotal += preciosPlanilla[sabor.value];
             }
             
-            // Contamos únicamente como sabores de helado lo que NO sea salsa ni adicional
             if (!valLower.includes("salsa") && !valLower.includes("cono") && !valLower.includes("adicional") && !valLower.includes("pasas")) {
                 contadorSaboresReales++; 
             }
@@ -775,14 +781,12 @@
             const valLower = s.value.toLowerCase();
             let costo = 0;
 
-            // Sumar precio solo si se definió en la tabla de precios (columna E y F del Excel)
             if (preciosPlanilla[s.value]) {
                 costo = preciosPlanilla[s.value];
             }
 
             granTotal += costo;
 
-            // Clasificación limpia para el mensaje de WhatsApp
             if (valLower.includes("salsa")) {
                 listaSalsas += `🍯 *${s.value}*%0A`;
             } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("cucurucho")) {
