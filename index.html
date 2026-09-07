@@ -527,7 +527,7 @@
                     }
                 }
 
-                // 2. Procesar Precios y Salsas de la derecha (Columnas E, F, G)
+                // 2. Procesar Precios, Conos y Salsas de la derecha (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
@@ -539,10 +539,17 @@
                             preciosPlanilla[prodNombre] = prodPrecio;
                         }
 
-                        // Si es una Salsa activa cargada en la columna E, dibujarla en la lista de salsas sin costo
-                        if (prodNombre.toLowerCase().includes("salsa")) {
+                        const prodMinuscula = prodNombre.toLowerCase();
+
+                        // Dibujar en "Salsas y Aderezo" si es una salsa
+                        if (prodMinuscula.includes("salsa")) {
                             const htmlSalsa = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
                             if (contSalsas) contSalsas.innerHTML += htmlSalsa;
+                        }
+                        // Dibujar en "Conos y Adicionales" si es un cono o adicional
+                        else if (prodMinuscula.includes("cono") || prodMinuscula.includes("cucurucho") || prodMinuscula.includes("adicional")) {
+                            const htmlCono = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contConos) contConos.innerHTML += htmlCono;
                         }
                     }
                 }
