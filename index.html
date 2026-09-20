@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍦 Helados.mix - Pedidos</title>
-    <meta name="copyright" content="© 2026 Helados.mix - Todos los derechos reservados.">
-    <meta name="author" content="Helados.mix">
+
     <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
     <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
     <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
@@ -504,7 +503,7 @@
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
-                // 1. Procesar Sabores/Productos (Columnas A, B, C)
+                // 1. Procesar Sabores de la izquierda (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
@@ -528,14 +527,30 @@
                     }
                 }
 
-                // 2. Procesar Precios (Columnas E, F, G)
+                // 2. Procesar Precios, Conos y Salsas de la derecha (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
                     let prodEstado = columnas[6] ? columnas[6].toLowerCase() : "";
 
-                    if (prodEstado === "si" && prodNombre && !isNaN(prodPrecio)) {
-                        preciosPlanilla[prodNombre] = prodPrecio;
+                    if (prodEstado === "si" && prodNombre) {
+                        // Guardar precio si tiene un valor numérico (ej: Kilos y Conos)
+                        if (!isNaN(prodPrecio)) {
+                            preciosPlanilla[prodNombre] = prodPrecio;
+                        }
+
+                        const prodMinuscula = prodNombre.toLowerCase();
+
+                        // Dibujar en "Salsas y Aderezo" si es una salsa
+                        if (prodMinuscula.includes("salsa")) {
+                            const htmlSalsa = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contSalsas) contSalsas.innerHTML += htmlSalsa;
+                        }
+                        // Dibujar en "Conos y Adicionales" si es un cono o adicional
+                        else if (prodMinuscula.includes("cono") || prodMinuscula.includes("cucurucho") || prodMinuscula.includes("adicional")) {
+                            const htmlCono = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contConos) contConos.innerHTML += htmlCono;
+                        }
                     }
                 }
             }
@@ -546,7 +561,7 @@
             if (contConos && contConos.innerHTML === "") contConos.innerHTML = "<p>No hay conos ni adicionales activos.</p>";
 
             actualizarEtiquetasPreciosHTML();
-            lanzarPrimaveraBienvenida();
+            lanzarBurbujasBienvenida();
 
         } catch (error) {
             console.error("Error al cargar la planilla:", error);
@@ -576,89 +591,120 @@
         return 0;
     }
 
-    function lanzarPrimaveraBienvenida() {
-        const sonidoBienvenida = document.getElementById("sonidoSilbato");
-        if (sonidoBienvenida) {
-            sonidoBienvenida.volume = 0.25;
-            sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
-        }
-
-        const canvas = document.createElement("canvas");
-        canvas.id = "canvasPrimavera";
-        canvas.style.position = "fixed";
-        canvas.style.top = "0";
-        canvas.style.left = "0";
-        canvas.style.width = "100vw";
-        canvas.style.height = "100vh";
-        canvas.style.pointerEvents = "none";
-        canvas.style.zIndex = "9999";
-        document.body.appendChild(canvas);
-
-        const ctx = canvas.getContext("2d");
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-
-        const elementosPrimavera = ["🦋", "🌸", "🌷", "🌻", "🌺", "🦋"];
-        const elementos = [];
-        const cantidad = 35;
-
-        for (let i = 0; i < cantidad; i++) {
-            elementos.push({
-                x: Math.random() * width,
-                y: height + Math.random() * 40 + 10,
-                tamano: Math.random() * 16 + 18,
-                velocidadY: Math.random() * 3 + 3.5,
-                oscilacion: Math.random() * 0.08 + 0.02,
-                angulo: Math.random() * Math.PI * 2,
-                opacidad: Math.random() * 0.4 + 0.6,
-                simbolo: elementosPrimavera[Math.floor(Math.random() * elementosPrimavera.length)],
-                aleteo: Math.random() * Math.PI
-            });
-        }
-
-        let animacionId;
-        let tiempoInicio = performance.now();
-
-        function animar(tiempoActual) {
-            ctx.clearRect(0, 0, width, height);
-
-            let elementosVisibles = 0;
-
-            elementos.forEach(e => {
-                e.y -= e.velocidadY;
-                e.angulo += e.oscilacion;
-                e.aleteo += 0.2;
-                e.x += Math.sin(e.angulo) * 1.5;
-
-                if (e.y + e.tamano > 0) {
-                    elementosVisibles++;
-
-                    ctx.save();
-                    ctx.translate(e.x, e.y);
-                    
-                    const rotacion = Math.sin(e.aleteo) * 0.2;
-                    ctx.rotate(rotacion);
-
-                    ctx.globalAlpha = e.opacidad;
-                    ctx.font = `${e.tamano}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-                    ctx.fillText(e.simbolo, 0, 0);
-
-                    ctx.restore();
-                }
-            });
-
-            if (elementosVisibles > 0 && (tiempoActual - tiempoInicio) < 2800) {
-                animacionId = requestAnimationFrame(animar);
-            } else {
-                cancelAnimationFrame(animacionId);
-                canvas.remove();
-            }
-        }
-
-        animacionId = requestAnimationFrame(animar);
+   function lanzarBurbujasBienvenida() {
+    const sonidoBienvenida = document.getElementById("sonidoSilbato");
+    if (sonidoBienvenida) {
+        sonidoBienvenida.volume = 0.25;
+        sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
     }
+
+    const canvas = document.createElement("canvas");
+    canvas.id = "canvasBurbujas";
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "9999";
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const burbujas = [];
+    const cantidad = 35;
+
+    // Se mantiene exactamente la generación del trayecto y propiedades
+    for (let i = 0; i < cantidad; i++) {
+        burbujas.push({
+            x: Math.random() * width,
+            y: height + Math.random() * 30 + 5,
+            radio: Math.random() * 12 + 8,
+            velocidadY: Math.random() * 3 + 4.5,
+            oscilacion: Math.random() * 0.05,
+            angulo: Math.random() * Math.PI * 2,
+            opacidad: Math.random() * 0.5 + 0.4,
+            faseAleteo: Math.random() * Math.PI * 2
+        });
+    }
+
+    let animacionId;
+    let tiempoInicio = performance.now();
+
+    // Función auxiliar para renderizar mariposas en Canvas 2D
+    function dibujarMariposa(ctx, x, y, tamano, opacidad, aleteo) {
+        ctx.save();
+        ctx.translate(x, y);
+        
+        const escalaAleteo = Math.abs(Math.sin(aleteo)); // Simula el batir de alas
+        
+        ctx.fillStyle = `rgba(0, 180, 216, ${opacidad * 0.8})`;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${opacidad})`;
+        ctx.lineWidth = 1.2;
+
+        // Ala Superior Izquierda
+        ctx.beginPath();
+        ctx.ellipse(-tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Ala Superior Derecha
+        ctx.beginPath();
+        ctx.ellipse(tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Ala Inferior Izquierda
+        ctx.beginPath();
+        ctx.ellipse(-tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Ala Inferior Derecha
+        ctx.beginPath();
+        ctx.ellipse(tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Cuerpo central
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacidad})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, tamano * 0.15, tamano * 0.6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    function animar(tiempoActual) {
+        ctx.clearRect(0, 0, width, height);
+
+        let burbujasVisibles = 0;
+
+        burbujas.forEach(b => {
+            // Mismas ecuaciones exactas de movimiento
+            b.y -= b.velocidadY;
+            b.angulo += b.oscilacion;
+            b.x += Math.sin(b.angulo) * 0.8;
+            b.faseAleteo += 0.2; // Batido de alas constante
+
+            if (b.y + b.radio > 0) {
+                burbujasVisibles++;
+                dibujarMariposa(ctx, b.x, b.y, b.radio, b.opacidad, b.faseAleteo);
+            }
+        });
+
+        if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
+            animacionId = requestAnimationFrame(animar);
+        } else {
+            cancelAnimationFrame(animacionId);
+            canvas.remove();
+        }
+    }
+
+    animacionId = requestAnimationFrame(animar);
+}
 
     function actualizarInfo(tipoOrigen) {
         if (tipoOrigen === 'sabor') {
@@ -816,11 +862,21 @@
         
         msj += `*Total a Pagar: $${granTotal.toLocaleString('es-AR')}*`;
         
-        window.open(`https://wa.me/5491112345678?text=${msj}`, '_blank');
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
     }
 
-    // Inicializar carga de datos al abrir la página
-    window.addEventListener('DOMContentLoaded', cargarSabores);
+    window.onload = cargarSabores;
+
+    window.addEventListener("scroll", function() {
+        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        
+        if (window.scrollY < 400) {
+            if (cartelFlotante) cartelFlotante.style.display = "none";
+        } else {
+            if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
+        }
+    });
 </script>
 </body>
 </html>
