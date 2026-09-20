@@ -503,7 +503,7 @@
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
-                // 1. Procesar Sabores de la izquierda (Columnas A, B, C)
+                // 1. Procesar Sabores/Productos (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
@@ -527,30 +527,14 @@
                     }
                 }
 
-                // 2. Procesar Precios, Conos y Salsas de la derecha (Columnas E, F, G)
+                // 2. Procesar Precios (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
                     let prodEstado = columnas[6] ? columnas[6].toLowerCase() : "";
 
-                    if (prodEstado === "si" && prodNombre) {
-                        // Guardar precio si tiene un valor numérico (ej: Kilos y Conos)
-                        if (!isNaN(prodPrecio)) {
-                            preciosPlanilla[prodNombre] = prodPrecio;
-                        }
-
-                        const prodMinuscula = prodNombre.toLowerCase();
-
-                        // Dibujar en "Salsas y Aderezo" si es una salsa
-                        if (prodMinuscula.includes("salsa")) {
-                            const htmlSalsa = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
-                            if (contSalsas) contSalsas.innerHTML += htmlSalsa;
-                        }
-                        // Dibujar en "Conos y Adicionales" si es un cono o adicional
-                        else if (prodMinuscula.includes("cono") || prodMinuscula.includes("cucurucho") || prodMinuscula.includes("adicional")) {
-                            const htmlCono = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
-                            if (contConos) contConos.innerHTML += htmlCono;
-                        }
+                    if (prodEstado === "si" && prodNombre && !isNaN(prodPrecio)) {
+                        preciosPlanilla[prodNombre] = prodPrecio;
                     }
                 }
             }
@@ -561,7 +545,7 @@
             if (contConos && contConos.innerHTML === "") contConos.innerHTML = "<p>No hay conos ni adicionales activos.</p>";
 
             actualizarEtiquetasPreciosHTML();
-            lanzarBurbujasBienvenida();
+            lanzarPrimaveraBienvenida();
 
         } catch (error) {
             console.error("Error al cargar la planilla:", error);
@@ -591,7 +575,7 @@
         return 0;
     }
 
-    function lanzarBurbujasBienvenida() {
+    function lanzarPrimaveraBienvenida() {
         const sonidoBienvenida = document.getElementById("sonidoSilbato");
         if (sonidoBienvenida) {
             sonidoBienvenida.volume = 0.25;
@@ -599,7 +583,7 @@
         }
 
         const canvas = document.createElement("canvas");
-        canvas.id = "canvasBurbujas";
+        canvas.id = "canvasPrimavera";
         canvas.style.position = "fixed";
         canvas.style.top = "0";
         canvas.style.left = "0";
@@ -613,18 +597,21 @@
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
 
-        const burbujas = [];
+        const elementosPrimavera = ["🦋", "🌸", "🌷", "🌻", "🌺", "🦋"];
+        const elementos = [];
         const cantidad = 35;
 
         for (let i = 0; i < cantidad; i++) {
-            burbujas.push({
+            elementos.push({
                 x: Math.random() * width,
-                y: height + Math.random() * 30 + 5,
-                radio: Math.random() * 12 + 8,
-                velocidadY: Math.random() * 3 + 4.5,
-                oscilacion: Math.random() * 0.05,
+                y: height + Math.random() * 40 + 10,
+                tamano: Math.random() * 16 + 18,
+                velocidadY: Math.random() * 3 + 3.5,
+                oscilacion: Math.random() * 0.08 + 0.02,
                 angulo: Math.random() * Math.PI * 2,
-                opacidad: Math.random() * 0.5 + 0.4
+                opacidad: Math.random() * 0.4 + 0.6,
+                simbolo: elementosPrimavera[Math.floor(Math.random() * elementosPrimavera.length)],
+                aleteo: Math.random() * Math.PI
             });
         }
 
@@ -634,32 +621,34 @@
         function animar(tiempoActual) {
             ctx.clearRect(0, 0, width, height);
 
-            let burbujasVisibles = 0;
+            let elementosVisibles = 0;
 
-            burbujas.forEach(b => {
-                b.y -= b.velocidadY;
-                b.angulo += b.oscilacion;
-                b.x += Math.sin(b.angulo) * 0.8;
+            elementos.forEach(e => {
+                e.y -= e.velocidadY;
+                e.angulo += e.oscilacion;
+                e.aleteo += 0.2;
+                e.x += Math.sin(e.angulo) * 1.5;
 
-                if (b.y + b.radio > 0) {
-                    burbujasVisibles++;
+                if (e.y + e.tamano > 0) {
+                    elementosVisibles++;
 
-                    ctx.beginPath();
-                    ctx.arc(b.x, b.y, b.radio, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(0, 180, 216, ${b.opacidad * 0.25})`;
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacidad * 0.8})`;
-                    ctx.lineWidth = 1.5;
-                    ctx.fill();
-                    ctx.stroke();
+                    ctx.save();
+                    ctx.translate(e.x, e.y);
+                    
+                    const rotacion = Math.sin(e.aleteo) * 0.2;
+                    ctx.rotate(rotacion);
 
-                    ctx.beginPath();
-                    ctx.arc(b.x - b.radio * 0.3, b.y - b.radio * 0.3, b.radio * 0.25, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${b.opacidad})`;
-                    ctx.fill();
+                    ctx.globalAlpha = e.opacidad;
+                    ctx.font = `${e.tamano}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(e.simbolo, 0, 0);
+
+                    ctx.restore();
                 }
             });
 
-            if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
+            if (elementosVisibles > 0 && (tiempoActual - tiempoInicio) < 2800) {
                 animacionId = requestAnimationFrame(animar);
             } else {
                 cancelAnimationFrame(animacionId);
@@ -826,21 +815,11 @@
         
         msj += `*Total a Pagar: $${granTotal.toLocaleString('es-AR')}*`;
         
-        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+        window.open(`https://wa.me/5491112345678?text=${msj}`, '_blank');
     }
 
-    window.onload = cargarSabores;
-
-    window.addEventListener("scroll", function() {
-        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        
-        if (window.scrollY < 400) {
-            if (cartelFlotante) cartelFlotante.style.display = "none";
-        } else {
-            if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
-        }
-    });
+    // Inicializar carga de datos al abrir la página
+    window.addEventListener('DOMContentLoaded', cargarSabores);
 </script>
 </body>
 </html>
