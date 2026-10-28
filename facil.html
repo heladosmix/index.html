@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍦 Helados.mix -Sabores</title>
+
+    <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
+    <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
+    <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
+    <meta property="og:url" content="https://heladosmix.github.io/index.html">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="https://heladosmix.github.io/index.html/logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121214;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 15px 15px 140px 15px;
+            font-size: 20px; /* Tipografía bien grande para fácil lectura */
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 10px;
+            background: #1E1E24;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #FF477E;
+        }
+
+        h1 {
+            color: #FF477E;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+        }
+
+        p.instruccion {
+            color: #00B894;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .titulo-seccion {
+            background: #25252E;
+            color: #FFFFFF;
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 25px 0 15px 0;
+            border: 1px solid #3D3D4E;
+        }
+
+        /* Lista de sabores con botones gigantes */
+        .opcion-sabor {
+            display: flex;
+            align-items: center;
+            background: #1E1E24;
+            border: 3px solid #2D2D36;
+            border-radius: 20px;
+            padding: 18px 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .opcion-sabor:has(input:checked) {
+            border-color: #00B894;
+            background-color: #162E28;
+        }
+
+        input[type="checkbox"] {
+            width: 35px;
+            height: 35px;
+            accent-color: #00B894;
+            margin-right: 15px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .nombre-sabor {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        /* Botón de envío Gigante */
+        .btn-whatsapp-gigante {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 500px;
+            background-color: #25D366;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 30px;
+            padding: 20px 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+            cursor: pointer;
+            z-index: 9999;
+            font-family: inherit;
+        }
+
+        .btn-whatsapp-gigante:active {
+            transform: translateX(-50%) scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍦 Helados.mix</h1>
+        <p class="instruccion">👉 Toca los sabores que quieras pedir 👇</p>
+    </header>
+
+    <div class="titulo-seccion">🍨 Sabores a la Crema</div>
+    <div id="lista-crema">Cargando sabores...</div>
+
+    <div class="titulo-seccion">🍋 Sabores al Agua</div>
+    <div id="lista-agua">Cargando sabores...</div>
+
+    <button class="btn-whatsapp-gigante" onclick="enviarWhatsAppSimple()">
+        📲 ENVIAR PEDIDO POR WHATSAPP
+    </button>
+
+<script>
+    const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
+
+    async function cargarSaboresSimples() {
+        try {
+            const respuesta = await fetch(urlPlanilla + '&v=' + new Date().getTime());
+            const texto = await respuesta.text();
+            const filas = texto.split(/\r?\n/);
+
+            const contCrema = document.getElementById('lista-crema');
+            const contAgua = document.getElementById('lista-agua');
+
+            if (contCrema) contCrema.innerHTML = "";
+            if (contAgua) contAgua.innerHTML = "";
+
+            for (let i = 1; i < filas.length; i++) {
+                if (!filas[i].trim()) continue;
+
+                let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
+                
+                if (columnas.length >= 3) {
+                    let nombre = columnas[0];
+                    let category = columnas[1]; 
+                    let disponible = columnas[2].toLowerCase();
+
+                    if (disponible === "si" && nombre) {
+                        const htmlItem = `
+                            <label class="opcion-sabor">
+                                <input type="checkbox" name="sabor" value="${nombre}">
+                                <span class="nombre-sabor">${nombre}</span>
+                            </label>`;
+
+                        if (category === "saboresAgua" && contAgua) {
+                            contAgua.innerHTML += htmlItem;
+                        } else if (category === "saboresCrema" && contCrema) {
+                            contCrema.innerHTML += htmlItem;
+                        } else if (!category.includes("salsa") && !category.includes("cono")) {
+                            if (contCrema) contCrema.innerHTML += htmlItem;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error al cargar la planilla:", error);
+        }
+    }
+
+    function enviarWhatsAppSimple() {
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+
+        if (seleccionados.length === 0) {
+            alert("Por favor, tocá al menos un sabor para hacer tu pedido.");
+            return;
+        }
+
+        let listaSabores = "";
+        seleccionados.forEach(s => {
+            listaSabores += `• ${s.value}%0A`;
+        });
+
+        let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
+        msj += `Quiero hacer un pedido de estos sabores:%0A%0A${listaSabores}%0A`;
+        msj += `¿Me indican el precio y la demora? ¡Muchas gracias!`;
+
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+    }
+
+    window.onload = cargarSaboresSimples;
+</script>
+
+</body>
+</html>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121214;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 15px 15px 140px 15px;
+            font-size: 20px; /* Tipografía bien grande para fácil lectura */
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 10px;
+            background: #1E1E24;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #FF477E;
+        }
+
+        h1 {
+            color: #FF477E;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+        }
+
+        p.instruccion {
+            color: #00B894;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .titulo-seccion {
+            background: #25252E;
+            color: #FFFFFF;
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 25px 0 15px 0;
+            border: 1px solid #3D3D4E;
+        }
+
+        /* Lista de sabores con botones gigantes */
+        .opcion-sabor {
+            display: flex;
+            align-items: center;
+            background: #1E1E24;
+            border: 3px solid #2D2D36;
+            border-radius: 20px;
+            padding: 18px 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .opcion-sabor:has(input:checked) {
+            border-color: #00B894;
+            background-color: #162E28;
+        }
+
+        input[type="checkbox"] {
+            width: 35px;
+            height: 35px;
+            accent-color: #00B894;
+            margin-right: 15px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .nombre-sabor {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        /* Botón de envío Gigante */
+        .btn-whatsapp-gigante {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 500px;
+            background-color: #25D366;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 30px;
+            padding: 20px 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+            cursor: pointer;
+            z-index: 9999;
+            font-family: inherit;
+        }
+
+        .btn-whatsapp-gigante:active {
+            transform: translateX(-50%) scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍦 Helados.mix</h1>
+        <p class="instruccion">👉 Toca los sabores que quieras pedir 👇</p>
+    </header>
+
+    <div class="titulo-seccion">🍨 Sabores a la Crema</div>
+    <div id="lista-crema">Cargando sabores...</div>
+
+    <div class="titulo-seccion">🍋 Sabores al Agua</div>
+    <div id="lista-agua">Cargando sabores...</div>
+
+    <button class="btn-whatsapp-gigante" onclick="enviarWhatsAppSimple()">
+        📲 ENVIAR PEDIDO POR WHATSAPP
+    </button>
+
+<script>
+    const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
+
+    async function cargarSaboresSimples() {
+        try {
+            const respuesta = await fetch(urlPlanilla + '&v=' + new Date().getTime());
+            const texto = await respuesta.text();
+            const filas = texto.split(/\r?\n/);
+
+            const contCrema = document.getElementById('lista-crema');
+            const contAgua = document.getElementById('lista-agua');
+
+            if (contCrema) contCrema.innerHTML = "";
+            if (contAgua) contAgua.innerHTML = "";
+
+            for (let i = 1; i < filas.length; i++) {
+                if (!filas[i].trim()) continue;
+
+                let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
+                
+                if (columnas.length >= 3) {
+                    let nombre = columnas[0];
+                    let category = columnas[1]; 
+                    let disponible = columnas[2].toLowerCase();
+
+                    if (disponible === "si" && nombre) {
+                        const htmlItem = `
+                            <label class="opcion-sabor">
+                                <input type="checkbox" name="sabor" value="${nombre}">
+                                <span class="nombre-sabor">${nombre}</span>
+                            </label>`;
+
+                        if (category === "saboresAgua" && contAgua) {
+                            contAgua.innerHTML += htmlItem;
+                        } else if (category === "saboresCrema" && contCrema) {
+                            contCrema.innerHTML += htmlItem;
+                        } else if (!category.includes("salsa") && !category.includes("cono")) {
+                            if (contCrema) contCrema.innerHTML += htmlItem;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error al cargar la planilla:", error);
+        }
+    }
+
+    function enviarWhatsAppSimple() {
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+
+        if (seleccionados.length === 0) {
+            alert("Por favor, tocá al menos un sabor para hacer tu pedido.");
+            return;
+        }
+
+        let listaSabores = "";
+        seleccionados.forEach(s => {
+            listaSabores += `• ${s.value}%0A`;
+        });
+
+        let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
+        msj += `Quiero hacer un pedido de estos sabores:%0A%0A${listaSabores}%0A`;
+        msj += `¿Me indican el precio y la demora? ¡Muchas gracias!`;
+
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+    }
+
+    window.onload = cargarSaboresSimples;
+</script>
+
+</body>
+</html>
