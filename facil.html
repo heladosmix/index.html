@@ -162,20 +162,34 @@
                     let nombre = columnas[0];
                     let category = columnas[1]; 
                     let disponible = columnas[2].toLowerCase();
+                    
+                    let catMinuscula = category ? category.toLowerCase() : "";
+                    let nombreMinuscula = nombre ? nombre.toLowerCase() : "";
 
                     if (disponible === "si" && nombre) {
-                        const htmlItem = `
-                            <label class="opcion-sabor">
-                                <input type="checkbox" name="sabor" value="${nombre}">
-                                <span class="nombre-sabor">${nombre}</span>
-                            </label>`;
+                        // Filtramos para ignorar salsas, conos, adicionales y pasas
+                        const esAdicional = catMinuscula.includes("salsa") || 
+                                            catMinuscula.includes("cono") || 
+                                            catMinuscula.includes("adicional") || 
+                                            nombreMinuscula.includes("pasas") || 
+                                            nombreMinuscula.includes("salsa") || 
+                                            nombreMinuscula.includes("cono") ||
+                                            nombreMinuscula.includes("cucurucho");
 
-                        if (category === "saboresAgua" && contAgua) {
-                            contAgua.innerHTML += htmlItem;
-                        } else if (category === "saboresCrema" && contCrema) {
-                            contCrema.innerHTML += htmlItem;
-                        } else if (!category.includes("salsa") && !category.includes("cono")) {
-                            if (contCrema) contCrema.innerHTML += htmlItem;
+                        if (!esAdicional) {
+                            const htmlItem = `
+                                <label class="opcion-sabor">
+                                    <input type="checkbox" name="sabor" value="${nombre}">
+                                    <span class="nombre-sabor">${nombre}</span>
+                                </label>`;
+
+                            if (category === "saboresAgua" && contAgua) {
+                                contAgua.innerHTML += htmlItem;
+                            } else if (category === "saboresCrema" && contCrema) {
+                                contCrema.innerHTML += htmlItem;
+                            } else if (contCrema) {
+                                contCrema.innerHTML += htmlItem;
+                            }
                         }
                     }
                 }
