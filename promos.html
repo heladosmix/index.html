@@ -346,35 +346,35 @@
             display: none; 
             transition: opacity 0.3s ease;
         }
-        /* Carrusel Deslizable */
+      /* Carrusel Deslizable Aún Más Grande */
 .carrusel-contenedor {
     width: 100%;
     overflow-x: auto;
-    padding: 15px 10px;
+    padding: 20px 14px;
     background: #18181C;
     border-bottom: 1px solid var(--card-border);
-    scrollbar-width: none; /* Oculta barra en Firefox */
+    scrollbar-width: none;
 }
 
 .carrusel-contenedor::-webkit-scrollbar {
-    display: none; /* Oculta barra en Chrome/Safari */
+    display: none;
 }
 
 .carrusel-track {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     width: max-content;
 }
 
 .carrusel-card {
     background: var(--card-bg);
     border: 2px solid var(--card-border);
-    border-radius: 16px;
-    padding: 10px;
+    border-radius: 20px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
+    width: 150px; /* Aumentado de 125px a 150px */
     cursor: pointer;
     transition: transform 0.2s, border-color 0.2s;
 }
@@ -384,18 +384,19 @@
 }
 
 .carrusel-card img {
-    width: 80px;
-    height: 80px;
+    width: 125px;  /* Aumentado de 105px a 125px */
+    height: 125px; /* Aumentado de 105px a 125px */
     object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 6px;
+    border-radius: 16px;
+    margin-bottom: 10px;
 }
 
 .carrusel-card span {
-    font-size: 0.85rem;
+    font-size: 1.05rem; /* Texto bien claro y legible */
     font-weight: bold;
     color: var(--texto-principal);
     text-align: center;
+    line-height: 1.2;
 }
 
 /* Efecto cuando se selecciona desde el carrusel */
@@ -821,68 +822,76 @@
     animacionId = requestAnimationFrame(animar);
 }
 
-    function actualizarInfo(tipoOrigen) {
-        if (tipoOrigen === 'sabor') {
-            reproducirSonidoSabor();
-        } else {
-            reproducirClick();
-        }
+   function actualizarInfo(tipoOrigen) {
+    if (tipoOrigen === 'sabor') {
+        reproducirSonidoSabor();
+    } else {
+        reproducirClick();
+    }
 
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
-        const resumen = document.getElementById('resumen-seleccion');
-        
-        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-        const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
+    const tamano = document.querySelector('input[name="tamano"]:checked');
+    const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+    const resumen = document.getElementById('resumen-seleccion');
+    
+    const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+    const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
 
-        if (!tamano) {
-            if (resumen) resumen.innerText = "Primero elegí un tamaño";
-            if (cartelFlotante) cartelFlotante.style.display = "none";
-            return;
-        }
-        
-        let precioTotal = obtenerPrecioBase(tamano.value);
-        let mensajeFlotante = "";
+    if (!tamano) {
+        if (resumen) resumen.innerText = "Primero elegí un tamaño";
+        if (cartelFlotante) cartelFlotante.style.display = "none";
+        return;
+    }
+    
+    let precioTotal = obtenerPrecioBase(tamano.value);
+    let mensajeFlotante = "";
 
-        if (tamano.value.includes("3 de 1/4 KG")) {
-            mensajeFlotante = "✔️ Promo 3 Potes de 1/4 seleccionada";
-        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
-            mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
-        } else if (tamano.value.includes("1 KG")) {
-            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
-        } else if (tamano.value.includes("1/2 KG")) {
-            mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
-        } else if (tamano.value.includes("1/4 KG")) {
-            mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
-        }
+    if (tamano.value.includes("3 de 1/4 KG")) {
+        mensajeFlotante = "✔️ Promo 3 Potes de 1/4 seleccionada";
+    } else if (tamano.value.includes("1/2 + 1/4 KG")) {
+        mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
+    } else if (tamano.value.includes("1 KG")) {
+        mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
+    } else if (tamano.value.includes("1/2 KG")) {
+        mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
+    } else if (tamano.value.includes("1/4 KG")) {
+        mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
+    }
 
-        if (cartelFlotante && textoTamanoFlotante) {
-            textoTamanoFlotante.innerText = mensajeFlotante;
-            if (window.scrollY >= 400) {
-                cartelFlotante.style.display = "block";
-            }
-        }
-
-        let contadorSaboresReales = 0;
-        
-        seleccionados.forEach(sabor => {
-            const valLower = sabor.value.toLowerCase();
-            
-            if (preciosPlanilla[sabor.value]) {
-                precioTotal += preciosPlanilla[sabor.value];
-            }
-            
-            if (!valLower.includes("salsa") && !valLower.includes("cono") && !valLower.includes("adicional") && !valLower.includes("pasas")) {
-                contadorSaboresReales++; 
-            }
-        });
-        
-        let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
-        
-        if (resumen) {
-            resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
+    if (cartelFlotante && textoTamanoFlotante) {
+        textoTamanoFlotante.innerText = mensajeFlotante;
+        if (window.scrollY >= 400) {
+            cartelFlotante.style.display = "block";
         }
     }
+
+    let contadorSaboresReales = 0;
+    
+    seleccionados.forEach(sabor => {
+        const valLower = sabor.value.toLowerCase();
+        
+        if (preciosPlanilla[sabor.value]) {
+            precioTotal += preciosPlanilla[sabor.value];
+        }
+        
+        if (!valLower.includes("salsa") && !valLower.includes("cono") && !valLower.includes("adicional") && !valLower.includes("pasas")) {
+            contadorSaboresReales++; 
+        }
+    });
+    
+    let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
+    
+    if (resumen) {
+        resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
+    }
+
+    // Scroll suave hacia los sabores al elegir o cambiar el tamaño
+    if (tipoOrigen !== 'sabor') {
+        const seccionSabores = document.getElementById('lista-crema');
+        if (seccionSabores) {
+            seccionSabores.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
 
     function copiarAlias() {
         const alias = "helados.mix";
