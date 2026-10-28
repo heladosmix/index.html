@@ -588,7 +588,7 @@
         
         if (radioTarget) {
             radioTarget.checked = true;
-            actualizarInfo('tamano'); // Se actualiza la selección, sonido y total de WhatsApp
+            actualizarInfo('tamano'); // Se actualiza la selección, sonido, precios y scroll
         }
     }
 
@@ -785,7 +785,7 @@
             ctx.ellipse(0, 0, tamano * 0.15, tamano * 0.6, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.restore;
+            ctx.restore();
         }
 
         function animar(tiempoActual) {
@@ -878,11 +878,20 @@
             resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
         }
 
-        // Scroll suave hacia los sabores al elegir o cambiar el tamaño
+        // --- SCROLL AJUSTADO A MANO ---
         if (tipoOrigen !== 'sabor') {
-            const seccionSabores = document.getElementById('lista-crema');
-            if (seccionSabores) {
-                seccionSabores.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const destino = document.getElementById('lista-salsas') || document.getElementById('lista-crema');
+            if (destino) {
+                const posicionAbsoluta = destino.getBoundingClientRect().top + window.scrollY;
+                
+                // Si querés que el scroll quede MÁS ARRIBA aún, aumentá este número (ej: 180 o 200).
+                // Si querés que baje un poco más, achicalo (ej: 100 o 80).
+                const margenArriba = 140; 
+
+                window.scrollTo({
+                    top: posicionAbsoluta - margenArriba,
+                    behavior: 'smooth'
+                });
             }
         }
     }
