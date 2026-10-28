@@ -1,208 +1,904 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>🍦Promos Helados.mix</title>
-    
+    <title>🍦 Helados.mix - Pedidos</title>
+
     <meta property="og:title" content="🍦 Helados.mix - Pedidos Online">
     <meta property="og:description" content="Elegí tus sabores favoritos y hacé tu pedido por WhatsApp en segundos.">
     <meta property="og:image" content="https://heladosmix.github.io/index.html/logo.jpg?v=500">
     <meta property="og:url" content="https://heladosmix.github.io/index.html">
     <meta property="og:type" content="website">
     <link rel="icon" href="https://heladosmix.github.io/index.html/logo.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
+    <link rel="apple-touch-icon" href="https://heladosmix.github.io/index.html/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primario: #ff8fab;
-            --secundario: #fb6f92;
-            --fondo: #fff0f3;
-            --texto: #4a4a4a;
-            --celeste: #00bfff;
+            /* Estilo Moderno Oscuro / App */
+            --bg-body: #121214;
+            --card-bg: #1E1E24;
+            --card-border: #2D2D36;
+            --primario: #FF477E;
+            --primario-hover: #FF6592;
+            --texto-principal: #FFFFFF;
+            --texto-secundario: #A0A0B0;
+            --destacado: #00B894;
+            --whatsapp: #25d366;
+            --mp-azul: #009EE3;
+            --mp-verde: #00A15E;
         }
 
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: var(--fondo); 
-            text-align: center; 
-            padding: 20px; 
-            color: var(--texto); 
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--texto-principal);
             margin: 0;
+            padding-bottom: 170px;
+            font-size: 16px;
         }
 
-        /* --- ESTILO BOTÓN VOLVER --- */
-        .btn-volver-celeste {
-            display: inline-block;
-            background-color: var(--celeste);
-            color: white !important;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 30px 0;
-            box-shadow: 0 4px 15px rgba(0,191,255,0.4);
-            transition: 0.3s;
-            border: none;
+        header {
+            background: linear-gradient(180deg, #1A1A22 0%, #121214 100%);
+            color: #FFFFFF;
             text-align: center;
+            padding: 1.8rem 1rem 1.2rem 1rem;
+            border-bottom: 1px solid var(--card-border);
         }
 
-        .btn-volver-celeste:hover {
-            transform: scale(1.05);
-            background-color: #0099cc;
+        .brand-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: block;
+            line-height: 1.2;
+            color: var(--primario);
+            text-shadow: 0 2px 10px rgba(255, 71, 126, 0.3);
         }
 
-        @media (max-width: 768px) {
-            body { padding-bottom: 110px !important; }
-            .btn-volver-celeste {
-                position: fixed; bottom: 20px; left: 50%;
-                transform: translateX(-50%); z-index: 9999;
-                margin: 0; width: 85%; max-width: 320px;
-            }
+        header p {
+            margin: 6px 0 0;
+            font-size: 1.05rem;
+            color: var(--texto-secundario);
+            font-weight: 600;
         }
 
-        .contenedor-promos { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .container {
+            padding: 15px 12px;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+        }
+
+        .categoria {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+        }
+
+        h2 {
+            color: var(--texto-principal);
+            font-size: 1.25rem;
+            margin: 0 0 18px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+
+        /* Tarjetas de tamaños grandes y fáciles para presionar */
+        .grid-tamanos {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .radio-tamano {
+            display: flex;
+            align-items: center;
+            background: #25252E;
+            padding: 14px 16px;
+            border: 2px solid var(--card-border);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .radio-tamano:has(input:checked) {
+            border-color: var(--primario);
+            background: #2D212A;
+            box-shadow: 0 0 15px rgba(255, 71, 126, 0.2);
+        }
+
+        .pote-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            background-color: #1A1A22;
+        }
+
+        .info-tamano {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .titulo-tamano {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--texto-principal);
+            margin-bottom: 4px;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            transform: scale(1.4);
+            accent-color: var(--primario);
+            margin: 0 10px 0 5px;
+            cursor: pointer;
+        }
+
+        .input-direccion {
+            width: 100%;
+            padding: 16px;
+            background: #25252E;
+            border: 2px solid var(--card-border);
+            border-radius: 15px;
+            font-family: inherit;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--texto-principal);
+        }
+
+        .input-direccion:focus {
+            outline: none;
+            border-color: var(--primario);
+        }
+
+        .opcion {
+            display: flex;
+            align-items: center;
+            padding: 14px 10px;
+            border-bottom: 1px solid var(--card-border);
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            color: var(--texto-principal);
+        }
+
+        .opcion:last-child {
+            border-bottom: none;
+        }
+
+        .contenedor-alias-nuevo {
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .cuadro-alias-nuevo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #182A38;
+            border: 2px dashed #009EE3;
+            border-radius: 14px;
+            padding: 12px 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            animation: pulsoAtencion 3s infinite;
+        }
+
+        @keyframes pulsoAtencion {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.2); }
+            50% { transform: scale(1.02); box-shadow: 0 0 12px 4px rgba(0, 158, 227, 0.25); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 158, 227, 0.2); }
+        }
+
+        .cuadro-alias-nuevo.copiado-exito {
+            animation: titilarVerde 0.6s ease-out !important;
+            background-color: #123321 !important;
+            border-color: var(--mp-verde) !important;
+        }
+
+        @keyframes titilarVerde {
+            0% { transform: scale(1); }
+            30% { transform: scale(0.95); background-color: #123321; border-color: var(--mp-verde); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .alias-texto-resaltado {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            letter-spacing: 0.5px;
+            margin-left: 5px;
+        }
+
+        .badge-copiar {
+            background-color: #009EE3;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #mensajeCopiado {
+            color: var(--mp-verde);
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(5px);
+        }
+
+        #mensajeCopiado.visible {
+            opacity: 1 !important;
+            transform: translateY(0);
+        }
+
+        #sugerenciaSabores {
+            display: none;
+            background-color: #2D212A;
+            color: var(--primario);
+            border: 2px dashed var(--primario);
+            border-radius: 14px;
+            padding: 12px 15px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+            animation: aparecerSugerencia 0.4s ease-out;
+        }
+
+        @keyframes aparecerSugerencia {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .flecha-animada {
+            display: inline-block;
+            font-size: 1.3rem;
+            animation: rebotarFlecha 1.2s infinite;
+        }
+
+        @keyframes rebotarFlecha {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        .btn-flotante {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--whatsapp);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 35px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            width: calc(100% - 24px);
+            max-width: 480px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.15rem;
+            font-family: inherit;
+        }
+
+        .precio-tag {
+            background-color: #33202A;
+            color: var(--primario);
+            border: 1px solid var(--primario);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.05rem;
+            display: inline-block;
+            margin-top: 4px;
+            width: fit-content;
+        }
         
-        .card { 
-            background: white; border-radius: 20px; padding: 20px; width: 180px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 3px solid transparent; 
-            transition: 0.3s; cursor: pointer; position: relative;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--primario); }
-        .card.activa { border-color: var(--secundario); background: #fff5f7; }
-        
-        .precio { font-size: 1.3rem; font-weight: bold; color: #333; display: block; margin-top: 10px; }
-
-        #seccion-sabores { 
-            display: none; background: white; padding: 25px; border-radius: 25px; 
-            max-width: 600px; margin: 20px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: left;
-        }
-
-        .categoria-titulo { font-weight: bold; color: var(--secundario); display: block; border-bottom: 2px solid var(--fondo); margin: 15px 0 10px; }
-        .lista-sabores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
-        label { display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; padding: 5px; border-radius: 5px; }
-        input[type="checkbox"] { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--secundario); }
-
-        .btn-ws { 
-            background-color: #25d366; color: white; padding: 18px; border: none;
-            border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; 
-            margin-top: 25px; width: 100%; transition: 0.3s;
-        }
-        .btn-ws:hover { background-color: #1ebe57; }
-
-        @media (max-width: 600px) { 
-            .lista-sabores { grid-template-columns: 1fr; } 
-            .card { width: 140px; } 
+        .cartel-flotante-top {
+            position: fixed !important;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: calc(100% - 30px);
+            max-width: 480px;
+            box-sizing: border-box;
+            background: rgba(255, 71, 126, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 14px 15px;
+            border-radius: 35px;
+            border: 2px solid #FFFFFF;
+            font-weight: bold;
+            font-size: 1.05rem; 
+            line-height: 1.3;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            display: none; 
+            transition: opacity 0.3s ease;
         }
     </style>
 </head>
+
 <body>
-  <h1>🍦 Helados.mix 🍦</h1>
-    
-    <h2 style="color: #fb6f92; margin: 20px 0 5px 0; font-size: 2rem;">¡Promos!</h2>
-    
-    <span style="color: #00bfff; font-size: 1.6rem; font-weight: bold; display: block; margin-bottom: 30px; line-height: 1.2;">
-        Seleccioná tu combo y armalo como quieras
-    </span>
 
-    <div class="contenedor-promos">
-        <div class="card" id="c1" onclick="ver('Combo 1kg + 1/4kg', '$15.000', 'c1')">
-            <h3>1 KG + 1/4 KG</h3>
-            <span class="precio">$15.000</span>
-        </div>
+    <audio id="sonidoCopiar" src="correct.mp3" preload="auto"></audio>
+    <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
+    <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
+    <audio id="sonidoSabor" src="sabor.mp3" preload="auto"></audio>
 
-        <div class="card" id="c2" onclick="ver('Combo 1/2kg + 1/4kg', '$10.000', 'c2')">
-            <h3>1/2 KG + 1/4 KG</h3>
-            <span class="precio">$10.000</span>
-        </div>
-        
-        <div class="card" id="c3" onclick="ver('1Kg+1/2KG', '$20.000', 'c3')">
-            <h3>1KG+1/2KG</h3>
-            <span class="precio">$20.000</span>
-        </div>
-
-        <div class="card" id="c4" onclick="ver('Súper 2 Kilos', '$24.000', 'c4')">
-            <span style="background:var(--primario); color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem; position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-weight:bold;">TOP</span>
-            <h3>DOS KILOS</h3>
-            <span class="precio">$24.000</span>
-        </div>
+    <!-- Cartel flotante superior fijo -->
+    <div id="cartelTamanoFlotante" class="cartel-flotante-top">
+        <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
     </div>
 
-    <div id="seccion-sabores">
-        <h2 id="nom-p" style="text-align: center; color: var(--secundario); margin-top:0;"></h2>
+    <header>
+        <span class="brand-title">🍦 Helados.mix</span>
+        <p>Catálogo de Pedidos Online 🍓✨</p>
+    </header>
+
+    <div class="container">
         
-        <span class="categoria-titulo">Nuestras Cremas 🍦</span>
-        <div id="lista-crema" class="lista-sabores">Cargando...</div>
+        <div class="categoria">
+            <h2>🤝 ALIAS MERCADO PAGO</h2>
+            <p style="margin-bottom: 15px; font-size: 1.05rem; font-weight: bold; color: var(--texto-secundario); text-align: center;">👉 ¡Toca el recuadro azul para copiar el alias! 👇</p>
+            
+            <div class="contenedor-alias-nuevo">
+                <div class="cuadro-alias-nuevo" id="btnAlias" onclick="copiarAlias()">
+                    <span class="alias-texto-resaltado" id="aliasText">helados.mix</span>
+                    <div class="badge-copiar" id="badgeCopiar">
+                        <span>COPIAR ALIAS</span>
+                    </div>
+                </div>
+            </div>
 
-        <span class="categoria-titulo">Frutales al Agua 🍋</span>
-        <div id="lista-agua" class="lista-sabores">Cargando...</div>
+            <div id="mensajeCopiado" style="opacity: 0; text-align: center;">¡Alias copiado! 🎉🍦</div>
+        </div>
 
-        <button class="btn-ws" onclick="enviar()">Pedir por WhatsApp </button>
-    </div>
-
-    <script>
-        const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
-        let elegida = "";
-        let precioElegido = "";
-
-        async function cargarSaboresDesdeExcel() {
-            try {
-                const res = await fetch(urlPlanilla + '&t=' + new Date().getTime());
-                const texto = await res.text();
-                const filas = texto.split(/\r?\n/).slice(1);
+        <form id="pedidoForm">
+            <!-- 1. TAMAÑO -->
+            <div class="categoria">
+                <h2>📏 1. Elegí el tamaño o promo</h2>
                 
-                const contCrema = document.getElementById('lista-crema');
-                const contAgua = document.getElementById('lista-agua');
-                contCrema.innerHTML = ""; contAgua.innerHTML = "";
+                <div class="grid-tamanos">
+                    <label class="radio-tamano">
+                        <input type="radio" name="tamano" value="1 KG" onchange="actualizarInfo()">
+                        <img src="https://heladosmix.github.io/index.html/1%20Kilo.webp" alt="1 KG" class="pote-img" loading="lazy">
+                        <div class="info-tamano">
+                            <span class="titulo-tamano">1 KG (5 sabores)</span>
+                            <span class="precio-tag" id="tag-1KG">$ --</span>
+                        </div>
+                    </label>
 
-                filas.forEach(f => {
-                    const col = f.split(',').map(c => c.replace(/"/g, "").trim());
-                    if (col.length >= 3 && col[2].toLowerCase() === "si") {
-                        const html = `<label><input type="checkbox" value="${col[0]}"> ${col[0]}</label>`;
-                        if (col[1] === "saboresCrema") contCrema.innerHTML += html;
-                        if (col[1] === "saboresAgua") contAgua.innerHTML += html;
-                    }
-                });
-            } catch (e) {
-                console.error("Error al cargar sabores");
-            }
-        }
+                    <label class="radio-tamano">
+                        <input type="radio" name="tamano" value="1/2 KG" onchange="actualizarInfo()">
+                        <img src="https://heladosmix.github.io/index.html/medio.webp" alt="1/2 KG" class="pote-img" loading="lazy">
+                        <div class="info-tamano">
+                            <span class="titulo-tamano">1/2 KG (3 sabores)</span>
+                            <span class="precio-tag" id="tag-12KG">$ --</span>
+                        </div>
+                    </label>
 
-        function ver(nombre, precio, id) {
-            const panel = document.getElementById('seccion-sabores');
-            const titulo = document.getElementById('nom-p');
-            const cards = document.querySelectorAll('.card');
-            const limpiarChecks = () => { document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false); };
+                    <label class="radio-tamano">
+                        <input type="radio" name="tamano" value="1/4 KG" onchange="actualizarInfo()">
+                        <img src="https://heladosmix.github.io/index.html/1_4.webp" alt="1/4 KG" class="pote-img" loading="lazy">
+                        <div class="info-tamano">
+                            <span class="titulo-tamano">1/4 KG (2 sabores)</span>
+                            <span class="precio-tag" id="tag-14KG">$ --</span>
+                        </div>
+                    </label>
 
-            if (elegida === nombre && panel.style.display === "block") {
-                panel.style.display = "none"; elegida = ""; precioElegido = "";
-                document.getElementById(id).classList.remove('activa'); limpiarChecks();
-            } else {
-                limpiarChecks(); cards.forEach(c => c.classList.remove('activa'));
-                document.getElementById(id).classList.add('activa');
-                elegida = nombre; precioElegido = precio;
-                titulo.innerText = "Armando: " + nombre + " (" + precio + ")";
-                panel.style.display = "block"; panel.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+                    <label class="radio-tamano">
+                        <input type="radio" name="tamano" value="1/2 + 1/4 KG" onchange="actualizarInfo()">
+                        <img src="https://heladosmix.github.io/index.html/med_un4.webp" alt="1/2 + 1/4 KG" class="pote-img" loading="lazy">
+                        <div class="info-tamano">
+                            <span class="titulo-tamano">1/2 + 1/4 KG (5 sabores)</span>
+                            <span class="precio-tag" id="tag-1214KG">$ --</span>
+                        </div>
+                    </label>
 
-        function enviar() {
-            const checks = document.querySelectorAll('input:checked');
-            let gustos = []; checks.forEach(c => gustos.push(c.value));
-            if (gustos.length === 0) return alert("Por favor, seleccioná al menos un sabor.");
-            const miNum = "5491137610574"; 
-            const msj = `¡Hola Helados.mix! 🍦\nQuiero la promo: *${elegida}*\nPrecio: *${precioElegido}*\n\nSabores elegidos:\n✅ ${gustos.join("\n✅ ")}`;
-            window.open(`https://wa.me/${miNum}?text=${encodeURIComponent(msj)}`, '_blank');
-        }
+                    <label class="radio-tamano">
+                        <input type="radio" name="tamano" value="3 de 1/4 KG" onchange="actualizarInfo()">
+                        <img src="https://heladosmix.github.io/index.html/3_un_4.webp" alt="3 de 1/4 KG" class="pote-img" loading="lazy">
+                        <div class="info-tamano">
+                            <span class="titulo-tamano">3 Potes de 1/4 KG</span>
+                            <span class="precio-tag" id="tag-314KG">$ --</span>
+                        </div>
+                    </label>
+                </div>
 
-        window.onload = cargarSaboresDesdeExcel;
-    </script>
+                <!-- Cartel de Sugerencia -->
+                <div id="sugerenciaSabores">
+                    <span id="textoSugerencia"></span> <span class="flecha-animada">👇</span>
+                </div>
+            </div>
 
-    <div style="text-align: center; width: 100%;">
-        <a href="index.html" class="btn-volver-celeste">
-            ⬅️ Volver a los Sabores
-        </a>
+            <!-- 2. DIRECCIÓN -->
+            <div class="categoria">
+                <h2>🏠 2. Dirección (Opcional)</h2>
+                <input type="text" id="direccion" class="input-direccion" placeholder="Calle y número (o retiro local)">
+            </div>
+
+            <!-- 3. SALSAS Y ADEREZOS -->
+            <div class="categoria">
+                <h2>🍯 Salsas y Aderezos</h2>
+                <div id="lista-salsas">Cargando salsas...</div>
+            </div>
+
+            <!-- 4. CONOS Y ADICIONALES -->
+            <div class="categoria">
+                <h2>🍦 Conos y Adicionales</h2>
+                <div id="lista-conos">Cargando adicionales...</div>
+            </div>
+
+            <!-- 5. SABORES A LA CREMA -->
+            <div class="categoria">
+                <h2>🍨 Sabores a la Crema</h2>
+                <div id="lista-crema">Cargando sabores...</div>
+            </div>
+
+            <!-- 6. SABORES AL AGUA -->
+            <div class="categoria">
+                <h2>🍋 Sabores al Agua</h2>
+                <div id="lista-agua">Cargando sabores...</div>
+            </div>
+
+            <button type="button" class="btn-flotante" onclick="enviarWhatsApp()">
+                <strong>ENVIAR POR WHATSAPP</strong><br>
+                <span id="resumen-seleccion" style="font-size: 0.9rem; font-weight: normal;">Primero elegí un tamaño</span>
+            </button>
+        </form>
+
+        <div style="text-align: center; background: var(--card-bg); padding: 20px; border-radius: 20px; margin: 20px auto; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid var(--card-border);">
+            <p style="margin-bottom: 10px; font-weight: bold; color: var(--primario);">🍦 Helados.mix 🍦</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix" style="border-radius: 10px;">
+            <p style="font-size: 0.8rem; margin-top: 5px; color: var(--texto-secundario);">heladosmix.github.io</p>
+        </div>
+        
     </div>
+
+<script>
+    const urlPlanilla = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxf_pDd_vZrsa7jDx-TtptUbTyuM6WyxnEPz9Kr9RLZht4k6Bym5Zcq6I-jGv6_3kHAm0-GQAB3jh/pub?output=csv';
+
+    let preciosPlanilla = {};
+
+    function reproducirClick() {
+        const click = document.getElementById("sonidoClick");
+        if (click) {
+            click.currentTime = 0;
+            click.play().catch(e => console.log("Click bloqueado por el navegador"));
+        }
+    }
+
+    function reproducirSonidoSabor() {
+        const sonidoSabor = document.getElementById("sonidoSabor");
+        if (sonidoSabor) {
+            sonidoSabor.currentTime = 0;
+            sonidoSabor.play().catch(e => console.log("Sonido de sabor bloqueado"));
+        }
+    }
+
+    async function cargarSabores() {
+        try {
+            const respuesta = await fetch(urlPlanilla + '&v=' + new Date().getTime());
+            const texto = await respuesta.text();
+            
+            const filas = texto.split(/\r?\n/);
+            const contCrema = document.getElementById('lista-crema');
+            const contAgua = document.getElementById('lista-agua');
+            const contSalsas = document.getElementById('lista-salsas');
+            const contConos = document.getElementById('lista-conos');
+            
+            if (contCrema) contCrema.innerHTML = "";
+            if (contAgua) contAgua.innerHTML = "";
+            if (contSalsas) contSalsas.innerHTML = "";
+            if (contConos) contConos.innerHTML = "";
+
+            for (let i = 1; i < filas.length; i++) {
+                if (!filas[i].trim()) continue;
+
+                let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
+                
+                // 1. Procesar Sabores de la izquierda (Columnas A, B, C)
+                if (columnas.length >= 3) {
+                    let nombre = columnas[0];
+                    let category = columnas[1]; 
+                    let disponible = columnas[2].toLowerCase();
+
+                    if (disponible === "si" && nombre) {
+                        const htmlItem = `<label class="opcion"><input type="checkbox" name="sabor" value="${nombre}" onchange="actualizarInfo('sabor')"> <span>${nombre}</span></label>`;
+                        const nombreMinuscula = nombre.toLowerCase();
+
+                        if (category === "salsas" || nombreMinuscula.includes("salsa")) {
+                            if (contSalsas) contSalsas.innerHTML += htmlItem;
+                        } else if (category === "conos" || category === "adicional" || category === "adicionales" || nombreMinuscula.includes("cono") || nombreMinuscula.includes("cucurucho") || nombreMinuscula.includes("pasas")) {
+                            if (contConos) contConos.innerHTML += htmlItem;
+                        } else if (category === "saboresCrema" && contCrema) {
+                            contCrema.innerHTML += htmlItem;
+                        } else if (category === "saboresAgua" && contAgua) {
+                            contAgua.innerHTML += htmlItem;
+                        } else {
+                            if (contCrema) contCrema.innerHTML += htmlItem;
+                        }
+                    }
+                }
+
+                // 2. Procesar Precios, Conos y Salsas de la derecha (Columnas E, F, G)
+                if (columnas.length >= 7) {
+                    let prodNombre = columnas[4];
+                    let prodPrecio = parseFloat(columnas[5]);
+                    let prodEstado = columnas[6] ? columnas[6].toLowerCase() : "";
+
+                    if (prodEstado === "si" && prodNombre) {
+                        // Guardar precio si tiene un valor numérico (ej: Kilos y Conos)
+                        if (!isNaN(prodPrecio)) {
+                            preciosPlanilla[prodNombre] = prodPrecio;
+                        }
+
+                        const prodMinuscula = prodNombre.toLowerCase();
+
+                        // Dibujar en "Salsas y Aderezo" si es una salsa
+                        if (prodMinuscula.includes("salsa")) {
+                            const htmlSalsa = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contSalsas) contSalsas.innerHTML += htmlSalsa;
+                        }
+                        // Dibujar en "Conos y Adicionales" si es un cono o adicional
+                        else if (prodMinuscula.includes("cono") || prodMinuscula.includes("cucurucho") || prodMinuscula.includes("adicional")) {
+                            const htmlCono = `<label class="opcion"><input type="checkbox" name="sabor" value="${prodNombre}" onchange="actualizarInfo('sabor')"> <span>${prodNombre}</span></label>`;
+                            if (contConos) contConos.innerHTML += htmlCono;
+                        }
+                    }
+                }
+            }
+
+            if (contCrema && contCrema.innerHTML === "") contCrema.innerHTML = "<p>No hay sabores de crema activos.</p>";
+            if (contAgua && contAgua.innerHTML === "") contAgua.innerHTML = "<p>No hay sabores al agua activos.</p>";
+            if (contSalsas && contSalsas.innerHTML === "") contSalsas.innerHTML = "<p>No hay salsas activas.</p>";
+            if (contConos && contConos.innerHTML === "") contConos.innerHTML = "<p>No hay conos ni adicionales activos.</p>";
+
+            actualizarEtiquetasPreciosHTML();
+            lanzarBurbujasBienvenida();
+
+        } catch (error) {
+            console.error("Error al cargar la planilla:", error);
+            if(document.getElementById('lista-crema')) {
+                document.getElementById('lista-crema').innerHTML = "<p style='color:red;'>Conectando con la lista...</p>";
+            }
+        }
+    }
+
+    function actualizarEtiquetasPreciosHTML() {
+        const tag1 = document.getElementById("tag-1KG");
+        const tag12 = document.getElementById("tag-12KG");
+        const tag14 = document.getElementById("tag-14KG");
+        const tag1214 = document.getElementById("tag-1214KG");
+        const tag314 = document.getElementById("tag-314KG");
+
+        if (tag1) tag1.innerText = preciosPlanilla["1 KG"] ? `$${preciosPlanilla["1 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag12) tag12.innerText = preciosPlanilla["1/2 KG"] ? `$${preciosPlanilla["1/2 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag14) tag14.innerText = preciosPlanilla["1/4 KG"] ? `$${preciosPlanilla["1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag1214) tag1214.innerText = preciosPlanilla["1/2 + 1/4 KG"] ? `$${preciosPlanilla["1/2 + 1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        if (tag314) tag314.innerText = preciosPlanilla["3 de 1/4 KG"] ? `$${preciosPlanilla["3 de 1/4 KG"].toLocaleString('es-AR')}` : (preciosPlanilla["1/4 KG"] ? `$${(preciosPlanilla["1/4 KG"] * 3).toLocaleString('es-AR')}` : "$ Consultar");
+    }
+
+    function obtenerPrecioBase(tamanoValor) {
+        if (tamanoValor.includes("3 de 1/4 KG")) return preciosPlanilla["3 de 1/4 KG"] || (preciosPlanilla["1/4 KG"] ? preciosPlanilla["1/4 KG"] * 3 : 0);
+        if (tamanoValor.includes("1/2 + 1/4 KG")) return preciosPlanilla["1/2 + 1/4 KG"] || 0;
+        if (tamanoValor.includes("1 KG")) return preciosPlanilla["1 KG"] || 0;
+        if (tamanoValor.includes("1/2 KG")) return preciosPlanilla["1/2 KG"] || 0;
+        if (tamanoValor.includes("1/4 KG")) return preciosPlanilla["1/4 KG"] || 0;
+        return 0;
+    }
+
+   function lanzarBurbujasBienvenida() {
+    const sonidoBienvenida = document.getElementById("sonidoSilbato");
+    if (sonidoBienvenida) {
+        sonidoBienvenida.volume = 0.25;
+        sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.id = "canvasBurbujas";
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "9999";
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const burbujas = [];
+    const cantidad = 35;
+
+    for (let i = 0; i < cantidad; i++) {
+        burbujas.push({
+            x: Math.random() * width,
+            y: height + Math.random() * 30 + 5,
+            radio: Math.random() * 12 + 8,
+            velocidadY: Math.random() * 3 + 4.5,
+            oscilacion: Math.random() * 0.05,
+            angulo: Math.random() * Math.PI * 2,
+            opacidad: Math.random() * 0.5 + 0.4,
+            faseAleteo: Math.random() * Math.PI * 2
+        });
+    }
+
+    let animacionId;
+    let tiempoInicio = performance.now();
+
+    function dibujarMariposa(ctx, x, y, tamano, opacidad, aleteo) {
+        ctx.save();
+        ctx.translate(x, y);
+        
+        const escalaAleteo = Math.abs(Math.sin(aleteo));
+        
+        ctx.fillStyle = `rgba(0, 180, 216, ${opacidad * 0.8})`;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${opacidad})`;
+        ctx.lineWidth = 1.2;
+
+        ctx.beginPath();
+        ctx.ellipse(-tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(-tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacidad})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, tamano * 0.15, tamano * 0.6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    function animar(tiempoActual) {
+        ctx.clearRect(0, 0, width, height);
+
+        let burbujasVisibles = 0;
+
+        burbujas.forEach(b => {
+            b.y -= b.velocidadY;
+            b.angulo += b.oscilacion;
+            b.x += Math.sin(b.angulo) * 0.8;
+            b.faseAleteo += 0.2;
+
+            if (b.y + b.radio > 0) {
+                burbujasVisibles++;
+                dibujarMariposa(ctx, b.x, b.y, b.radio, b.opacidad, b.faseAleteo);
+            }
+        });
+
+        if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
+            animacionId = requestAnimationFrame(animar);
+        } else {
+            cancelAnimationFrame(animacionId);
+            canvas.remove();
+        }
+    }
+
+    animacionId = requestAnimationFrame(animar);
+}
+
+    function actualizarInfo(tipoOrigen) {
+        if (tipoOrigen === 'sabor') {
+            reproducirSonidoSabor();
+        } else {
+            reproducirClick();
+        }
+
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const resumen = document.getElementById('resumen-seleccion');
+        
+        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+        const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
+
+        if (!tamano) {
+            if (resumen) resumen.innerText = "Primero elegí un tamaño";
+            if (cartelFlotante) cartelFlotante.style.display = "none";
+            return;
+        }
+        
+        let precioTotal = obtenerPrecioBase(tamano.value);
+        let mensajeFlotante = "";
+
+        if (tamano.value.includes("3 de 1/4 KG")) {
+            mensajeFlotante = "✔️ Promo 3 Potes de 1/4 seleccionada";
+        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
+            mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
+        } else if (tamano.value.includes("1 KG")) {
+            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
+        } else if (tamano.value.includes("1/2 KG")) {
+            mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
+        } else if (tamano.value.includes("1/4 KG")) {
+            mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
+        }
+
+        if (cartelFlotante && textoTamanoFlotante) {
+            textoTamanoFlotante.innerText = mensajeFlotante;
+            if (window.scrollY >= 400) {
+                cartelFlotante.style.display = "block";
+            }
+        }
+
+        let contadorSaboresReales = 0;
+        
+        seleccionados.forEach(sabor => {
+            const valLower = sabor.value.toLowerCase();
+            
+            if (preciosPlanilla[sabor.value]) {
+                precioTotal += preciosPlanilla[sabor.value];
+            }
+            
+            if (!valLower.includes("salsa") && !valLower.includes("cono") && !valLower.includes("adicional") && !valLower.includes("pasas")) {
+                contadorSaboresReales++; 
+            }
+        });
+        
+        let textoSabores = contadorSaboresReales === 0 ? "Seleccioná tus sabores" : `Llevás ${contadorSaboresReales} ${contadorSaboresReales === 1 ? 'sabor' : 'sabores'}`;
+        
+        if (resumen) {
+            resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
+        }
+    }
+
+    function copiarAlias() {
+        const alias = "helados.mix";
+        const cuadro = document.getElementById("btnAlias");
+        const msj = document.getElementById("mensajeCopiado");
+        const badge = document.getElementById("badgeCopiar");
+
+        navigator.clipboard.writeText(alias).then(() => {
+            const sonido = document.getElementById("sonidoCopiar");
+            if (sonido) { 
+                sonido.currentTime = 0; 
+                sonido.play().catch(error => console.log("Error al reproducir:", error));
+            }
+
+            if(badge) badge.innerHTML = "<span>✓</span> <span>COPIADO</span>";
+
+            cuadro.classList.add("copiado-exito");
+            msj.classList.add("visible");
+            
+            setTimeout(() => {
+                cuadro.classList.remove("copiado-exito");
+            }, 600);
+
+            setTimeout(() => {
+                msj.classList.remove("visible");
+                if(badge) badge.innerHTML = "<span>COPIAR ALIAS</span>";
+            }, 2000);
+        });
+    }
+
+    function enviarWhatsApp() {
+        const sonidoCampana = document.getElementById("sonidoCopiar");
+        if (sonidoCampana) {
+            sonidoCampana.currentTime = 0;
+            sonidoCampana.play().catch(error => console.log("Error al reproducir:", error));
+        }
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
+        const direccion = document.getElementById('direccion').value.trim() || "Retiro en local";
+
+        if (!tamano) {
+            alert("Por favor, elegí un tamaño.");
+            return;
+        }
+        if (seleccionados.length === 0) {
+            alert("Por favor, seleccioná al menos un sabor.");
+            return;
+        }
+
+        let granTotal = obtenerPrecioBase(tamano.value);
+        let listaSabores = "";
+        let listaSalsas = "";
+        let listaAdicionales = "";
+
+        seleccionados.forEach(s => {
+            const valLower = s.value.toLowerCase();
+            let costo = 0;
+
+            if (preciosPlanilla[s.value]) {
+                costo = preciosPlanilla[s.value];
+            }
+
+            granTotal += costo;
+
+            if (valLower.includes("salsa")) {
+                listaSalsas += `🍯 *${s.value}*%0A`;
+            } else if (valLower.includes("cono") || valLower.includes("adicional") || valLower.includes("cucurucho")) {
+                listaAdicionales += `🍦 *${s.value}*%0A`; 
+            } else if (valLower.includes("pasas")) {
+                listaAdicionales += `🍇 *${s.value}*%0A`;
+            } else {
+                listaSabores += `✅ ${s.value}%0A`; 
+            }
+        });
+
+        let textoPedido = `${tamano.value} ($${obtenerPrecioBase(tamano.value).toLocaleString('es-AR')})`;
+        if (textoPedido.includes("1/2 + 1/4")) {
+            textoPedido = textoPedido.replace("1/2 + 1/4", "1/2 %E2%9E%95 1/4");
+        }
+
+        let msj = `¡Hola *Helados.mix*! 👋%0A%0A`;
+        msj += `*Pedido:* ${textoPedido}%0A`;
+        msj += `*Dirección:* ${direccion}%0A%0A`;
+        
+        if (listaSabores !== "") {
+            msj += `*Sabores:*%0A${listaSabores}%0A`;
+        }
+        if (listaSalsas !== "") {
+            msj += `*Salsas:*%0A${listaSalsas}%0A`;
+        }
+        if (listaAdicionales !== "") {
+            msj += `*Adicionales:*%0A${listaAdicionales}%0A`;
+        }
+        
+        msj += `*Total a Pagar: $${granTotal.toLocaleString('es-AR')}*`;
+        
+        window.open(`https://wa.me/5491137610574?text=${msj}`, '_blank');
+    }
+
+    window.onload = cargarSabores;
+
+    window.addEventListener("scroll", function() {
+        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
+        const tamano = document.querySelector('input[name="tamano"]:checked');
+        
+        if (window.scrollY < 400) {
+            if (cartelFlotante) cartelFlotante.style.display = "none";
+        } else {
+            if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
+        }
+    });
+</script>
 </body>
 </html>
