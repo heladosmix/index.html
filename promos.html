@@ -346,6 +346,63 @@
             display: none; 
             transition: opacity 0.3s ease;
         }
+        /* Carrusel Deslizable */
+.carrusel-contenedor {
+    width: 100%;
+    overflow-x: auto;
+    padding: 15px 10px;
+    background: #18181C;
+    border-bottom: 1px solid var(--card-border);
+    scrollbar-width: none; /* Oculta barra en Firefox */
+}
+
+.carrusel-contenedor::-webkit-scrollbar {
+    display: none; /* Oculta barra en Chrome/Safari */
+}
+
+.carrusel-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+}
+
+.carrusel-card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.carrusel-card:active {
+    transform: scale(0.95);
+}
+
+.carrusel-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 6px;
+}
+
+.carrusel-card span {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--texto-principal);
+    text-align: center;
+}
+
+/* Efecto cuando se selecciona desde el carrusel */
+.carrusel-card.seleccionado {
+    border-color: var(--primario);
+    box-shadow: 0 0 10px rgba(255, 71, 126, 0.4);
+}
     </style>
 </head>
 
@@ -365,7 +422,31 @@
         <span class="brand-title">🍦 Helados.mix</span>
         <p>Catálogo de Pedidos Online 🍓✨</p>
     </header>
-
+   <!-- CARRUSEL VISUAL DE PRODUCTOS -->
+   <div class="carrusel-contenedor">
+    <div class="carrusel-track">
+        <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1 KG')">
+            <img src="https://heladosmix.github.io/index.html/1%20Kilo.webp" alt="1 KG">
+            <span>1 KG</span>
+        </div>
+        <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/2 KG')">
+            <img src="https://heladosmix.github.io/index.html/medio.webp" alt="1/2 KG">
+            <span>1/2 KG</span>
+        </div>
+        <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/4 KG')">
+            <img src="https://heladosmix.github.io/index.html/1_4.webp" alt="1/4 KG">
+            <span>1/4 KG</span>
+        </div>
+        <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/2 + 1/4 KG')">
+            <img src="https://heladosmix.github.io/index.html/med_un4.webp" alt="1/2 + 1/4 KG">
+            <span>1/2 + 1/4</span>
+        </div>
+        <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('3 de 1/4 KG')">
+            <img src="https://heladosmix.github.io/index.html/3_un_4.webp" alt="3 de 1/4">
+            <span>Promo 3x 1/4</span>
+        </div>
+    </div>
+</div>
     <div class="container">
         
         <div class="categoria">
@@ -498,7 +579,21 @@
             click.play().catch(e => console.log("Click bloqueado por el navegador"));
         }
     }
-
+   function seleccionarDesdeCarrusel(valorTamano) {
+    // Buscar el radio button que coincide con el tamaño
+    const radioTarget = document.querySelector(`input[name="tamano"][value="${valorTamano}"]`);
+    
+    if (radioTarget) {
+        radioTarget.checked = true; // Marca la opción abajo
+        actualizarInfo(); // Actualiza los precios, cartel flotante y sonidos
+        
+        // Hace un scroll suave directo a la sección de sabores
+        const seccionSabores = document.getElementById('lista-crema');
+        if (seccionSabores) {
+            seccionSabores.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+   }
     function reproducirSonidoSabor() {
         const sonidoSabor = document.getElementById("sonidoSabor");
         if (sonidoSabor) {
