@@ -40,15 +40,15 @@
             background-color: var(--bg-body);
             color: var(--texto-principal);
             margin: 0;
-            padding-bottom: 170px;
-            font-size: 16px;
+            padding-bottom: 140px;
+            font-size: 20px;
         }
 
         header {
             background: linear-gradient(180deg, #1A1A22 0%, #121214 100%);
             color: #FFFFFF;
             text-align: center;
-            padding: 1.8rem 1rem 1.2rem 1rem;
+            padding: 1.5rem 1rem 1rem 1rem;
             border-bottom: 1px solid var(--card-border);
         }
 
@@ -63,7 +63,7 @@
 
         header p {
             margin: 6px 0 0;
-            font-size: 1.05rem;
+            font-size: 1.2rem;
             color: var(--texto-secundario);
             font-weight: 600;
         }
@@ -86,7 +86,7 @@
 
         h2 {
             color: var(--texto-principal);
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin: 0 0 18px 0;
             display: flex;
             justify-content: center;
@@ -96,7 +96,7 @@
             padding-bottom: 10px;
         }
 
-        /* Tarjetas de tamaños grandes y fáciles para presionar */
+        /* Tarjetas de tamaños */
         .grid-tamanos {
             display: flex;
             flex-direction: column;
@@ -107,8 +107,8 @@
             display: flex;
             align-items: center;
             background: #25252E;
-            padding: 18px 20px;
-            border: 2px solid var(--card-border);
+            padding: 16px 18px;
+            border: 3px solid var(--card-border);
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -122,11 +122,11 @@
         }
 
         .pote-img {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             border-radius: 16px;
-            margin-right: 18px;
+            margin-right: 16px;
             flex-shrink: 0;
             background-color: #1A1A22;
         }
@@ -146,10 +146,12 @@
 
         input[type="radio"],
         input[type="checkbox"] {
-            transform: scale(1.4);
+            width: 32px;
+            height: 32px;
             accent-color: var(--primario);
-            margin: 0 10px 0 5px;
+            margin-right: 12px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .input-direccion {
@@ -160,7 +162,7 @@
             border-radius: 15px;
             font-family: inherit;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--texto-principal);
         }
 
@@ -169,19 +171,30 @@
             border-color: var(--primario);
         }
 
+        /* Opciones en las listas */
         .opcion {
             display: flex;
             align-items: center;
-            padding: 14px 10px;
-            border-bottom: 1px solid var(--card-border);
+            background: #1E1E24;
+            border: 3px solid #2D2D36;
+            border-radius: 20px;
+            padding: 16px 14px;
+            margin-bottom: 12px;
             cursor: pointer;
+            transition: all 0.2s ease;
             width: 100%;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--texto-principal);
         }
 
+        .opcion:has(input:checked) {
+            border-color: var(--destacado);
+            background-color: #162E28;
+        }
+
         .opcion:last-child {
-            border-bottom: none;
+            margin-bottom: 0;
         }
 
         .contenedor-alias-nuevo {
@@ -197,7 +210,7 @@
             background-color: #182A38;
             border: 2px dashed #009EE3;
             border-radius: 14px;
-            padding: 12px 15px;
+            padding: 12px 16px;
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -235,9 +248,9 @@
         .badge-copiar {
             background-color: #009EE3;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: bold;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -246,7 +259,7 @@
 
         #mensajeCopiado {
             color: var(--mp-verde);
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: bold;
             margin-top: 10px;
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -265,7 +278,7 @@
             border: 2px dashed var(--primario);
             border-radius: 14px;
             padding: 12px 15px;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: bold;
             margin-top: 15px;
             text-align: center;
@@ -288,23 +301,24 @@
             50% { transform: translateY(5px); }
         }
 
+        /* Botón Flotante Reducido */
         .btn-flotante {
             position: fixed;
-            bottom: 20px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--whatsapp);
             color: white;
-            padding: 16px 20px;
-            border-radius: 35px;
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
-            width: calc(100% - 24px);
-            max-width: 480px;
+            padding: 12px 16px;
+            border-radius: 25px;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            width: calc(100% - 30px);
+            max-width: 450px;
             border: none;
             cursor: pointer;
             z-index: 1000;
             text-align: center;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-family: inherit;
         }
 
@@ -312,46 +326,20 @@
             background-color: #33202A;
             color: var(--primario);
             border: 1px solid var(--primario);
-            padding: 5px 12px;
-            border-radius: 12px;
+            padding: 4px 10px;
+            border-radius: 10px;
             font-weight: bold;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             display: inline-block;
             margin-top: 4px;
             width: fit-content;
         }
-        
-        .cartel-flotante-top {
-            position: fixed !important;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            width: calc(100% - 30px);
-            max-width: 480px;
-            box-sizing: border-box;
-            background: rgba(255, 71, 126, 0.95);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #FFFFFF;
-            text-align: center;
-            padding: 14px 15px;
-            border-radius: 35px;
-            border: 2px solid #FFFFFF;
-            font-weight: bold;
-            font-size: 1.05rem; 
-            line-height: 1.3;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-            display: none; 
-            transition: opacity 0.3s ease;
-        }
 
-        /* Carrusel Accesible y Cómodo */
+        /* Carrusel y Precios */
         .carrusel-contenedor {
             width: 100%;
             overflow-x: auto;
-            padding: 22px 14px;
+            padding: 18px 12px;
             background: #18181C;
             border-bottom: 1px solid var(--card-border);
             scrollbar-width: none;
@@ -363,19 +351,19 @@
 
         .carrusel-track {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             width: max-content;
         }
 
         .carrusel-card {
             background: var(--card-bg);
             border: 2px solid var(--card-border);
-            border-radius: 20px;
-            padding: 14px;
+            border-radius: 18px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 175px;
+            width: 160px;
             cursor: pointer;
             transition: transform 0.2s, border-color 0.2s;
         }
@@ -385,19 +373,30 @@
         }
 
         .carrusel-card img {
-            width: 145px;
-            height: 145px;
+            width: 130px;
+            height: 130px;
             object-fit: cover;
-            border-radius: 16px;
-            margin-bottom: 12px;
+            border-radius: 14px;
+            margin-bottom: 8px;
         }
 
         .carrusel-card span {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--texto-principal);
             text-align: center;
             line-height: 1.2;
+        }
+
+        .carrusel-precio {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primario);
+            margin-top: 4px;
+            background: #33202A;
+            padding: 2px 8px;
+            border-radius: 8px;
+            border: 1px solid var(--primario);
         }
 
         .carrusel-card.seleccionado {
@@ -406,29 +405,29 @@
         }
         
         /* Cartel flotante de contador gigante */
-.contador-flotante-sabor {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.5);
-    background-color: rgba(30, 30, 36, 0.92);
-    color: #00B894; /* Verde llamativo (puedes cambiarlo por var(--primario) si prefieres rosa) */
-    font-size: 5rem;
-    font-weight: bold;
-    padding: 10px 35px;
-    border-radius: 20px;
-    border: 3px solid #00B894;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    z-index: 10000;
-    pointer-events: none;
-    opacity: 0;
-    transition: all 0.25s ease-out;
-}
+        .contador-flotante-sabor {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            background-color: rgba(30, 30, 36, 0.92);
+            color: #00B894;
+            font-size: 5rem;
+            font-weight: bold;
+            padding: 10px 35px;
+            border-radius: 20px;
+            border: 3px solid #00B894;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.25s ease-out;
+        }
 
-.contador-flotante-sabor.activo {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
+        .contador-flotante-sabor.activo {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
     </style>
 </head>
 
@@ -438,11 +437,6 @@
     <audio id="sonidoSilbato" src="silbato.mp3" preload="auto"></audio>
     <audio id="sonidoClick" src="click.mp3" preload="auto"></audio>
     <audio id="sonidoSabor" src="sabor.mp3" preload="auto"></audio>
-
-    <!-- Cartel flotante superior fijo -->
-    <div id="cartelTamanoFlotante" class="cartel-flotante-top">
-        <span id="textoTamanoFlotante">Elegí un tamaño para comenzar</span>
-    </div>
 
     <header>
         <span class="brand-title">🍦 Helados.mix</span>
@@ -455,22 +449,27 @@
             <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1 KG')">
                 <img src="https://heladosmix.github.io/index.html/1%20Kilo.webp" alt="1 KG">
                 <span>1 KG</span>
+                <span class="carrusel-precio" id="car-1KG">$ --</span>
             </div>
             <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/2 KG')">
                 <img src="https://heladosmix.github.io/index.html/medio.webp" alt="1/2 KG">
                 <span>1/2 KG</span>
+                <span class="carrusel-precio" id="car-12KG">$ --</span>
             </div>
             <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/4 KG')">
                 <img src="https://heladosmix.github.io/index.html/1_4.webp" alt="1/4 KG">
                 <span>1/4 KG</span>
+                <span class="carrusel-precio" id="car-14KG">$ --</span>
             </div>
             <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('1/2 + 1/4 KG')">
                 <img src="https://heladosmix.github.io/index.html/med_un4.webp" alt="1/2 + 1/4 KG">
                 <span>1/2 + 1/4</span>
+                <span class="carrusel-precio" id="car-1214KG">$ --</span>
             </div>
             <div class="carrusel-card" onclick="seleccionarDesdeCarrusel('3 de 1/4 KG')">
                 <img src="https://heladosmix.github.io/index.html/3_un_4.webp" alt="3 de 1/4">
                 <span>Promo 3x 1/4</span>
+                <span class="carrusel-precio" id="car-314KG">$ --</span>
             </div>
         </div>
     </div>
@@ -560,26 +559,22 @@
            <!-- 3. SALSAS Y ADEREZOS -->
             <div class="categoria">
                 <h2>🍯 Salsas y Aderezos</h2>
-                <!-- Contenedor centrado para las 3 imágenes -->
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-        <img src="https://heladosmix.github.io/index.html/salsas.webp" alt="salsas" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
-    </div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <img src="https://heladosmix.github.io/index.html/salsas.webp" alt="salsas" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
+                </div>
                 <div id="lista-salsas">Cargando salsas...</div>
             </div>
 
-       <!-- 4. CONOS Y ADICIONALES -->
-<div class="categoria">
-    <h2>🍦 Conos y Adicionales</h2>
-    
-    <!-- Contenedor centrado para las 3 imágenes -->
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-        <img src="https://heladosmix.github.io/index.html/con_comun.webp" alt="Conos Comunes" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
-        <img src="https://heladosmix.github.io/index.html/conosdulces.webp" alt="Conos Dulces" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
-        <img src="https://heladosmix.github.io/index.html/pasas.webp" alt="Pasas Uva" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
-    </div>
-
-    <div id="lista-conos">Cargando adicionales...</div>
-</div>
+            <!-- 4. CONOS Y ADICIONALES -->
+            <div class="categoria">
+                <h2>🍦 Conos y Adicionales</h2>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <img src="https://heladosmix.github.io/index.html/con_comun.webp" alt="Conos Comunes" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
+                    <img src="https://heladosmix.github.io/index.html/conosdulces.webp" alt="Conos Dulces" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
+                    <img src="https://heladosmix.github.io/index.html/pasas.webp" alt="Pasas Uva" class="pote-img" style="width: 90px; height: 90px; margin: 0;" loading="lazy">
+                </div>
+                <div id="lista-conos">Cargando adicionales...</div>
+            </div>
 
             <!-- 5. SABORES A LA CREMA -->
             <div class="categoria">
@@ -602,7 +597,7 @@
         <div style="text-align: center; background: var(--card-bg); padding: 20px; border-radius: 20px; margin: 20px auto; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid var(--card-border);">
             <p style="margin-bottom: 10px; font-weight: bold; color: var(--primario);">🍦 Helados.mix 🍦</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://heladosmix.github.io/index.html" alt="QR Helados Mix" style="border-radius: 10px;">
-            <p style="font-size: 0.8rem; margin-top: 5px; color: var(--texto-secundario);">heladosmix.github.io</p>
+            <p style="font-size: 0.85rem; margin-top: 5px; color: var(--texto-secundario);">heladosmix.github.io</p>
         </div>
         
     </div>
@@ -626,7 +621,7 @@
         
         if (radioTarget) {
             radioTarget.checked = true;
-            actualizarInfo('tamano'); // Se actualiza la selección, sonido, precios y scroll
+            actualizarInfo('tamano');
         }
     }
 
@@ -645,10 +640,8 @@
         el.innerText = numero;
         el.classList.add('activo');
 
-        // Limpia el temporizador anterior si tildan rápido
         if (timerContador) clearTimeout(timerContador);
 
-        // Oculta el número flotante tras 1 segundo
         timerContador = setTimeout(() => {
             el.classList.remove('activo');
         }, 1000);
@@ -675,7 +668,7 @@
 
                 let columnas = filas[i].split(',').map(c => c.replace(/"/g, "").trim());
                 
-                // 1. Procesar Sabores de la izquierda (Columnas A, B, C)
+                // 1. Procesar Sabores (Columnas A, B, C)
                 if (columnas.length >= 3) {
                     let nombre = columnas[0];
                     let category = columnas[1]; 
@@ -699,7 +692,7 @@
                     }
                 }
 
-                // 2. Procesar Precios, Conos y Salsas de la derecha (Columnas E, F, G)
+                // 2. Procesar Precios (Columnas E, F, G)
                 if (columnas.length >= 7) {
                     let prodNombre = columnas[4];
                     let prodPrecio = parseFloat(columnas[5]);
@@ -730,7 +723,6 @@
             if (contConos && contConos.innerHTML === "") contConos.innerHTML = "<p>No hay conos ni adicionales activos.</p>";
 
             actualizarEtiquetasPreciosHTML();
-            lanzarBurbujasBienvenida();
 
         } catch (error) {
             console.error("Error al cargar la planilla:", error);
@@ -747,11 +739,29 @@
         const tag1214 = document.getElementById("tag-1214KG");
         const tag314 = document.getElementById("tag-314KG");
 
-        if (tag1) tag1.innerText = preciosPlanilla["1 KG"] ? `$${preciosPlanilla["1 KG"].toLocaleString('es-AR')}` : "$ Consultar";
-        if (tag12) tag12.innerText = preciosPlanilla["1/2 KG"] ? `$${preciosPlanilla["1/2 KG"].toLocaleString('es-AR')}` : "$ Consultar";
-        if (tag14) tag14.innerText = preciosPlanilla["1/4 KG"] ? `$${preciosPlanilla["1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
-        if (tag1214) tag1214.innerText = preciosPlanilla["1/2 + 1/4 KG"] ? `$${preciosPlanilla["1/2 + 1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
-        if (tag314) tag314.innerText = preciosPlanilla["3 de 1/4 KG"] ? `$${preciosPlanilla["3 de 1/4 KG"].toLocaleString('es-AR')}` : (preciosPlanilla["1/4 KG"] ? `$${(preciosPlanilla["1/4 KG"] * 3).toLocaleString('es-AR')}` : "$ Consultar");
+        const car1 = document.getElementById("car-1KG");
+        const car12 = document.getElementById("car-12KG");
+        const car14 = document.getElementById("car-14KG");
+        const car1214 = document.getElementById("car-1214KG");
+        const car314 = document.getElementById("car-314KG");
+
+        const p1 = preciosPlanilla["1 KG"] ? `$${preciosPlanilla["1 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        const p12 = preciosPlanilla["1/2 KG"] ? `$${preciosPlanilla["1/2 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        const p14 = preciosPlanilla["1/4 KG"] ? `$${preciosPlanilla["1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        const p1214 = preciosPlanilla["1/2 + 1/4 KG"] ? `$${preciosPlanilla["1/2 + 1/4 KG"].toLocaleString('es-AR')}` : "$ Consultar";
+        const p314 = preciosPlanilla["3 de 1/4 KG"] ? `$${preciosPlanilla["3 de 1/4 KG"].toLocaleString('es-AR')}` : (preciosPlanilla["1/4 KG"] ? `$${(preciosPlanilla["1/4 KG"] * 3).toLocaleString('es-AR')}` : "$ Consultar");
+
+        if (tag1) tag1.innerText = p1;
+        if (tag12) tag12.innerText = p12;
+        if (tag14) tag14.innerText = p14;
+        if (tag1214) tag1214.innerText = p1214;
+        if (tag314) tag314.innerText = p314;
+
+        if (car1) car1.innerText = p1;
+        if (car12) car12.innerText = p12;
+        if (car14) car14.innerText = p14;
+        if (car1214) car1214.innerText = p1214;
+        if (car314) car314.innerText = p314;
     }
 
     function obtenerPrecioBase(tamanoValor) {
@@ -761,113 +771,6 @@
         if (tamanoValor.includes("1/2 KG")) return preciosPlanilla["1/2 KG"] || 0;
         if (tamanoValor.includes("1/4 KG")) return preciosPlanilla["1/4 KG"] || 0;
         return 0;
-    }
-
-    function lanzarBurbujasBienvenida() {
-        const sonidoBienvenida = document.getElementById("sonidoSilbato");
-        if (sonidoBienvenida) {
-            sonidoBienvenida.volume = 0.25;
-            sonidoBienvenida.play().catch(e => console.log("Audio de bienvenida bloqueado por navegador"));
-        }
-
-        const canvas = document.createElement("canvas");
-        canvas.id = "canvasBurbujas";
-        canvas.style.position = "fixed";
-        canvas.style.top = "0";
-        canvas.style.left = "0";
-        canvas.style.width = "100vw";
-        canvas.style.height = "100vh";
-        canvas.style.pointerEvents = "none";
-        canvas.style.zIndex = "9999";
-        document.body.appendChild(canvas);
-
-        const ctx = canvas.getContext("2d");
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-
-        const burbujas = [];
-        const cantidad = 35;
-
-        for (let i = 0; i < cantidad; i++) {
-            burbujas.push({
-                x: Math.random() * width,
-                y: height + Math.random() * 30 + 5,
-                radio: Math.random() * 12 + 8,
-                velocidadY: Math.random() * 3 + 4.5,
-                oscilacion: Math.random() * 0.05,
-                angulo: Math.random() * Math.PI * 2,
-                opacidad: Math.random() * 0.5 + 0.4,
-                faseAleteo: Math.random() * Math.PI * 2
-            });
-        }
-
-        let animacionId;
-        let tiempoInicio = performance.now();
-
-        function dibujarMariposa(ctx, x, y, tamano, opacidad, aleteo) {
-            ctx.save();
-            ctx.translate(x, y);
-            
-            const escalaAleteo = Math.abs(Math.sin(aleteo));
-            
-            ctx.fillStyle = `rgba(0, 180, 216, ${opacidad * 0.8})`;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacidad})`;
-            ctx.lineWidth = 1.2;
-
-            ctx.beginPath();
-            ctx.ellipse(-tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, -Math.PI / 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.ellipse(tamano * 0.6 * escalaAleteo, -tamano * 0.5, tamano * 0.7 * escalaAleteo, tamano * 0.5, Math.PI / 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.ellipse(-tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, Math.PI / 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.ellipse(tamano * 0.4 * escalaAleteo, tamano * 0.3, tamano * 0.4 * escalaAleteo, tamano * 0.3, -Math.PI / 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.fillStyle = `rgba(255, 255, 255, ${opacidad})`;
-            ctx.beginPath();
-            ctx.ellipse(0, 0, tamano * 0.15, tamano * 0.6, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.restore();
-        }
-
-        function animar(tiempoActual) {
-            ctx.clearRect(0, 0, width, height);
-
-            let burbujasVisibles = 0;
-
-            burbujas.forEach(b => {
-                b.y -= b.velocidadY;
-                b.angulo += b.oscilacion;
-                b.x += Math.sin(b.angulo) * 0.8;
-                b.faseAleteo += 0.2;
-
-                if (b.y + b.radio > 0) {
-                    burbujasVisibles++;
-                    dibujarMariposa(ctx, b.x, b.y, b.radio, b.opacidad, b.faseAleteo);
-                }
-            });
-
-            if (burbujasVisibles > 0 && (tiempoActual - tiempoInicio) < 2500) {
-                animacionId = requestAnimationFrame(animar);
-            } else {
-                cancelAnimationFrame(animacionId);
-                canvas.remove();
-            }
-        }
-
-        animacionId = requestAnimationFrame(animar);
     }
 
     function actualizarInfo(tipoOrigen) {
@@ -880,37 +783,13 @@
         const tamano = document.querySelector('input[name="tamano"]:checked');
         const seleccionados = document.querySelectorAll('input[name="sabor"]:checked');
         const resumen = document.getElementById('resumen-seleccion');
-        
-        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-        const textoTamanoFlotante = document.getElementById('textoTamanoFlotante');
 
         if (!tamano) {
             if (resumen) resumen.innerText = "Primero elegí un tamaño";
-            if (cartelFlotante) cartelFlotante.style.display = "none";
             return;
         }
         
         let precioTotal = obtenerPrecioBase(tamano.value);
-        let mensajeFlotante = "";
-
-        if (tamano.value.includes("3 de 1/4 KG")) {
-            mensajeFlotante = "✔️ Promo 3 Potes de 1/4 seleccionada";
-        } else if (tamano.value.includes("1/2 + 1/4 KG")) {
-            mensajeFlotante = "✔️ 1/2 + 1/4 KG seleccionado (Elegí 5 sabores)";
-        } else if (tamano.value.includes("1 KG")) {
-            mensajeFlotante = "✔️ 1 KG seleccionado (Elegí 5 sabores)";
-        } else if (tamano.value.includes("1/2 KG")) {
-            mensajeFlotante = "✔️ 1/2 KG seleccionado (Elegí 3 sabores)";
-        } else if (tamano.value.includes("1/4 KG")) {
-            mensajeFlotante = "✔️ 1/4 seleccionado (Elegí 2 sabores)";
-        }
-
-        if (cartelFlotante && textoTamanoFlotante) {
-            textoTamanoFlotante.innerText = mensajeFlotante;
-            if (window.scrollY >= 400) {
-                cartelFlotante.style.display = "block";
-            }
-        }
 
         // Conteo de sabores seleccionados
         let contadorSaboresReales = 0;
@@ -927,7 +806,6 @@
             }
         });
 
-        // Muestra el número flotante gigante si el evento proviene de seleccionar un sabor
         if (tipoOrigen === 'sabor' && contadorSaboresReales > 0) {
             mostrarNumeroFlotante(contadorSaboresReales);
         }
@@ -938,7 +816,6 @@
             resumen.innerHTML = `${textoSabores} | <strong>Total: $${precioTotal.toLocaleString('es-AR')}</strong>`;
         }
 
-        // --- SCROLL AJUSTADO A MANO ---
         if (tipoOrigen !== 'sabor') {
             const destino = document.getElementById('lista-salsas') || document.getElementById('lista-crema');
             if (destino) {
@@ -1052,17 +929,6 @@
     }
 
     window.onload = cargarSabores;
-
-    window.addEventListener("scroll", function() {
-        const cartelFlotante = document.getElementById('cartelTamanoFlotante');
-        const tamano = document.querySelector('input[name="tamano"]:checked');
-        
-        if (window.scrollY < 400) {
-            if (cartelFlotante) cartelFlotante.style.display = "none";
-        } else {
-            if (cartelFlotante && tamano) cartelFlotante.style.display = "block";
-        }
-    });
 </script>
 <!-- CARTEL FLOTANTE DE CONTEO DE SABORES -->
 <div id="contadorFlotanteSabores" class="contador-flotante-sabor">0</div>
